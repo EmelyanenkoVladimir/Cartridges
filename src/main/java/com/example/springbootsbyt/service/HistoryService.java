@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface HistoryService {
 
-    public History findById(int id);
+    public History findById(Integer id);
 
     public List<History> findAll();
 
     public History saveHistory(History history);
 
-    public void deleteById(int id);
+    public void deleteById(Integer id);
 
 
 }

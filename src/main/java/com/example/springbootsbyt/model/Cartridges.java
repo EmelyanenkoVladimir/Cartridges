@@ -37,5 +37,8 @@ public class Cartridges {
     @Column(name = "cartrs_id_cartrs")
     private Integer cartrsIdCartrs;
 
+    @Column(name = "printers_id_printers")
+    private Integer printersIdPrinters;
+
 
 }

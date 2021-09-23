@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание типа принтера</title>
+</head>
+<body>
+</form>
+<form action="#" th:action="@{/printers-create}" th:object="${printers}" method="post">
+    <table>
+        <tbody>
+        <tr>
+            <th for="typePrinters">Тип</th>
+            <td><input type="text" th:field="*{typePrinters}" id="typePrinters" placeholder="typePrinters"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Создать Тип принтера"></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

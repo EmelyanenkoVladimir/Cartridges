@@ -31,6 +31,16 @@
             <td><input type="text" th:field="*{comments}" id="comments" placeholder="comments"></td>
         </tr>
         <tr>
+            <td>Выберите тип принтера</td>
+            <td><select th:field="*{printersIdPrinters}" id="printersIdPrinters">
+                <option th:each="print : ${printers}"
+                        th:value="${print.idPrinters}"
+                        th:text="${print.typePrinters}">
+                </option>
+            </select>
+            </td>
+        </tr>
+        <tr>
             <td>Выберите тип картриджа</td>
             <td><select th:field="*{cartrsIdCartrs}" id="cartrsIdCartrs">
                 <option th:each="cart : ${cartrs}"

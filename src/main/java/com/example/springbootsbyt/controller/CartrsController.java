@@ -38,7 +38,7 @@ public class CartrsController {
     }
 
     @PostMapping("/cartrs-update")
-    public String updateUser(Cartrs cartrs) {
+    public String updateCartrs(Cartrs cartrs) {
         cartrsServiceImpl.saveCartrs(cartrs);
         return "redirect:/cartridges";
     }

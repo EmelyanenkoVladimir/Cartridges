@@ -23,7 +23,7 @@ public class CartridgeServiceImpl implements CartridgeService {
         this.cartridgeRepository = cartridgeRepository;
     }
 
-    public Cartridges findById(int id){
+    public Cartridges findById(Integer id){
         return cartridgeRepository.findById(id).orElse(null);
     }
 
@@ -35,7 +35,7 @@ public class CartridgeServiceImpl implements CartridgeService {
         return cartridgeRepository.save(cartridge);
     }
 
-    public void deleteById(int id){
+    public void deleteById(Integer id){
         cartridgeRepository.deleteById(id);
     }
 

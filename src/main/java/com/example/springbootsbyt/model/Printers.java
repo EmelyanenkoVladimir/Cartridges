@@ -15,6 +15,6 @@ public class Printers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPrinters;
 
-    @Column(name = "type_print")
-    private String typePrint;
+    @Column(name = "type_printers")
+    private String typePrinters;
 }

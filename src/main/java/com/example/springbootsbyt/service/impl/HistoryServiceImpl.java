@@ -18,7 +18,7 @@ public class HistoryServiceImpl implements HistoryService {
         this.historyRepository = historyRepository;
     }
 
-    public History findById(int id) {
+    public History findById(Integer id) {
         return historyRepository.findById(id).orElse(null);
     }
 
@@ -30,7 +30,7 @@ public class HistoryServiceImpl implements HistoryService {
         return historyRepository.save(history);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(Integer id) {
         historyRepository.deleteById(id);
     }
 }
