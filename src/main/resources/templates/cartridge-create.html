@@ -27,6 +27,10 @@
             <td><input type="text" th:field="*{executor}" id="executor" placeholder="executor"></td>
         </tr>
         <tr>
+            <th for="count">Количество заправок</th>
+            <td><input readonly type="number" th:field="*{count}" th:value="*{count=0}" id="count"></td>
+        </tr>
+        <tr>
             <th for="comments">Описание</th>
             <td><input type="text" th:field="*{comments}" id="comments" placeholder="comments"></td>
         </tr>

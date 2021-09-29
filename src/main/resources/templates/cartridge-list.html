@@ -20,6 +20,7 @@
                 <th>Ресурс</th>
                 <th>Город</th>
                 <th>Исполнитель</th>
+                <th>Количество заправок</th>
                 <th>Комментарии</th>
                 <th colspan="2">Операции</th>
             </tr>
@@ -44,6 +45,7 @@
                 <td th:text="${cartridge.resource}"></td>
                 <td th:text="${cartridge.city}"></td>
                 <td th:text="${cartridge.executor}"></td>
+                <td th:text="${cartridge.count}"></td>
                 <td th:text="${cartridge.comments}"></td>
                 <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}">Подробнее</a></td>
                 <td><a th:href="@{cartridge-update/{id}(id=${cartridge.id})}">Исправить</a></td>
