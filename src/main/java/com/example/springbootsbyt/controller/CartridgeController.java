@@ -2,23 +2,30 @@ package com.example.springbootsbyt.controller;
 
 import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.Cartrs;
-//import com.example.springbootsbyt.entity.Cartridges;
-//import com.example.springbootsbyt.entity.Cartrs;
 import com.example.springbootsbyt.model.History;
 import com.example.springbootsbyt.model.Printers;
 import com.example.springbootsbyt.service.impl.CartridgeServiceImpl;
 import com.example.springbootsbyt.service.impl.CartrsServiceImpl;
-//import com.example.springbootsbyt.service.impl.HistoryServiceImpl;
 import com.example.springbootsbyt.service.impl.HistoryServiceImpl;
 import com.example.springbootsbyt.service.impl.PrintersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+import javax.validation.ValidationException;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Controller
 public class CartridgeController {
@@ -28,11 +35,12 @@ public class CartridgeController {
     private final HistoryServiceImpl historyServiceImpl;
     private final PrintersServiceImpl printersServiceImpl;
 
+
     @Autowired
     public CartridgeController(CartridgeServiceImpl cartridgeServiceImpl,
                                CartrsServiceImpl cartrsServiceImpl,
                                HistoryServiceImpl historyServiceImpl,
-                               PrintersServiceImpl printersServiceImpl) {
+                               PrintersServiceImpl printersServiceImpl){
         this.cartridgeServiceImpl = cartridgeServiceImpl;
         this.cartrsServiceImpl = cartrsServiceImpl;
         this.historyServiceImpl = historyServiceImpl;
@@ -40,7 +48,7 @@ public class CartridgeController {
     }
 
     @GetMapping("/cartridges")
-    public String findAll(Model model) {
+    public String findAllCartridges(Model model) {
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
         List<History> history = historyServiceImpl.findAll();
@@ -50,6 +58,7 @@ public class CartridgeController {
         model.addAttribute("history", history);
         model.addAttribute("printers", printers);
         return "cartridge-list";
+
     }
 
     @GetMapping("/cartridge-create")
@@ -62,10 +71,22 @@ public class CartridgeController {
     }
 
     @PostMapping("/cartridge-create")
-    public String createCartridge(Cartridges cartridge) {
+    public String createCartridge(@Valid Cartridges cartridge, BindingResult bindingResult, Model model){
+        try {if (bindingResult.hasErrors()){
+            List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+            List<Printers> printers = printersServiceImpl.findAll();
+            model.addAttribute("cartrs", cartrs);
+            model.addAttribute("printers", printers);
+            model.addAttribute("cartridges", cartridge);
+            return "cartridge-create";
+        }
+        }catch(NumberFormatException e){
+            throw new ValidationException("lox");
+        }
         cartridgeServiceImpl.saveCartridge(cartridge);
         return "redirect:/cartridges";
     }
+
 
     @GetMapping("/cartridge-update/{id}")
     public String updateCartridgeForm(@PathVariable("id") int id, Model model) {
@@ -84,47 +105,17 @@ public class CartridgeController {
         return "redirect:/cartridges";
     }
     @GetMapping("/cartridge-moreInfo/{id}")
-    public String moreInfoForm(@PathVariable("id") Integer id, Model model) {
+    public String moreInfoForm(@PathVariable("id") int id, Model model) {
         Cartridges cartridges = cartridgeServiceImpl.findById(id);
         List<History> history = historyServiceImpl.findAll();
         model.addAttribute("cartridges", cartridges);
         model.addAttribute("history", history);
-        return "cartridge-moreInfo";
+        return "cartridge-moreinfo";
     }
 
     @GetMapping("/cartridge-delete/{id}")
-    public String deleteCartridge(@PathVariable("id") Integer id) {
+    public String deleteCartridge(@PathVariable("id") int id) {
         cartridgeServiceImpl.deleteById(id);
-        return "redirect:/cartridges";
-    }
-    @GetMapping("/printers-create")
-    public String createPrintersForm(Model model,Printers printers) {
-        List<Printers> printer = printersServiceImpl.findAll();
-        model.addAttribute("printer", printer);
-        return "printers-create";
-    }
-    @PostMapping("/printers-create")
-    public String createPrinters(Printers printers) {
-        printersServiceImpl.savePrinters(printers);
-        return "redirect:/cartridges";
-    }
-
-    @GetMapping("printers-update/{idPrinters}")
-    public String updatePrintersForm(@PathVariable("idPrinters") int id, Model model) {
-        Printers printers = printersServiceImpl.findById(id);
-        model.addAttribute("printers", printers);
-        return "printers-update";
-    }
-
-    @PostMapping("/printers-update")
-    public String updatePrinters(Printers printers) {
-        printersServiceImpl.savePrinters(printers);
-        return "redirect:/cartridges";
-    }
-
-    @GetMapping("printers-delete/{idPrinters}")
-    public String deletePrinters(@PathVariable("idPrinters") int id) {
-        printersServiceImpl.deleteById(id);
         return "redirect:/cartridges";
     }
 }

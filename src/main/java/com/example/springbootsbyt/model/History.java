@@ -1,14 +1,17 @@
 package com.example.springbootsbyt.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.sql.Date;
-import java.util.Objects;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
-//@Data
+@Data
 @Entity
 @Table(name = "history")
+@NoArgsConstructor
 public class History {
 
     @Id
@@ -23,6 +26,7 @@ public class History {
 
     @Column(name = "cartridges_id")
     private Integer cartridgesId;
+
 
     public Integer getIdHistory() {
         return idHistory;
@@ -56,39 +60,4 @@ public class History {
         this.cartridgesId = cartridgesId;
     }
 
-    public History(Integer idHistory, Date dateOfStatus, String status, Integer cartridgesId) {
-        this.idHistory = idHistory;
-        this.dateOfStatus = dateOfStatus;
-        this.status = status;
-        this.cartridgesId = cartridgesId;
-    }
-
-    public History() {
-    }
-
-    @Override
-    public String toString() {
-        return "History{" +
-                "idHistory=" + idHistory +
-                ", dateOfStatus=" + dateOfStatus +
-                ", status='" + status + '\'' +
-                ", cartridgesId=" + cartridgesId +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        History history = (History) o;
-        return Objects.equals(idHistory, history.idHistory) &&
-                Objects.equals(dateOfStatus, history.dateOfStatus) &&
-                Objects.equals(status, history.status) &&
-                Objects.equals(cartridgesId, history.cartridgesId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idHistory, dateOfStatus, status, cartridgesId);
-    }
 }

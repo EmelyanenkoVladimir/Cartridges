@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
-    <title>Исправление типа принтера</title>
+    <title>Поиск</title>
 </head>
 <body>
 <!-- Optional JavaScript; choose one of the two! -->
@@ -17,21 +18,17 @@
 <!-- Option 2: Separate Popper and Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js" integrity="sha384-PsUw7Xwds7x08Ew3exXhqzbhuEYmA2xnwc8BuD6SEr+UmEHlX8/MCltYEodzWA4u" crossorigin="anonymous"></script>
-<form action="#" th:action="@{/printers-update}" th:object="${printers}" method="post">
-    <table>
-        <tbody>
-        <tr>
-            <td><input readonly type="hidden" th:field="*{idPrinters}"></td>
-        </tr>
-        <tr>
-            <th for="typePrinters">Тип принтера</th>
-            <td><input type="text" th:field="*{typePrinters}" id="typePrinters"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Исправить картридж"></td>
-        </tr>
-        </tbody>
-    </table>
-</form>
+    <h1>Поиск</h1>
+    <form action="#" th:action="@{/search}" th:object = "${cartridges}" method="post">
+        <label> Поиск (Инвентарному, по заправкам, по городу, по типам) </label>
+        <input type="search" name="keyword" >
+        <input type="submit" value="Найти">
+    </form>
+    <form action="#" th:action="@{/Data-Search}" th:object="${history}" method="post">
+        <label Поиск по дате></label>
+        <input type="date" name="Date">
+        <input type="submit" value="Найти по дате">
+    </form>
+    <p><a href="/Main">Вернуться на главную</a></p>
 </body>
 </html>

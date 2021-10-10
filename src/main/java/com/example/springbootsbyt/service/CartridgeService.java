@@ -2,11 +2,14 @@ package com.example.springbootsbyt.service;
 
 import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.History;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
+import java.sql.Date;
 import java.util.List;
 
-public interface CartridgeService {
+public interface CartridgeService  {
 
     public Cartridges findById(Integer id);
 
@@ -16,12 +19,7 @@ public interface CartridgeService {
 
     public void deleteById(Integer id);
 
-
-//    Integer countingById(Cartridges id, Cartridges cartrsIdCartrs, Cartridges count, History status);
-
-
-
-
+    public List<Cartridges> findAll(String keyword);
 
 }
 

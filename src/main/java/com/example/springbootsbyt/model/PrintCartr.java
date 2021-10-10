@@ -3,77 +3,43 @@ package com.example.springbootsbyt.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-//@Data
+@Data
 @Entity
 @Table(name = "printcartr")
 public class PrintCartr {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "id_cartrs")
-    private int idCartrs;
+    private Integer idCartrs;
 
     @Column(name = "id_printers")
-    private int idPrinters;
+    private Integer idPrinters;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getIdCartrs() {
+    public Integer getIdCartrs() {
         return idCartrs;
     }
 
-    public void setIdCartrs(int idCartrs) {
+    public void setIdCartrs(Integer idCartrs) {
         this.idCartrs = idCartrs;
     }
 
-    public int getIdPrinters() {
+    public Integer getIdPrinters() {
         return idPrinters;
     }
 
-    public void setIdPrinters(int idPrinters) {
+    public void setIdPrinters(Integer idPrinters) {
         this.idPrinters = idPrinters;
-    }
-
-    public PrintCartr(int id, int idCartrs, int idPrinters) {
-        this.id = id;
-        this.idCartrs = idCartrs;
-        this.idPrinters = idPrinters;
-    }
-
-    public PrintCartr() {
-    }
-
-    @Override
-    public String toString() {
-        return "PrintCartr{" +
-                "id=" + id +
-                ", idCartrs=" + idCartrs +
-                ", idPrinters=" + idPrinters +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PrintCartr that = (PrintCartr) o;
-        return id == that.id &&
-                idCartrs == that.idCartrs &&
-                idPrinters == that.idPrinters;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, idCartrs, idPrinters);
     }
 }

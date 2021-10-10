@@ -2,12 +2,14 @@ package com.example.springbootsbyt.model;
 
 //import com.example.springbootsbyt.entity.Cartrs;
 import lombok.Data;
+import lombok.NonNull;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Objects;
-//@Data
 @Entity
 @Table(name = "cartridges")
 public class Cartridges {
@@ -16,9 +18,11 @@ public class Cartridges {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull(message = "Поле не может быть пустым")
     @Column(name = "inventory_number")
     private Integer inventoryNumber;
 
+    @NotNull(message = "Поле не может быть пустым")
     @Column(name = "resource")
     private Integer resource;
 
@@ -34,14 +38,14 @@ public class Cartridges {
     @Column(name = "executor")
     private String executor;
 
-    @Column(name = "count")
-    private Integer count;
-
     @Column(name = "cartrs_id_cartrs")
     private Integer cartrsIdCartrs;
 
     @Column(name = "printers_id_printers")
     private Integer printersIdPrinters;
+
+    @Column(name = "count")
+    private Integer count;
 
     public Integer getId() {
         return id;
@@ -99,14 +103,6 @@ public class Cartridges {
         this.executor = executor;
     }
 
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
     public Integer getCartrsIdCartrs() {
         return cartrsIdCartrs;
     }
@@ -123,60 +119,11 @@ public class Cartridges {
         this.printersIdPrinters = printersIdPrinters;
     }
 
-    public Cartridges(Integer id, Integer inventoryNumber, Integer resource, Integer barcode,
-                      String comments, String city, String executor, Integer count,
-                      Integer cartrsIdCartrs, Integer printersIdPrinters) {
-        this.id = id;
-        this.inventoryNumber = inventoryNumber;
-        this.resource = resource;
-        this.barcode = barcode;
-        this.comments = comments;
-        this.city = city;
-        this.executor = executor;
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
         this.count = count;
-        this.cartrsIdCartrs = cartrsIdCartrs;
-        this.printersIdPrinters = printersIdPrinters;
-    }
-
-    public Cartridges() {
-    }
-
-    @Override
-    public String toString() {
-        return "Cartridges{" +
-                "id=" + id +
-                ", inventoryNumber=" + inventoryNumber +
-                ", resource=" + resource +
-                ", barcode=" + barcode +
-                ", comments='" + comments + '\'' +
-                ", city='" + city + '\'' +
-                ", executor='" + executor + '\'' +
-                ", count='" + count + '\'' +
-                ", cartrsIdCartrs=" + cartrsIdCartrs +
-                ", printersIdPrinters=" + printersIdPrinters +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cartridges that = (Cartridges) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(inventoryNumber, that.inventoryNumber) &&
-                Objects.equals(resource, that.resource) &&
-                Objects.equals(barcode, that.barcode) &&
-                Objects.equals(comments, that.comments) &&
-                Objects.equals(city, that.city) &&
-                Objects.equals(executor, that.executor) &&
-                Objects.equals(count, that.count) &&
-                Objects.equals(cartrsIdCartrs, that.cartrsIdCartrs) &&
-                Objects.equals(printersIdPrinters, that.printersIdPrinters);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, inventoryNumber, resource, barcode, comments, city,
-                executor, count, cartrsIdCartrs, printersIdPrinters);
     }
 }

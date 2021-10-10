@@ -2,7 +2,6 @@ package com.example.springbootsbyt.controller;
 
 import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.History;
-import com.example.springbootsbyt.service.CartridgeService;
 import com.example.springbootsbyt.service.impl.CartridgeServiceImpl;
 import com.example.springbootsbyt.service.impl.HistoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import java.util.List;
 
 @Controller
@@ -27,7 +25,7 @@ public class HistoryController {
     }
 
     @GetMapping("/history")
-    public String findAll(Model model){
+    public String findAllHistory(Model model){
         List<History> history = historyServiceImpl.findAll();
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
         model.addAttribute("history", history);
@@ -43,18 +41,18 @@ public class HistoryController {
     }
 
     @PostMapping("/history-create/{id}")
-    public String createHistory(@PathVariable("id") Integer id, History history) {
-        historyServiceImpl.saveHistory(history);
+    public String createHistory(@PathVariable("id") Integer id,History history) {
         String str1 = Integer.toString(id);
+        historyServiceImpl.saveHistory(history);
         return "redirect:/cartridge-moreInfo/" + str1;
     }
 
     @GetMapping("/cartridge-moreInfo/history-update/{idHistory}/{id}")
-    public String updateHistoryForm(@PathVariable("idHistory") Integer idHistory, @PathVariable("id") Integer id, Model model){
+    public String updateHistoryForm(@PathVariable("idHistory") Integer idHistory,@PathVariable("id") Integer id, Model model){
         History history = historyServiceImpl.findById(idHistory);
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
-        model.addAttribute("cartridges", cartridges);
         model.addAttribute("history", history);
+        model.addAttribute("cartridges", cartridges);
         return "history-update";
     }
 
@@ -68,8 +66,9 @@ public class HistoryController {
     @GetMapping("/cartridge-moreInfo/history-delete/{idHistory}/{id}")
     public String deleteHistory(@PathVariable("idHistory") Integer idHistory, @PathVariable("id") Integer id){
         History history = historyServiceImpl.findById(idHistory);
-        historyServiceImpl.deleteById(idHistory, history);
+        historyServiceImpl.deleteById(idHistory,history);
         String str2 = Integer.toString(id);
         return "redirect:/cartridge-moreInfo/" + str2;
     }
+
 }
