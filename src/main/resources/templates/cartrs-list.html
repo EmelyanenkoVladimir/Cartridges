@@ -27,6 +27,7 @@
                 <th>Id Типов картриджей</th>
                 <th>Чип</th>
                 <th>Тип картриджа</th>
+                <th>Модель</th>
                 <th colspan="2">Операции</th>
             </tr>
             </thead>
@@ -35,6 +36,7 @@
                 <td th:text="${cartrs.idCartrs}"></td>
                 <td th:text="${cartrs.chip}"></td>
                 <td th:text="${cartrs.typeCartr}"></td>
+                <td th:text="${cartrs.typePrintersFromCartrs}"></td>
                 <td><a th:href="@{cartrs-update/{idCartrs}(idCartrs=${cartrs.idCartrs})}">Исправить</a></td>
                 <td><a th:href="@{cartrs-delete/{idCartrs}(idCartrs=${cartrs.idCartrs})}">Удалить</a></td>
             </tr>
@@ -44,7 +46,7 @@
     <p><a href="/cartrs-create">Создать тип картриджа</a></p>
     <p><a href="/cartridges">Перейти на картриджи</a></p>
     <p><a href="/printers">Перейти на принтеры</a></p>
-    <p><a href="/Main">Вернуться на главную</a></p>
+    <p><a href="/main">Вернуться на главную</a></p>
 </div>
 </body>
 </html>
