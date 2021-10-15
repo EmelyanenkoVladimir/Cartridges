@@ -1,5 +1,6 @@
 package com.example.springbootsbyt.model;
 
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;

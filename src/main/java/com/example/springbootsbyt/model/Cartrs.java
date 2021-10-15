@@ -19,7 +19,7 @@ public class Cartrs {
     @Column(name = "type_cartr")
     private String typeCartr;
 
-    @Column(name = "type_printers_from_carts")
+    @Column(name = "type_printers_from_cartrs")
     private String typePrintersFromCartrs;
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)

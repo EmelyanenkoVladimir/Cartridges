@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PrintersController {
@@ -36,12 +38,18 @@ public class PrintersController {
 
     @PostMapping("/printers-create")
     public String createPrinters(@Valid Printers printers, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/printers-create";
-        }
-//        List<Data> uniqueDataList = dataList.stream().distinct().collect(Collectors.toList());
-//
-//        System.out.println("Unique Data List = "+uniqueDataList);
+            Printers printer = null;
+            List<Printers> printers1 = printersServiceImpl.findAll();
+//            printers.sort(Comparator.comparing(Printers::getModelFromPrinters));
+            String str = printers.getTypePrinters();
+            for (int i = 0; i < printers1.size(); i++) {
+                printer = printers1.get(i);
+                if (str.equalsIgnoreCase(printer.getTypePrinters()) == true) {
+                    bindingResult.rejectValue("typePrinters", "error.typePrinters", "Такой тип картриджа уже существует");
+                    return "/printers-create";
+                }
+            }
+
         printersServiceImpl.savePrinters(printers);
         return "redirect:/printers";
     }
