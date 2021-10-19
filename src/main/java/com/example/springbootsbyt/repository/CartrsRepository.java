@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CartrsRepository extends JpaRepository<Cartrs, Integer> {
 
-    @Query(value="SELECT * from printers as p inner join cartrs as c on p.type_printers=c.type_printers_from_cartrs " +
+    @Query(value="SELECT * from printers as p inner join cartrs as c on p.id_printers=c.printers_id_printers " +
             "order by model_from_printers", nativeQuery = true)
     List<Cartrs> findDistinctByModelFromCartrs();
 }

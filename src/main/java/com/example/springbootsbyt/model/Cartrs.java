@@ -19,24 +19,18 @@ public class Cartrs {
     @Column(name = "type_cartr")
     private String typeCartr;
 
-    @Column(name = "type_printers_from_cartrs")
-    private String typePrintersFromCartrs;
+//    @Column(name = "type_printers_from_cartrs")
+//    private String typePrintersFromCartrs;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
-    @JoinTable(name = "cartrs_has_printers",
-            joinColumns = @JoinColumn(name = "cartrs_id_cartrs"),
-            inverseJoinColumns = @JoinColumn(name = "printers_id_printers")
-    )
-    private Set<Printers> printersSet = new HashSet<>();
+    @Column(name = "printers_id_printers")
+    private Integer printersIdPrinters;
 
-
-    public String getTypePrintersFromCartrs() {
-        return typePrintersFromCartrs;
-    }
-
-    public void setTypePrintersFromCartrs(String typePrintersFromCartrs) {
-        this.typePrintersFromCartrs = typePrintersFromCartrs;
-    }
+//    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+//    @JoinTable(name = "cartrs_has_printers",
+//            joinColumns = @JoinColumn(name = "cartrs_id_cartrs"),
+//            inverseJoinColumns = @JoinColumn(name = "printers_id_printers")
+//    )
+//    private Set<Printers> printersSet = new HashSet<>();
 
     public Integer getIdCartrs() {
         return idCartrs;
@@ -62,14 +56,31 @@ public class Cartrs {
         this.typeCartr = typeCartr;
     }
 
+    public Integer getPrintersIdPrinters() {
+        return printersIdPrinters;
+    }
+
+    public void setPrintersIdPrinters(Integer printersIdPrinters) {
+        this.printersIdPrinters = printersIdPrinters;
+    }
+
+//    public Set<Printers> getPrintersSet() {
+//        return printersSet;
+//    }
+//
+//    public void setPrintersSet(Set<Printers> printersSet) {
+//        this.printersSet = printersSet;
+//    }
+
     public Cartrs() {
            }
 
-    public Cartrs(Integer idCartrs, String chip, String typeCartr, String typePrintersFromCartrs) {
+    public Cartrs(Integer idCartrs, String chip, String typeCartr, Integer printersIdPrinters) {
         this.idCartrs = idCartrs;
         this.chip = chip;
         this.typeCartr = typeCartr;
-        this.typePrintersFromCartrs = typePrintersFromCartrs;
+        this.printersIdPrinters = printersIdPrinters;
+
     }
 
     @Override
@@ -80,12 +91,12 @@ public class Cartrs {
         return Objects.equals(idCartrs, cartrs.idCartrs) &&
                 Objects.equals(chip, cartrs.chip) &&
                 Objects.equals(typeCartr, cartrs.typeCartr) &&
-                Objects.equals(typePrintersFromCartrs, cartrs.typePrintersFromCartrs);
+                Objects.equals(printersIdPrinters, cartrs.printersIdPrinters);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idCartrs, chip, typeCartr, typePrintersFromCartrs);
+        return Objects.hash(idCartrs, chip, typeCartr, printersIdPrinters);
     }
 
     @Override
@@ -94,7 +105,7 @@ public class Cartrs {
                 "idCartrs=" + idCartrs +
                 ", chip='" + chip + '\'' +
                 ", typeCartr='" + typeCartr + '\'' +
-                ", typePrintersFromCartrs='" + typePrintersFromCartrs + '\'' +
+                ", printersIdPrinters='" + printersIdPrinters + '\'' +
                 '}';
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:margin-left="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,13 @@
     <title>Главная</title>
 </head>
 <body>
+<div class="nav justify-content-end" >
+    <form th:action="@{/logout}" method="post">
+         <input type="submit" value="Выйти" class="btn btn-danger"/>
+    </form>
+</div>
 <div class="container">
+
     <div class="mx-auto" style="width: 200px;">
         <h1>Главная</h1>
     </div>

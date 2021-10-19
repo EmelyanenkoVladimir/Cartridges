@@ -20,8 +20,8 @@ public class Printers {
     @Column(name = "model_from_printers")
     private String modelFromPrinters;
 
-    @ManyToMany(mappedBy = "printersSet",fetch = FetchType.LAZY)
-    private Set<Cartrs> cartrsSet = new HashSet<>();
+//    @ManyToMany(mappedBy = "printersSet",fetch = FetchType.LAZY)
+//    private Set<Cartrs> cartrsSet = new HashSet<>();
 
     public Integer getIdPrinters() {
         return idPrinters;
