@@ -1,6 +1,7 @@
 package com.example.springbootsbyt.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,21 +17,12 @@ public class Cartrs {
     @Column(name = "chip")
     private String chip;
 
+    @NotBlank(message = "Поле не может быть пустым")
     @Column(name = "type_cartr")
     private String typeCartr;
 
-//    @Column(name = "type_printers_from_cartrs")
-//    private String typePrintersFromCartrs;
-
     @Column(name = "printers_id_printers")
     private Integer printersIdPrinters;
-
-//    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
-//    @JoinTable(name = "cartrs_has_printers",
-//            joinColumns = @JoinColumn(name = "cartrs_id_cartrs"),
-//            inverseJoinColumns = @JoinColumn(name = "printers_id_printers")
-//    )
-//    private Set<Printers> printersSet = new HashSet<>();
 
     public Integer getIdCartrs() {
         return idCartrs;
@@ -63,14 +55,6 @@ public class Cartrs {
     public void setPrintersIdPrinters(Integer printersIdPrinters) {
         this.printersIdPrinters = printersIdPrinters;
     }
-
-//    public Set<Printers> getPrintersSet() {
-//        return printersSet;
-//    }
-//
-//    public void setPrintersSet(Set<Printers> printersSet) {
-//        this.printersSet = printersSet;
-//    }
 
     public Cartrs() {
            }

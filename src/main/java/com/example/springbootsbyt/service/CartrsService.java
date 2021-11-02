@@ -16,7 +16,4 @@ public interface CartrsService {
 
     public void deleteById(Integer id);
 
-    public List<Cartrs> findDistinctByModelFromCartrs();
-
-
 }
