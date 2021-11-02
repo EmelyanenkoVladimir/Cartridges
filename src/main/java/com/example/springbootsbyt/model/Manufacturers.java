@@ -15,7 +15,6 @@ public class Manufacturers {
 
     @Column(name = "model_from_printers")
     @NotBlank(message = "Поле не может быть пустым")
-    @Pattern(regexp = "[a-zA-Z]+",message = "Неверный ввод, ожидаются только буквы")
     private String modelFromPrinters;
 
     public Manufacturers() {
