@@ -59,10 +59,31 @@ public class CartridgeController {
     public String createCartridge(@Valid Cartridges cartridge, BindingResult bindingResult, Model model){
        if (bindingResult.hasErrors()) {
                List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+               List<Printers> printers = printersServiceImpl.findAll();
+               List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
                model.addAttribute("cartrs", cartrs);
-               model.addAttribute("cartridges", cartridge);
+               model.addAttribute("printers", printers);
+               model.addAttribute("manufacturers", manufacturers);
+//               model.addAttribute("cartridges", cartridge);
                return "cartridge-create";
            }
+        Cartridges cartridges = null;
+        List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
+        String str = cartridge.getInventoryNumber();
+        for (int i = 0; i < cartridges1.size(); i++) {
+            cartridges = cartridges1.get(i);
+            if (str.equalsIgnoreCase(cartridges.getInventoryNumber())) {
+                List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+                List<Printers> printers = printersServiceImpl.findAll();
+                List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+                model.addAttribute("cartrs", cartrs);
+                model.addAttribute("printers", printers);
+                model.addAttribute("manufacturers", manufacturers);
+                bindingResult.rejectValue("inventoryNumber", "error.inventoryNumber", "Такой Инвентарный номер уже существует");
+                return "/cartridge-create";
+            }
+        }
+
         cartridgeServiceImpl.saveCartridge(cartridge);
         return "redirect:/cartridges";
     }
@@ -84,6 +105,23 @@ public class CartridgeController {
             List<Cartrs> cartrs = cartrsServiceImpl.findAll();
             model.addAttribute("cartrs", cartrs);
             return "cartridge-update";
+        }
+        String str = cartridge.getInventoryNumber();
+        Cartridges cartridges2 = cartridgeServiceImpl.findById(id);
+        String str2 = cartridges2.getInventoryNumber();
+        if(str.equals(str2)){
+            cartridgeServiceImpl.saveCartridge(cartridges2);
+            return"redirect:/cartridges";
+        } else {
+            Cartridges cartridge1 = null;
+            List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
+            for (int i = 0; i < cartridges1.size(); i++) {
+                cartridge1 = cartridges1.get(i);
+                if (str.equalsIgnoreCase(cartridge1.getInventoryNumber())) {
+                    bindingResult.rejectValue("inventoryNumber", "error.inventoryNumber", "Такой инвентарный номер уже существует");
+                    return "cartridge-update";
+                }
+            }
         }
         cartridgeServiceImpl.saveCartridge(cartridge);
         return "redirect:/cartridges";

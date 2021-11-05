@@ -40,7 +40,8 @@
         <tbody>
         <tr>
             <th for="modelFromPrinters">Производитель</th>
-            <td><input type="text" th:field="*{modelFromPrinters}" id="modelFromPrinters">
+            <td>
+                <input type="text" th:field="*{modelFromPrinters}" id="modelFromPrinters">
                 <div style="color:red" th:if="${#fields.hasErrors('modelFromPrinters')}" th:errors="*{modelFromPrinters}">Name Error</div>
             </td>
         </tr>

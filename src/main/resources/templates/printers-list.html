@@ -8,6 +8,7 @@
     <link href="/webjars/bootstrap/5.1.0/css/bootstrap.css" rel="stylesheet" />
     <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+    <link href="/css/first.css" rel="stylesheet" />
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -41,7 +42,10 @@
             <div class="mx-auto" style="width: 200px;">
                 <h2>Принтеры</h2>
                 <p><a class="btn btn-primary btn-sm" href="/printers-create">Создать модель принтера</a></p>
-                <p><a class="btn btn-primary btn-sm" href="/create-model">Внести производителя</a></p>
+                <button type="button" class="btn btn-warning" href="/manufacturers-create" data-bs-toggle="modal" data-bs-target="#CreateManufacturers">
+                    Внести производителя
+                </button>
+<!--                <p><a class="btn btn-primary btn-sm" href="/manufacturers-create">Внести производителя</a></p>-->
             </div>
             <table class="table table-hover table-bordered">
                 <thead class="table-light">
@@ -49,7 +53,7 @@
                     <th>Id принтеров</th>
                     <th>Модель принтера</th>
                     <th>Производитель</th>
-                    <th colspan="2">Операции</th>
+                    <th colspan="2" class="text-center">Операции</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,20 +77,20 @@
         <h2 th:case="null">Производители не найдены</h2>
         <div th:case="*">
             <h2>Производители</h2>
-            <table class="table table-hover table-bordered">
+            <table class="table table-hover table-bordered" id="models">
                 <thead class="table-light">
                 <tr>
-                    <th>Id принтеров</th>
                     <th>Производитель</th>
-                    <th colspan="2">Операции</th>
+<!--                    <th>Id принтеров</th>-->
+                    <th colspan="2" class="text-center">Операции</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="model : ${manufacturers}">
-                    <td th:text="${model.idModels}"></td>
                     <td th:text="${model.modelFromPrinters}"></td>
+<!--                    <td th:text="${model.idModels}"></td>-->
                     <td><a th:href="@{manufacturers-update/{idModels}(idModels=${model.idModels})}"  class="btn btn-warning" >Исправить</a></td>
-                    <td><a th:href="@{manufacturers-delete/{idModels}(idModels=${model.idModels})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+                    <td><a th:href="@{models-delete/{idModels}(idModels=${model.idModels})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -110,6 +114,34 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="CreateManufacturers" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <form action="#" th:action="@{/manufacturers-create}" th:object="${manufacturers}" method="post" id="addManufacturers">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Внесение производителя</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modelFromPrinters" class="col-form-label">Производитель</label>
+                        <input type="text" class="mb-3" id="modelFromPrinters" name="modelFromPrinters">
+<!--                        <div style="color:red" th:if="${#fields.hasErrors('modelFromPrinters')}" th:errors="*{modelFromPrinters}">Name Error</div>-->
+                        <small></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                    <input  type="submit" id="manufacturers" value="Создать Производителя" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 </body>
 </html>

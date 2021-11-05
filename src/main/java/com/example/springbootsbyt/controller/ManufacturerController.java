@@ -35,22 +35,11 @@ public class ManufacturerController {
 
     @GetMapping("/manufacturers-create")
     public String createManufacturersForm(Manufacturers manufacturers) {
-        return "manufacturers-create";
+        return "printers-list";
     }
 
     @PostMapping("/manufacturers-create")
-    public String createManufacturers(@Valid Manufacturers manufacturers, BindingResult bindingResult) {
-        Manufacturers model = null;
-        List<Manufacturers> manufacturers1 = manufacturerServiceImpl.findAll();
-        String str = manufacturers.getModelFromPrinters();
-        for (int i = 0; i < manufacturers1.size(); i++) {
-            model = manufacturers1.get(i);
-            if (str.equalsIgnoreCase(model.getModelFromPrinters()) == true) {
-                bindingResult.rejectValue("modelFromPrinters", "error.modelFromPrinters", "Такой производитель уже существует");
-                return "/manufacturers-create";
-            }
-
-        }
+    public String createManufacturers(@Valid Manufacturers manufacturers) {
         manufacturerServiceImpl.saveModels(manufacturers);
         return "redirect:/printers";
     }
