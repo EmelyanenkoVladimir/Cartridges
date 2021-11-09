@@ -21,10 +21,10 @@
                     <a class="nav-link active" aria-current="page" href="/main">На Главную страницу</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/printers">Модели принтеров</a>
+                    <a class="nav-link" href="/cartridges">Картриджи</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cartridges">Картриджи</a>
+                    <a class="nav-link" href="/printers">Модели принтеров</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/search">Поиск</a>
@@ -41,47 +41,51 @@
             <h2>Модели картриджей</h2>
             <p><a class="btn btn-primary btn-sm" href="/cartrs-create">Создать модель картриджа</a></p>
         </div>
-        <table class="table table-hover table-bordered">
-            <thead class="table-light">
-            <tr>
-                <th>Id Модели картриджа</th>
-                <th>Чип</th>
-                <th>Модель картриджа</th>
-                <th>Модель принтера</th>
-                <th colspan="2">Операции</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="cartrs : ${cartrs}">
-                <td th:text="${cartrs.idCartrs}"></td>
-                <td th:text="${cartrs.chip}"></td>
-                <td th:text="${cartrs.typeCartr}"></td>
-                <td th:each="print:${printers}"
-                    th:switch="${print.idPrinters}"
-                    th:case="${cartrs.printersIdPrinters}"
-                    th:text="${print.typePrinters}"></td>
-                <td><a th:href="@{cartrs-update/{idCartrs}(idCartrs=${cartrs.idCartrs})}" class="btn btn-warning">Исправить</a></td>
-                <td><a th:href="@{cartrs-delete/{idCartrs}(idCartrs=${cartrs.idCartrs})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
-                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Вы уверены, что хотите удалить эту запись?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
-                                <a href="" class="btn btn-primary" id="delRef">Да, удалить</a>
+        <div class="text-center">
+            <table class="table table-hover table-bordered">
+                <thead class="table-light">
+                <tr>
+                    <th>Id Модели картриджа</th>
+                    <th>Чип</th>
+                    <th>Модель картриджа</th>
+                    <th>Модель принтера</th>
+                    <th colspan="2">Операции</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cartrs : ${cartrs}">
+                    <td th:text="${cartrs.idCartrs}"></td>
+                    <td th:text="${cartrs.chip}"></td>
+                    <td th:text="${cartrs.typeCartr}"></td>
+                    <div th:switch="${cartrs.printersIdPrinters}" th:case="null">
+                        <td th:text="---"></td>
+                    </div>
+                    <div th:each="print:${printers}" th:switch="${print.idPrinters}" th:case="${cartrs.printersIdPrinters}">
+                        <td th:text="${print.typePrinters}"></td>
+                    </div>
+                    <td><a th:href="@{cartrs-update/{idCartrs}(idCartrs=${cartrs.idCartrs})}" class="btn btn-warning">Исправить</a></td>
+                    <td><a th:href="@{cartrs-delete/{idCartrs}(idCartrs=${cartrs.idCartrs})}" type="button" class="btn btn-danger text-center"  id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Вы уверены, что хотите удалить эту запись?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                                    <a href="" class="btn btn-primary" id="delRef">Да, удалить</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </tr>
-            </tbody>
-        </table>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </div>

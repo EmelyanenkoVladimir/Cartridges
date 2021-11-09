@@ -41,85 +41,97 @@
             <h2>Картриджи</h2>
             <p><a class="btn btn-primary btn-sm" href="/cartridge-create">Создать картридж</a></p>
         </div>
-        <table class="table table-hover table-bordered">
-            <thead class="table-light">
-            <tr>
-                <th class="text-center">Id</th>
-                <th class="text-center">Инвентарный номер</th>
-                <th class="text-center">Модель Картриджа</th>
-                <th class="text-center">Модель принтера</th>
-                <th class="text-center">Производитель</th>
-                <th class="text-center">Чип</th>
-                <th class="text-center">Ресурс</th>
-                <th class="text-center">Город</th>
-                <th class="text-center">Исполнитель</th>
-                <th class="text-center">Комментарии</th>
-                <th class="text-center">Колличество заправок</th>
-                <th colspan="3" class="text-center">Операции</th>
-            </tr>
-            </thead>
-            <tbody>
-            <div th:each="cartridge : ${cartridges}">
+        <div class="text-center">
+            <table class="table table-hover table-bordered">
+                <thead class="table-light">
                 <tr>
-                    <td th:text="${cartridge.id}"></td>
-                    <td th:text="${cartridge.inventoryNumber}"></td>
-                    <td th:each="cart:${cartrs}"
-                        th:switch="${cart.idCartrs}"
-                        th:case="${cartridge.cartrsIdCartrs}"
-                        th:text="${cart.typeCartr}"></td>
-                    <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                        <td th:each="print:${printers}"
-                            th:switch="${print.idPrinters}"
-                            th:case="${cart.printersIdPrinters}"
-                            th:text="${print.typePrinters}"></td>
-                        <div th:each="man:${manufacturers}">
-                            <div th:each="print:${printers}" th:switch="${man.idModels}" th:case="${print.modelsIdModels}">
-                                <td th:switch="${print.idPrinters}"
-                                    th:case="${cart.printersIdPrinters}"
-                                    th:text="${man.modelFromPrinters}"></td>
+                    <th>Id</th>
+                    <th>Инвентарный номер</th>
+                    <th>Модель Картриджа</th>
+                    <th>Модель принтера</th>
+                    <th>Производитель</th>
+                    <th>Чип</th>
+                    <th>Ресурс</th>
+                    <th>Город</th>
+                    <th>Исполнитель</th>
+                    <th>Комментарии</th>
+                    <th>Колличество заправок</th>
+                    <th colspan="3">Операции</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <div th:each="cartridge : ${cartridges}">
+                        <tr>
+                            <td th:text="${cartridge.id}"></td>
+                            <td th:text="${cartridge.inventoryNumber}"></td>
+                            <div th:switch="${cartridge.cartrsIdCartrs}" th:case="null">
+                                 <td th:text="---"></td>
+                                 <td th:text="---"></td>
+                                 <td th:text="---"></td>
+                                 <td th:text="---"></td>
                             </div>
-                        </div>
-                    </div>
-                    <td th:each="cart:${cartrs}"
-                        th:switch="${cart.idCartrs}"
-                        th:case="${cartridge.cartrsIdCartrs}"
-                        th:text="${cart.chip}"></td>
-                    <td th:text="${cartridge.resource}"></td>
-                    <td th:text="${cartridge.city}"></td>
-                    <td th:text="${cartridge.executor}"></td>
-                    <td th:text="${cartridge.comments}"></td>
-                    <td th:text="${cartridge.count}">
-                    <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}" class="btn btn-info">Подробнее</a></td>
-                    <td><a th:href="@{cartridge-update/{id}(id=${cartridge.id})}" class="btn btn-warning">Исправить</a></td>
+                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                                <td th:text="${cart.typeCartr}"></td>
+                            </div>
+                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                                <div th:switch="${cart.printersIdPrinters}" th:case="null">
+                                    <td th:text="---"></td>
+                                    <td th:text="---"></td>
+                                </div>
+                                <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
+                                    <td th:text="${print.typePrinters}"></td>
+                                </div>
+                            </div>
+                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                                <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
+                                    <div th:switch="${print.modelsIdModels}" th:case="null">
+                                        <td th:text="---"></td>
+                                    </div>
+                                    <div th:each="man:${manufacturers}" th:switch="${print.modelsIdModels}" th:case="${man.idModels}">
+                                        <td th:text="${man.modelFromPrinters}"></td>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                                <td th:text="${cart.chip}"></td>
+                            </div>
+                            <td th:text="${cartridge.resource}"></td>
+                            <td th:text="${cartridge.city}"></td>
+                            <td th:text="${cartridge.executor}"></td>
+                            <td th:text="${cartridge.comments}"></td>
+                            <td th:text="${cartridge.count}">
+                            <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}" class="btn btn-info">Подробнее</a></td>
+                            <td><a th:href="@{cartridge-update/{id}(id=${cartridge.id})}" class="btn btn-warning">Исправить</a></td>
+                            <td>
+                                <a th:href="@{cartridge-delete/{id}(id=${cartridge.id})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    Удалить
+                                </a>
+                            </td>
 
-                    <td>
-                        <a th:href="@{cartridge-delete/{id}(id=${cartridge.id})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                            Удалить
-                        </a>
-                    </td>
-                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Вы уверены, что хотите удалить эту запись?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
-                                    <a href="" class="btn btn-primary" id="delRef">Да, удалить</a>
-                                </div>
-                            </div>
-                        </div>
+                        </tr>
                     </div>
-            </tr>
-            </div>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить эту запись?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="" class="btn btn-primary" id="delRef">Да, удалить</a>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 </body>

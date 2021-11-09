@@ -51,7 +51,11 @@ public class CartridgeController {
     @GetMapping("/cartridge-create")
     public String createCartridgeForm(Model model, Cartridges cartridge) {
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
         model.addAttribute("cartrs", cartrs);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers", manufacturers);
         return "cartridge-create";
     }
 
@@ -109,12 +113,15 @@ public class CartridgeController {
         String str = cartridge.getInventoryNumber();
         Cartridges cartridges2 = cartridgeServiceImpl.findById(id);
         String str2 = cartridges2.getInventoryNumber();
-        if(str.equals(str2)){
-            cartridgeServiceImpl.saveCartridge(cartridges2);
+        if(str.equalsIgnoreCase(str2)){
+            cartridgeServiceImpl.saveCartridge(cartridge);
             return"redirect:/cartridges";
         } else {
             Cartridges cartridge1 = null;
             List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
+            model.addAttribute("cartridges", cartridge);
+            List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+            model.addAttribute("cartrs", cartrs);
             for (int i = 0; i < cartridges1.size(); i++) {
                 cartridge1 = cartridges1.get(i);
                 if (str.equalsIgnoreCase(cartridge1.getInventoryNumber())) {

@@ -28,13 +28,13 @@
                     <a class="nav-link active" aria-current="page" href="/main">На Главную страницу</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/cartridges">Картриджи</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/cartrs">Модели картриджей</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/printers">Модели принтеров</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/cartridges">Картриджи</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/search">Поиск</a>
@@ -44,41 +44,40 @@
     </div>
 </nav>
 <form action="#" th:action="@{/history-update/{id}(id=${id})}" th:object="${history}" method="post">
-    <table>
-        <tbody>
-        <tr>
-            <td><input readonly type="hidden" th:field="*{idHistory}"></td>
-        </tr>
-        <tr>
-            <th for="dateOfStatus">Дата статуса</th>
-            <td><input type="date" th:field="*{dateOfStatus}" id="dateOfStatus" required></td>
-        </tr>
-        <tr>
-            <th for="status">Статус</th>
-            <td><select th:field="*{status}" id="status" required>
-                <option value="в заправке">в заправке</option>
-                <option value="в работе">в работе</option>
-                <option value="на складе">на складе</option>
-                <option value="списан">списан</option>
-                <option value="возврат">возврат</option>
-            </select>
-            </td>
-        </tr>
-        </tr>
-        <td>Выбранный картридж</td>
-        <td><select th:field="*{cartridgesId}" id="cartridgesId">
-            <option th:each="hist:${history}"
-                    th:value="${hist.cartridgesId}"
-                    th:text="${hist.cartridgesId}">
-            </option>
-        </select>
-        </td>
-        <tr>
-        <tr>
-            <td><input type="submit" value="Сохранить историю"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="container ms-auto mt-5 fw-bold" >
+        <input readonly type="hidden" th:field="*{idHistory}">
+        <div class="row mb-3">
+            <label for="dateOfStatus" class="col-sm-2 col-form-label">Дата статуса</label>
+            <div class="col-sm-7">
+                <input type="date" class="form-control w-50"  th:field="*{dateOfStatus}"
+                       id="dateOfStatus" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="status" class="col-sm-2 col-form-label">Статус</label>
+            <div class="col-sm-7">
+                <select class="form-select w-50" th:field="*{status}" id="status" required>
+                    <option value="в заправке">в заправке</option>
+                    <option value="в работе">в работе</option>
+                    <option value="на складе">на складе</option>
+                    <option value="списан">списан</option>
+                    <option value="возврат">возврат</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="cartridgesId" class="col-sm-2 col-form-label">Выбранный ID картриджа</label>
+            <div class="col-sm-7">
+                <select class="form-select w-50" th:field="*{cartridgesId}" id="cartridgesId" required>
+                    <option th:each="hist:${history}"
+                            th:value="${hist.cartridgesId}"
+                            th:text="${hist.cartridgesId}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary mt-2" value="Сохранить историю">
+    </div>
 </form>
 </body>
 </html>

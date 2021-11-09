@@ -23,10 +23,10 @@
                     <a class="nav-link active" aria-current="page" href="/main">На Главную страницу</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cartrs">Модели картриджей</a>
+                    <a class="nav-link" href="/cartridges">Картриджи</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cartridges">Картриджи</a>
+                    <a class="nav-link" href="/cartrs">Модели картриджей</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/search">Поиск</a>
@@ -45,55 +45,62 @@
                 <button type="button" class="btn btn-warning" href="/manufacturers-create" data-bs-toggle="modal" data-bs-target="#CreateManufacturers">
                     Внести производителя
                 </button>
+                <p></p>
 <!--                <p><a class="btn btn-primary btn-sm" href="/manufacturers-create">Внести производителя</a></p>-->
             </div>
-            <table class="table table-hover table-bordered">
-                <thead class="table-light">
-                <tr>
-                    <th>Id принтеров</th>
-                    <th>Модель принтера</th>
-                    <th>Производитель</th>
-                    <th colspan="2" class="text-center">Операции</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="print : ${printers}">
-                    <td th:text="${print.idPrinters}"></td>
-                    <td th:text="${print.typePrinters}"></td>
-                    <td th:each="model:${manufacturers}"
-                        th:switch="${print.modelsIdModels}"
-                        th:case="${model.idModels}"
-                        th:text="${model.modelFromPrinters}"></td>
-                    <td><a th:href="@{printers-update/{id}(id=${print.idPrinters})}" class="btn btn-warning">Исправить</a></td>
-                    <td><a th:href="@{printers-delete/{id}(id=${print.idPrinters})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="text-center">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Id принтеров</th>
+                        <th>Модель принтера</th>
+                        <th>Производитель</th>
+                        <th colspan="2">Операции</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="print : ${printers}">
+                        <td th:text="${print.idPrinters}"></td>
+                        <td th:text="${print.typePrinters}"></td>
+                        <div th:switch="${print.modelsIdModels}" th:case="null">
+                            <td th:text="---"></td>
+                        </div>
+                        <div th:each="model:${manufacturers}" th:switch="${model.idModels}" th:case="${print.modelsIdModels}">
+                           <td th:text="${model.modelFromPrinters}"></td>
+                        </div>
+                            <td><a th:href="@{printers-update/{id}(id=${print.idPrinters})}" class="btn btn-warning">Исправить</a></td>
+                            <td><a th:href="@{printers-delete/{id}(id=${print.idPrinters})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-<div class="container-fluid">
+<div class="container">
     <div th:switch="${manufacturers}">
         <h2 th:case="null">Производители не найдены</h2>
         <div th:case="*">
-            <h2>Производители</h2>
-            <table class="table table-hover table-bordered" id="models">
-                <thead class="table-light">
-                <tr>
-                    <th>Производитель</th>
-<!--                    <th>Id принтеров</th>-->
-                    <th colspan="2" class="text-center">Операции</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="model : ${manufacturers}">
-                    <td th:text="${model.modelFromPrinters}"></td>
-<!--                    <td th:text="${model.idModels}"></td>-->
-                    <td><a th:href="@{manufacturers-update/{idModels}(idModels=${model.idModels})}"  class="btn btn-warning" >Исправить</a></td>
-                    <td><a th:href="@{models-delete/{idModels}(idModels=${model.idModels})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="text-center">
+                <h2>Производители</h2>
+                <table class="table table-hover table-bordered" id="models">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Производитель</th>
+    <!--                    <th>Id принтеров</th>-->
+                        <th colspan="2" class="text-center">Операции</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="model : ${manufacturers}">
+                        <td th:text="${model.modelFromPrinters}"></td>
+    <!--                    <td th:text="${model.idModels}"></td>-->
+                        <td><a th:href="@{manufacturers-update/{idModels}(idModels=${model.idModels})}"  class="btn btn-warning" >Исправить</a></td>
+                        <td><a th:href="@{manufacturers-delete/{idModels}(idModels=${model.idModels})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
