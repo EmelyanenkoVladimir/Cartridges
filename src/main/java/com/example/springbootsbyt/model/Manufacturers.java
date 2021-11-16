@@ -2,7 +2,6 @@ package com.example.springbootsbyt.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +13,6 @@ public class Manufacturers {
     private Integer idModels;
 
     @Column(name = "model_from_printers")
-    @NotBlank(message = "Поле не может быть пустым")
     private String modelFromPrinters;
 
     public Manufacturers() {

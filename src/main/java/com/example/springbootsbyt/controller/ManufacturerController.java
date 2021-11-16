@@ -9,7 +9,9 @@ import com.example.springbootsbyt.service.impl.PrintersServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,43 +28,18 @@ public class ManufacturerController {
         this.printersServiceImpl = printersServiceImpl;
     }
 
-    @GetMapping("/manufacturers")
-    public String findAllManufacturers(Model model){
-        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-        model.addAttribute("manufacturers", manufacturers);
+    @GetMapping("/create-model")
+    public String createModelsForm(Manufacturers manufacturers) {
         return "printers-list";
     }
 
-    @GetMapping("/manufacturers-create")
-    public String createManufacturersForm(Manufacturers manufacturers) {
-        return "printers-list";
-    }
-
-    @PostMapping("/manufacturers-create")
-    public String createManufacturers(@Valid Manufacturers manufacturers) {
+    @PostMapping("/create-model")
+    public String createModel(Manufacturers manufacturers) {
         manufacturerServiceImpl.saveModels(manufacturers);
         return "redirect:/printers";
     }
 
-    @GetMapping("manufacturers-update/{idModels}")
-    public String updateManufacturersForm(@PathVariable("idModels") int id, Model model) {
-        Manufacturers manufacturers = manufacturerServiceImpl.findById(id);
-        model.addAttribute("manufacturers", manufacturers);
-        return "/manufacturers-update";
-    }
-
-    @PostMapping("/manufacturers-update/{idModels}")
-    public String updateManufacturers(@PathVariable("idModels") int id, @Valid Manufacturers manufacturers, BindingResult bindingResult,Model model) {
-        if(bindingResult.hasErrors()){
-            List<Manufacturers> manufacturers1 = manufacturerServiceImpl.findAll();
-            model.addAttribute("manufacturers1", manufacturers1);
-            return "manufacturers-update";
-        }
-        manufacturerServiceImpl.saveModels(manufacturers);
-        return "redirect:/printers";
-    }
-
-    @GetMapping("/manufacturers-delete/{idModels}")
+    @GetMapping("/models-delete/{idModels}")
     public String deleteModels(@PathVariable("idModels") Integer id) {
         manufacturerServiceImpl.deleteById(id);
         return "redirect:/printers";
