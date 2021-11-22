@@ -41,5 +41,21 @@ public class PartyLotsServiceImpl implements PartyLotsService {
     public List<Partylots> findAllByLotNumber(String pl){
         return partyLotsRepository.findAllByLotNumber(pl);
     }
+    public  List<Partylots> findAllByLotNumberAndCartridgesIdAndHistoryIdHistory(String k1,int k2, int k3){
+        return partyLotsRepository.findAllByLotNumberAndCartridgesIdAndHistoryIdHistory(k1,k2,k3);
+    }
+
+    public List<Partylots> findDsLotNumber(){
+        return partyLotsRepository.findDsLotNumber();
+    }
+
+    public List<Partylots> findDsHistoryKeyword(int keyword){
+        return partyLotsRepository.findDsHistoryKeyword(keyword);
+    }
+
+    public List<Partylots> findDsHistory(){
+        return partyLotsRepository.findDsHistory();
+    }
+
 
 }

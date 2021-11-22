@@ -16,4 +16,12 @@ public interface PartyLotsService {
     public void deleteById(Integer id);
 
     public List<Partylots> findAllByLotNumber(String pl);
+
+    public List<Partylots> findAllByLotNumberAndCartridgesIdAndHistoryIdHistory(String k1,int k2, int k3);
+
+    public List<Partylots> findDsLotNumber();
+
+    public List<Partylots> findDsHistoryKeyword(int keyword);
+
+    public List<Partylots> findDsHistory();
 }
