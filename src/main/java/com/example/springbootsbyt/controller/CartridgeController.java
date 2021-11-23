@@ -75,6 +75,10 @@ public class CartridgeController {
             model.addAttribute("cartridges", cartridge);
             List<Cartrs> cartrs = cartrsServiceImpl.findAll();
             model.addAttribute("cartrs", cartrs);
+            List<Printers> printers = printersServiceImpl.findAll();
+            List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+            model.addAttribute("printers", printers);
+            model.addAttribute("manufacturers",manufacturers);
             String str = cartridge.getInventoryNumber();
             for (int i = 0; i < cartridges1.size(); i++) {
                 cartridge1 = cartridges1.get(i);
@@ -93,8 +97,12 @@ public class CartridgeController {
     public String updateCartridgeForm(@PathVariable("id") int id, Model model) {
         Cartridges cartridge = cartridgeServiceImpl.findById(id);
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
         model.addAttribute("cartridges", cartridge);
         model.addAttribute("cartrs", cartrs);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
         return "cartridge-update";
     }
 
@@ -102,7 +110,11 @@ public class CartridgeController {
     public String updateCartridgeForm1(@PathVariable("id") int id,@Valid  Cartridges cartridge,BindingResult bindingResult,Model model) {
         if (bindingResult.hasErrors()) {
             List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+            List<Printers> printers = printersServiceImpl.findAll();
+            List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
             model.addAttribute("cartrs", cartrs);
+            model.addAttribute("printers", printers);
+            model.addAttribute("manufacturers",manufacturers);
             return "cartridge-update";
         }
         String str = cartridge.getInventoryNumber();
@@ -117,6 +129,10 @@ public class CartridgeController {
             model.addAttribute("cartridges", cartridge);
             List<Cartrs> cartrs = cartrsServiceImpl.findAll();
             model.addAttribute("cartrs", cartrs);
+            List<Printers> printers = printersServiceImpl.findAll();
+            List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+            model.addAttribute("printers", printers);
+            model.addAttribute("manufacturers",manufacturers);
             for (int i = 0; i < cartridges1.size(); i++) {
                 cartridge1 = cartridges1.get(i);
                 if (str.equalsIgnoreCase(cartridge1.getInventoryNumber())) {
