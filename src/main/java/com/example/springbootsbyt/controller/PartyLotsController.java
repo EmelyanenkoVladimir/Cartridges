@@ -2,16 +2,15 @@ package com.example.springbootsbyt.controller;
 
 import com.example.springbootsbyt.model.*;
 import com.example.springbootsbyt.service.impl.*;
+import org.apache.coyote.http11.HeadersTooLargeException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PartyLotsController {
@@ -38,19 +37,35 @@ public class PartyLotsController {
     }
 
     @GetMapping("/lotsHistory/{idHistory}")
-    public String findAllLots1(@PathVariable ("idHistory") int idHistory,Model model){
+    public String findAllLots1(@PathVariable ("idHistory") long idHistory,Model model){
         History history = historyServiceImpl.findById(idHistory);
         model.addAttribute("history",history);
         return "partylotshistory";
     }
     @PostMapping("/lotsNumber/{idHistory}")
-    public String CreateLotsNumber(@PathVariable ("idHistory") int idHistory,Partylots partylots){
-        String str = partylots.getLotNumber();
-        return "redirect:/CreateLots/{idHistory}/" + str;
+    public String CreateLotsNumber(@PathVariable ("idHistory") long idHistory,@Valid Partylots Newpartylots, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            History history = historyServiceImpl.findById(idHistory);
+            model.addAttribute("history", history );
+            return "partylotshistory";
+        }
+        String str = Newpartylots.getLotNumber();
+        List<Partylots> partyLots = partyLotsServiceImpl.findAllByLotNumber(Newpartylots.getLotNumber());
+        Partylots partylots1 = null;
+        for(int i = 0; i < partyLots.size(); i++){
+            partylots1 = partyLots.get(i);
+            if(partylots1.getLotNumber().equals(Newpartylots.getLotNumber())) {
+                History history = historyServiceImpl.findById(idHistory);
+                model.addAttribute("history", history);
+                bindingResult.rejectValue("lotNumber", "error.lotNumber", "Такой номер партии уже есть");
+                return "partylotshistory";
+            }
+        }
+         return "redirect:/CreateLots/{idHistory}/" + str;
     }
 
     @GetMapping("/CreateLots/{idHistory}/{lotNumber}")
-    public String findAllLotsNumber(@PathVariable ("idHistory") int idHistory,@PathVariable ("lotNumber") String lotNumber,Model model){
+    public String findAllLotsNumber(@PathVariable ("idHistory") long idHistory,@PathVariable ("lotNumber") String lotNumber,Model model){
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
         History history = historyServiceImpl.findById(idHistory);
         model.addAttribute("cartridges", cartridges);
@@ -60,8 +75,8 @@ public class PartyLotsController {
     }
 
     @PostMapping("/CreateLots/{idHistory}/{lotNumber}")
-    public String CreateLots(@PathVariable ("idHistory") int idHistory, @PathVariable ("lotNumber") String lotNumber,Partylots partylots,BindingResult bindingResult,Model model){
-        String barcode = Integer.toString(partylots.getCartridgesId());
+    public String CreateLots(@PathVariable ("idHistory") long idHistory, @PathVariable ("lotNumber") String lotNumber,Partylots partylots,BindingResult bindingResult,Model model){
+        String barcode = Long.toString(partylots.getCartridgesId());
         List<Cartridges> cartridges = cartridgeServiceImpl.findAllByInventoryNumber(barcode);
         if (cartridges.isEmpty()){
             History history = historyServiceImpl.findById(idHistory);
@@ -73,7 +88,7 @@ public class PartyLotsController {
         for (int i = 0; i < cartridges.size(); i++) {
             cartridge = cartridges.get(i);
             if (cartridge.getInventoryNumber().equals(barcode)) {
-                int beryID = cartridge.getId();
+                Long beryID = cartridge.getId();
                 partylots.setCartridgesId(beryID);
             }
         }
@@ -82,7 +97,7 @@ public class PartyLotsController {
     }
 
     @GetMapping("/CreatePartyLots/{idHistory}/{lotNumber}")
-    public String CreatePartyLots(@PathVariable ("idHistory") int idHistory,@PathVariable ("lotNumber") String lotNumber,Model model){
+    public String CreatePartyLots(@PathVariable ("idHistory") long idHistory,@PathVariable ("lotNumber") String lotNumber,Model model){
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
         List<Partylots> partylots1 = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
@@ -100,8 +115,8 @@ public class PartyLotsController {
     }
 
     @PostMapping("/CreatePartyLots/{idHistory}/{lotNumber}")
-    public String CreatePartyLots(@PathVariable ("idHistory") int idHistory, @PathVariable ("lotNumber") String lotNumber,Partylots partylots,BindingResult bindingResult,Model model){
-        String barcode = Integer.toString(partylots.getCartridgesId());
+    public String CreatePartyLots(@PathVariable ("idHistory") long idHistory, @PathVariable ("lotNumber") String lotNumber,Partylots partylots,BindingResult bindingResult,Model model){
+        String barcode = Long.toString(partylots.getCartridgesId());
         List<Cartridges> cartridges = cartridgeServiceImpl.findAllByInventoryNumber(barcode);
         if (cartridges.isEmpty()){
             List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
@@ -123,7 +138,7 @@ public class PartyLotsController {
         for (int i = 0; i < cartridges.size(); i++) {
             cartridge = cartridges.get(i);
             if (cartridge.getInventoryNumber().equals(barcode)) {
-                int beryID = cartridge.getId();
+                Long beryID = cartridge.getId();
                 partylots.setCartridgesId(beryID);
             }
         }
@@ -133,13 +148,13 @@ public class PartyLotsController {
 
 
     @GetMapping("/lots-delete/{idPartylots}/{idHistory}/{lotNumber}")
-    public String deletePartyLots(@PathVariable("idPartylots") int idPartylots,@PathVariable ("idHistory") int idHistory,@PathVariable ("lotNumber") String lotNumber) {
+    public String deletePartyLots(@PathVariable("idPartylots") long idPartylots,@PathVariable ("idHistory") int idHistory,@PathVariable ("lotNumber") String lotNumber) {
         partyLotsServiceImpl.deleteById(idPartylots);
         return "redirect:/CreatePartyLots/{idHistory}/{lotNumber}";
     }
 
     @GetMapping("/lots1-delete/{idPartylots}/{idHistory}/{lotNumber}")
-    public String deletePartyLotsView(@PathVariable("idPartylots") int idPartylots,@PathVariable ("idHistory") int idHistory,@PathVariable ("lotNumber") String lotNumber) {
+    public String deletePartyLotsView(@PathVariable("idPartylots") long idPartylots,@PathVariable ("idHistory") int idHistory,@PathVariable ("lotNumber") String lotNumber) {
         partyLotsServiceImpl.deleteById(idPartylots);
         return "redirect:/view-lots/{lotNumber}/{idHistory}";
     }
@@ -154,7 +169,7 @@ public class PartyLotsController {
     }
 
     @GetMapping("/view-lots/{lotNumber}/{idHistory}")
-    public String viewLots(@PathVariable ("lotNumber") String lotNumber,@PathVariable ("idHistory") int idHistory,Model model){
+    public String viewLots(@PathVariable ("lotNumber") String lotNumber,@PathVariable ("idHistory") long idHistory,Model model){
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
         List<Partylots> partylots1 = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
@@ -172,8 +187,8 @@ public class PartyLotsController {
     }
 
     @PostMapping("/view-lots/{lotNumber}/{idHistory}")
-    public String CreatePartyLotsView(@PathVariable ("idHistory") int idHistory, @PathVariable ("lotNumber") String lotNumber,Partylots partylots,BindingResult bindingResult,Model model){
-        String barcode = Integer.toString(partylots.getCartridgesId());
+    public String CreatePartyLotsView(@PathVariable ("idHistory") long idHistory, @PathVariable ("lotNumber") String lotNumber,Partylots partylots,BindingResult bindingResult,Model model){
+        String barcode = Long.toString(partylots.getCartridgesId());
         List<Cartridges> cartridges = cartridgeServiceImpl.findAllByInventoryNumber(barcode);
         if (cartridges.isEmpty()){
             List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
@@ -195,13 +210,62 @@ public class PartyLotsController {
         for (int i = 0; i < cartridges.size(); i++) {
             cartridge = cartridges.get(i);
             if (cartridge.getInventoryNumber().equals(barcode)) {
-                int beryID = cartridge.getId();
+                Long beryID = cartridge.getId();
                 partylots.setCartridgesId(beryID);
             }
         }
         partyLotsServiceImpl.savePartylots(partylots);
         return "redirect:/view-lots/{lotNumber}/{idHistory}";
     }
+
+    @GetMapping("/addComments/{idHistory}/{lotNumber}/{idPartylots}")
+    public String addCommentsForPartylots(@PathVariable ("idHistory") long idHistory, @PathVariable ("lotNumber") String lotNumber,@PathVariable("idPartylots") long idPartylots, Model model) {
+        Partylots partylots = partyLotsServiceImpl.findById(idPartylots);
+        List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
+        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<History> history = historyServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+        model.addAttribute("partylots", partylots);
+        model.addAttribute("cartridges", cartridges);
+        model.addAttribute("cartrs", cartrs);
+        model.addAttribute("history", history);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
+        return "addCommentForPartylots";
+    }
+
+    @PostMapping("/addCommentsLook/{idHistory}/{lotNumber}/{idPartylots}")
+    public String addCommentsForPartylots1(@PathVariable ("idHistory") long idHistory, @PathVariable ("lotNumber") String lotNumber,@PathVariable ("idPartylots") Long idPartylots,
+                                           Partylots partylots,Model model){
+        partyLotsServiceImpl.savePartylots(partylots);
+        return "redirect:/view-lots/{lotNumber}/{idHistory}";
+    }
+
+    @GetMapping("/addCommentsCompare/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}")
+    public String addCommentsForPartylotsCompare(@PathVariable ("idHistory") long idHistory,@PathVariable("idHistoryReturn") long idHistoryReturn, @PathVariable ("lotNumber") String lotNumber,@PathVariable("idPartylots") long idPartylots, Model model) {
+        Partylots partylots = partyLotsServiceImpl.findById(idPartylots);
+        List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
+        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<History> history = historyServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+        model.addAttribute("partylots", partylots);
+        model.addAttribute("cartridges", cartridges);
+        model.addAttribute("cartrs", cartrs);
+        model.addAttribute("history", history);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
+        return "addCommentForPartylotsCompare";
+    }
+
+    @PostMapping("/addCommentsCompare/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}")
+    public String addCommentsForComparisonPartyLots(@PathVariable ("idHistory") long idHistory,@PathVariable("idHistoryReturn") long idHistoryReturn, @PathVariable ("lotNumber") String lotNumber,@PathVariable ("idPartylots") Long idPartylots,
+                                           Partylots partylots,Model model){
+        partyLotsServiceImpl.savePartylots(partylots);
+        return "redirect:/ComparisonPartyLots/{idHistory}/{idHistoryReturn}/{lotNumber}";
+    }
+
 
     @GetMapping("/lots-look-history")
     public String findAllLotsHistory(Model model){
@@ -213,11 +277,204 @@ public class PartyLotsController {
     }
 
     @GetMapping("/view-lots-history/{idHistory}")
-    public String viewLotsHistory(@PathVariable ("idHistory") int idHistory,Model model){
+    public String viewLotsHistory(@PathVariable ("idHistory") long idHistory,Model model){
         List<History> history = historyServiceImpl.findAll();
         List<Partylots> partylots1 = partyLotsServiceImpl.findDsHistoryKeyword(idHistory);
         model.addAttribute("history",history);
         model.addAttribute("partylots1",partylots1);
         return "partylots-list-history";
+    }
+
+    @GetMapping("/ComparePartyLots/{idHistory}/{lotNumber}")
+    public String ComparePartyLots(@PathVariable ("idHistory") long idHistory,@PathVariable ("lotNumber") String lotNumber,Model model){
+        List<Partylots> partylots1 = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
+        Partylots partylots12 = null;
+        for (int i=0; i<partylots1.size();i++){
+            partylots12 = partylots1.get(i);
+            if (partylots12.getHistoryIdHistoryReturn() != null){
+                return "redirect:/ComparisonPartyLots/{idHistory}/" + partylots12.getHistoryIdHistoryReturn() +"/{lotNumber}";
+            }
+        }
+        List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
+        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+        History history = historyServiceImpl.findById(idHistory);
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+        model.addAttribute("cartridges", cartridges);
+        model.addAttribute("cartrs", cartrs);
+        model.addAttribute("history", history);
+        model.addAttribute("history1", new History());
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
+        model.addAttribute("partylots1",partylots1);
+        model.addAttribute("partylots",new Partylots());
+        return "create-return-partylots";
+    }
+
+    @GetMapping("/ComparisonPartyLots/{idHistory}/{idHistoryReturn}/{lotNumber}")
+    public String ComparisonPartyLots(@PathVariable ("idHistory") long idHistory, @PathVariable("idHistoryReturn") long idHistoryReturn, @PathVariable ("lotNumber") String lotNumber,Model model,
+                                      @ModelAttribute("NewCartridge") Cartridges NewCartridge){
+        List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
+        List<Partylots> partylots1 = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
+        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+        History history = historyServiceImpl.findById(idHistory);
+        History history1 = historyServiceImpl.findById(idHistoryReturn);
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+        model.addAttribute("cartridges", cartridges);
+        model.addAttribute("cartrs", cartrs);
+        model.addAttribute("history", history);
+        model.addAttribute("history1", history1);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
+        model.addAttribute("partylots1",partylots1);
+        model.addAttribute("partylots",new Partylots());
+        return "comparepartylots";
+    }
+
+    @GetMapping("/ComparisonPartyLotsLookForCheck/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}")
+    public String ComparisonPartyLotsLookForCheck(@PathVariable ("idHistory") long idHistory, @PathVariable("idHistoryReturn") long idHistoryReturn, @PathVariable ("lotNumber") String lotNumber,
+                                                  @PathVariable("idPartylots") long idPartylots, Model model,
+                                                  @ModelAttribute("NewCartridge") Cartridges NewCartridge){
+        List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
+        List<Partylots> partylots1 = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
+        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+        History history = historyServiceImpl.findById(idHistory);
+        History history1 = historyServiceImpl.findById(idHistoryReturn);
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+        Partylots partylotsOne = partyLotsServiceImpl.findById(idPartylots);
+        model.addAttribute("cartridges", cartridges);
+        model.addAttribute("cartrs", cartrs);
+        model.addAttribute("history", history);
+        model.addAttribute("history1", history1);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
+        model.addAttribute("partylots1",partylots1);
+        model.addAttribute("partylotsOne",partylotsOne);
+        model.addAttribute("partylots",new Partylots());
+        return "comparepartylots";
+    }
+
+    @PostMapping("/Compare/{lotNumber}/{idHistory}/{idHistoryReturn}")
+    public String ComparisonPartyLotsView(@PathVariable ("idHistory") long idHistory, @PathVariable("idHistoryReturn") long idHistoryReturn, @PathVariable ("lotNumber") String lotNumber,
+                                          Partylots NewPartylots, @Valid @ModelAttribute("NewCartridge") Cartridges NewCartridge, BindingResult bindingResult, Model model){
+        List<Partylots> partylotsEquals = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
+        Cartridges cartridges = cartridgeServiceImpl.findByInventoryNumber(NewCartridge.getInventoryNumber());
+        if(bindingResult.hasErrors()){
+            List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
+            List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+            History history = historyServiceImpl.findById(idHistory);
+            History history1 = historyServiceImpl.findById(idHistoryReturn);
+            List<Printers> printers = printersServiceImpl.findAll();
+            List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+            model.addAttribute("cartridges", cartridges1);
+            model.addAttribute("cartrs", cartrs);
+            model.addAttribute("history", history);
+            model.addAttribute("history1", history1);
+            model.addAttribute("printers", printers);
+            model.addAttribute("manufacturers", manufacturers);
+            model.addAttribute("partylots1", partylotsEquals);
+            return "comparepartylots";
+        }
+        if (cartridges == null){
+            List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
+            List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+            History history = historyServiceImpl.findById(idHistory);
+            History history1 = historyServiceImpl.findById(idHistoryReturn);
+            List<Printers> printers = printersServiceImpl.findAll();
+            List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+            model.addAttribute("cartridges", cartridges1);
+            model.addAttribute("cartrs", cartrs);
+            model.addAttribute("history", history);
+            model.addAttribute("history1", history1);
+            model.addAttribute("printers", printers);
+            model.addAttribute("manufacturers",manufacturers);
+            model.addAttribute("partylots1",partylotsEquals);
+            bindingResult.rejectValue("inventoryNumber", "error.inventoryNumber", "Такой картридж не существует");
+            return "comparepartylots";
+        }
+//            Long beryID = newCartridge.getId();
+            NewPartylots.setCartridgesId(cartridges.getId());
+
+        Partylots partylots1 = null;
+        for (int i=0; i<partylotsEquals.size();i++){
+            partylots1 = partylotsEquals.get(i);
+            if (partylots1.getCartridgesId().equals(NewPartylots.getCartridgesId())){
+                if(partylots1.getPartyStatus() == 1 ){
+                    List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
+                    List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+                    History history = historyServiceImpl.findById(idHistory);
+                    History history1 = historyServiceImpl.findById(idHistoryReturn);
+                    List<Printers> printers = printersServiceImpl.findAll();
+                    List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+                    model.addAttribute("cartridges", cartridges1);
+                    model.addAttribute("cartrs", cartrs);
+                    model.addAttribute("history", history);
+                    model.addAttribute("history1", history1);
+                    model.addAttribute("printers", printers);
+                    model.addAttribute("manufacturers",manufacturers);
+                    model.addAttribute("partylots1",partylotsEquals);
+                    bindingResult.rejectValue("inventoryNumber", "error.inventoryNumber", "Такой картридж уже принят");
+                    return "comparepartylots";
+                }
+                partylots1.setPartyStatus((long) 1);
+                partylots1.setHistoryIdHistoryReturn(NewPartylots.getHistoryIdHistoryReturn());
+            }
+        }
+        partyLotsServiceImpl.savePartylots(partylots1);
+        return "redirect:/ComparisonPartyLotsLookForCheck/{idHistory}/{idHistoryReturn}/{lotNumber}/" + partylots1.getIdPartylots();
+    }
+
+    @PostMapping("/main/{idHistory}/{idHistoryReturn}/{lotNumber}")
+    public String finishComparePartylots(@PathVariable ("idHistory") long idHistory,@PathVariable("idHistoryReturn") long idHistoryReturn, @PathVariable ("lotNumber") String lotNumber
+            ,Partylots NewPartylots,BindingResult bindingResult,Model model){
+        List<Partylots> partylots = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
+        Partylots partylots2 = null;
+        for (int i=0;i<partylots.size();i++){
+            partylots2 = partylots.get(i);
+            if (partylots2.getPartyStatus()==1){
+                partylots2.setPartyStatus((long) 2);
+            }else {
+                List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
+                List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+                History history = historyServiceImpl.findById(idHistory);
+                History history1 = historyServiceImpl.findById(idHistoryReturn);
+                List<Printers> printers = printersServiceImpl.findAll();
+                List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+                model.addAttribute("cartridges", cartridges1);
+                model.addAttribute("cartrs", cartrs);
+                model.addAttribute("history", history);
+                model.addAttribute("history1", history1);
+                model.addAttribute("printers", printers);
+                model.addAttribute("manufacturers",manufacturers);
+                model.addAttribute("partylots1",partylots);
+                bindingResult.rejectValue("cartridgesId", "error.cartridgesId", "Партия не может быть закрыта, так как, не все картриджи пришли");
+                return "comparepartylots";
+            }
+        }
+        partyLotsServiceImpl.savePartylots(partylots2);
+        return "redirect:/main";
+    }
+
+
+    @GetMapping("/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}")
+    public String checkOnePartylots(@PathVariable("idPartylots") long idPartylots,@PathVariable("idHistory") long idHistory,
+                                    @PathVariable("idHistoryReturn") long idHistoryReturn,@PathVariable("lotNumber") String lotNumber){
+        Partylots partylots = partyLotsServiceImpl.findById(idPartylots);
+        partylots.setPartyStatus((long) 1);
+        partylots.setHistoryIdHistoryReturn(idHistoryReturn);
+        partyLotsServiceImpl.savePartylots(partylots);
+        return "redirect:/ComparisonPartyLots/{idHistory}/{idHistoryReturn}/{lotNumber}";
+    }
+
+    @GetMapping("/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}")
+    public  String checkOnePartylotsReturn(@PathVariable("idPartylots") long idPartylots,@PathVariable("idHistory") long idHistory,
+                                           @PathVariable("idHistoryReturn") long idHistoryReturn,@PathVariable("lotNumber") String lotNumber){
+        Partylots partylots = partyLotsServiceImpl.findById(idPartylots);
+        partylots.setPartyStatus((long) 0);
+        partylots.setHistoryIdHistoryReturn(null);
+        partyLotsServiceImpl.savePartylots(partylots);
+        return "redirect:/ComparisonPartyLots/{idHistory}/{idHistoryReturn}/{lotNumber}";
     }
 }

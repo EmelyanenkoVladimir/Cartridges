@@ -79,6 +79,10 @@
                     <div style="color:red" th:if="${#fields.hasErrors('cartridgesId')}" th:errors="*{cartridgesId}">Name Error</div>
                     <small style="color:red;"></small>
                 </div>
+                <div hidden class="row mb-3">
+                    <label for="partyStatus" class="col-sm-2 col-form-label">Статус партии</label>
+                    <input type="number" class="form-control w-50" th:field="*{partyStatus}" th:value="*{partyStatus=0}" id="partyStatus">
+                </div>
             </div>
             <input  type="submit" id="addNumberLots1" value="Записать картридж" class="btn btn-primary">
         </form>

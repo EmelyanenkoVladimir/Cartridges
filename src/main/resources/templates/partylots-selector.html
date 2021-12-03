@@ -46,7 +46,10 @@
             <th>Дата статуса</th>
             <th>Статус</th>
             <th>Исполнитель</th>
-            <th>Операция</th>
+            <th>Статус партии</th>
+            <th>Операция просмотра</th>
+            <th>Операция сравнения</th>
+
         </tr>
         </thead>
         <tbody>
@@ -58,7 +61,12 @@
                     <td th:text="${hist.dateOfStatus}"></td>
                     <td th:text="${hist.status}"></td>
                     <td th:text="${hist.executor}"></td>
+                    <td th:if="${pl1.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>
+                    <td th:if="${pl1.partyStatus == 1}" style="color: red">Партия не закрыта</td>
+                    <td th:if="${pl1.partyStatus == 0}" style="color: red">Партия не закрыта</td>
                     <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Посмотреть партию</a></td>
+                    <td th:if="${pl1.partyStatus != 2}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Принять партию</a></td>
+                    <td th:if="${pl1.partyStatus == 2}">Партия закрыта</td>
                 </tr>
             </div>
         </div>
