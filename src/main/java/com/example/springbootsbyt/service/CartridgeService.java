@@ -2,6 +2,7 @@ package com.example.springbootsbyt.service;
 
 import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.History;
+import com.example.springbootsbyt.model.Partylots;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -24,6 +25,5 @@ public interface CartridgeService  {
     public List<Cartridges> findAllByInventoryNumber(String barcode);
 
     public Cartridges findByInventoryNumber(String inv);
-
 }
 

@@ -22,5 +22,20 @@ public interface PartyLotsRepository extends JpaRepository<Partylots, Long> {
 
     @Query(value="select * from partylots group by history_id_history",nativeQuery=true)
     List<Partylots> findDsHistory();
+
+    @Query(value="select * from partylots where party_status != 2 and cartridges_id like :keyword",nativeQuery=true)
+    List<Partylots> findAllByCartridgesId(@Param("keyword") long keyword);
+
+    @Query(value="select * from partylots where party_status = 0",nativeQuery=true)
+    List<Partylots> findAllByPartyStatusNe0();
+
+    @Query(value="select * from partylots where party_status = 0 and cartridges_id like :keyword and lot_number not like :keyword1",nativeQuery=true)
+    Partylots findOneByCartridgesId(@Param("keyword") long keyword, @Param("keyword1") String keyword1);
+
+    @Query(value="SELECT * from partylots where party_status = 0 and cartridges_id like :keyword",nativeQuery=true)
+    Partylots findByCartridgesIdWherePartyStatus0(@Param("keyword") long keyword);
+
+    @Query(value="select * from partylots where party_status = 2 and cartridges_id like :keyword", nativeQuery=true)
+    Partylots findByCartridgesIdWherePartyStatus2(@Param("keyword") long keyword);
 }
 

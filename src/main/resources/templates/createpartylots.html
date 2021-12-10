@@ -72,41 +72,25 @@
                     <input readonly type="hidden" class="form-control w-50" th:value="${lotNumber}" th:text="${lotNumber}" id="lotNumber" name="lotNumber">
                 </div>
             </div>
-            <div class="row mb-3">
-                <label for="cartridgesId" class="col-sm-2 col-form-label">Картридж</label>
-                <div class="col-sm-7">
-                    <input type="text" class="form-control w-50" th:field="*{cartridgesId}" name="cartridgesId" id="cartridgesId">
-                    <div style="color:red" th:if="${#fields.hasErrors('cartridgesId')}" th:errors="*{cartridgesId}">Name Error</div>
-                    <small style="color:red;"></small>
+                <div class="row mb-3" th:object="${NewCartridge}">
+                    <label for="inventoryNumber1" class="col-sm-2 col-form-label">Картридж</label>
+                    <div class="col-sm-7">
+                        <input autofocus type="text" class="form-control w-50" th:field="*{inventoryNumber}" name="inventoryNumber" id="inventoryNumber1">
+                        <div style="color:red" th:if="${#fields.hasErrors('inventoryNumber')}" th:errors="*{inventoryNumber}">Name Error</div>
+                    </div>
+                    <div class="col-sm-7">
+                        <input readonly hidden type="number" class="form-control w-50" th:field="*{resource}" th:value="*{resource=0}"
+                               id="resource">
+                    </div>
                 </div>
                 <div hidden class="row mb-3">
                     <label for="partyStatus" class="col-sm-2 col-form-label">Статус партии</label>
                     <input type="number" class="form-control w-50" th:field="*{partyStatus}" th:value="*{partyStatus=0}" id="partyStatus">
                 </div>
-            </div>
             <input  type="submit" id="addNumberLots1" value="Записать картридж" class="btn btn-primary">
         </form>
     </div>
 </div>
-
-<!-- Проверка на Пустое поле-->
-<script>
-    const form = document.getElementById('addNumberLots');
-    const cartridgesId = document.getElementById('cartridgesId');
-    form.addEventListener('submit', e => {
-        const cartridgesIdValue = cartridgesId.value.trim();
-        if (cartridgesIdValue === '') {
-            setErrorFor(cartridgesId, 'Поле не может быть пустым');
-            e.preventDefault();
-        }
-    });
-    function setErrorFor(input, message) {
-        const formControl = input.parentElement;
-        const small = formControl.querySelector('small');
-        formControl.className = 'form-control error';
-        small.innerText = message;
-    }
-</script>
 
 <!--Таймаут на кнопку отправки-->
 <script>

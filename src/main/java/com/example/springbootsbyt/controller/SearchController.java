@@ -32,17 +32,7 @@ public class SearchController {
         this.manufacturerServiceImpl = manufacturerServiceImpl;
     }
     @GetMapping("/search")
-    public String findAll(Model model) {
-        List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
-        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
-        List<History> history = historyServiceImpl.findAll();
-        List<Printers> printers = printersServiceImpl.findAll();
-        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-        model.addAttribute("cartridges", cartridges);
-        model.addAttribute("cartrs", cartrs);
-        model.addAttribute("history", history);
-        model.addAttribute("printers", printers);
-        model.addAttribute("manufacturers",manufacturers);
+    public String findAllSearch() {
         return "search";
     }
     @PostMapping("/search")

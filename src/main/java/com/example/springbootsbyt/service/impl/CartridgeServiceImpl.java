@@ -47,7 +47,7 @@ public class CartridgeServiceImpl implements CartridgeService {
         return cartridgeRepository.findAllByInventoryNumber(barcode);
     }
 
-    public Cartridges findByInventoryNumber(String inv) {
+    public Cartridges findByInventoryNumber(String inv){
         return cartridgeRepository.findByInventoryNumber(inv);
     }
 }

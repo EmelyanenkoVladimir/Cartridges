@@ -10,6 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -27,9 +30,17 @@ public class HistoryController {
     @GetMapping("/history-create/{id}")
     public String createHistoryForm(@PathVariable("id") long id,Model model, History history) {
         Cartridges cartridges = cartridgeServiceImpl.findById(id);
+        history.setDateOfStatus(Date.valueOf(LocalDate.now()));
         model.addAttribute("cartridges", cartridges);
         model.addAttribute("history", history);
         return "history-create";
+    }
+
+    @PostMapping("/history-create/{id}")
+    public String createHistory(@PathVariable("id") Integer id,History history) {
+        String str1 = Integer.toString(id);
+        historyServiceImpl.saveHistory(history);
+        return "redirect:/cartridge-moreInfo/" + str1;
     }
 
     @PostMapping("/history-create1")
@@ -40,19 +51,12 @@ public class HistoryController {
     }
 
     @PostMapping("/history-create2/{idHistory}/{lotNumber}")
-    public String createHistory2(@PathVariable("idHistory") long idHistory, @PathVariable("lotNumber") String lotNumber, History history) {
-        historyServiceImpl.saveHistory(history);
+    public String createHistory2(@PathVariable("idHistory") long idHistory, @PathVariable("lotNumber") String lotNumber, History historyReturn) {
+        historyServiceImpl.saveHistory(historyReturn);
         String str = Long.toString(idHistory);
-        String str1 = Long.toString(history.getIdHistory());
+        String str1 = Long.toString(historyReturn.getIdHistory());
         String str2 = lotNumber;
         return "redirect:/ComparisonPartyLots/" + str + '/' + str1 + '/' + str2;
-    }
-
-    @PostMapping("/history-create/{id}")
-    public String createHistory(@PathVariable("id") Integer id,History history) {
-        String str1 = Integer.toString(id);
-        historyServiceImpl.saveHistory(history);
-        return "redirect:/cartridge-moreInfo/" + str1;
     }
 
     @GetMapping("/cartridge-moreInfo/history-update/{idHistory}/{id}")

@@ -19,18 +19,22 @@ public class CartridgeController {
     private final HistoryServiceImpl historyServiceImpl;
     private final PrintersServiceImpl printersServiceImpl;
     private final ManufacturerServiceImpl manufacturerServiceImpl;
+    private final PartyLotsServiceImpl partyLotsServiceImpl;
 
 
     @Autowired
     public CartridgeController(CartridgeServiceImpl cartridgeServiceImpl,
                                CartrsServiceImpl cartrsServiceImpl,
                                HistoryServiceImpl historyServiceImpl,
-                               PrintersServiceImpl printersServiceImpl, ManufacturerServiceImpl manufacturerServiceImpl){
+                               PrintersServiceImpl printersServiceImpl,
+                               ManufacturerServiceImpl manufacturerServiceImpl,
+                               PartyLotsServiceImpl partyLotsServiceImpl){
         this.cartridgeServiceImpl = cartridgeServiceImpl;
         this.cartrsServiceImpl = cartrsServiceImpl;
         this.historyServiceImpl = historyServiceImpl;
         this.printersServiceImpl = printersServiceImpl;
         this.manufacturerServiceImpl = manufacturerServiceImpl;
+        this.partyLotsServiceImpl = partyLotsServiceImpl;
     }
 
     @GetMapping("/cartridges")
@@ -103,6 +107,7 @@ public class CartridgeController {
         model.addAttribute("cartrs", cartrs);
         model.addAttribute("printers", printers);
         model.addAttribute("manufacturers",manufacturers);
+
         return "cartridge-update";
     }
 
@@ -148,9 +153,17 @@ public class CartridgeController {
     @GetMapping("/cartridge-moreInfo/{id}")
     public String moreInfoForm(@PathVariable("id") long id, Model model) {
         Cartridges cartridges = cartridgeServiceImpl.findById(id);
+        Partylots partylots = partyLotsServiceImpl.findByCartridgesIdWherePartyStatus2(id);
+        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
         List<History> history = historyServiceImpl.findAll();
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
         model.addAttribute("cartridges", cartridges);
+        model.addAttribute("cartrs", cartrs);
         model.addAttribute("history", history);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
+        model.addAttribute("partylots", partylots);
         return "cartridge-moreInfo";
     }
 

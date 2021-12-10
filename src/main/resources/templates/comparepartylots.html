@@ -95,14 +95,14 @@
                 </div>
             </div>
             <div hidden class="row mb-3">
-                <label for="partyStatus" class="col-sm-2 col-form-label">Статус партии</label>
-                    <input type="number" class="form-control w-50" th:field="*{partyStatus}" th:value="*{partyStatus=0}" id="partyStatus">
+                <label for="partyStatus1" class="col-sm-2 col-form-label">Статус партии</label>
+                    <input type="number" class="form-control w-50" th:field="*{partyStatus}" th:value="*{partyStatus=0}" id="partyStatus1" name="partyStatus">
             </div>
             <input  type="submit" id="addNumberLots1" value="Проверить картридж" class="btn btn-primary">
         </form>
-        <br>
         <div th:if="${partylotsOne != null}">
             <div class="container-fluid">
+                <br>
                 <table class="table table-hover table-bordered">
                     <thead class="table-light">
                     <tr>
@@ -123,10 +123,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="pl : ${partylotsOne}">
-                        <td th:if="${pl.partyStatus == 0}"
-                            style="color: red">Картридж не пришёл</td>
-                        <td th:if="${pl.partyStatus == 1}"
-                            style="color: limegreen">Картридж пришёл</td>
+                        <td style="color:limegreen;">Картридж принят</td>
                         <td th:text="${pl.idPartylots}"></td>
                         <td th:text="${pl.lotNumber}"></td>
                         <td th:text="${pl.cartridgesId}"></td>
@@ -242,19 +239,19 @@
                     </div>
                     <td th:text="${cartridge.count}"></td>
                     <td th:text="${cartridge.resource}"></td>
+                    <td style="width: 150px;word-wrap: break-word;max-width: 150px" th:text="${pl.partyComments}"></td>
+                    <td th:if="${pl.partyStatus == 0}"><a type="button" class="btn btn-info" th:href="@{/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                           data-bs-toggle="modal" data-bs-target="#CheckOneStatus" id="CheckButton">
+                        Принять картридж
+                    </a></td>
+                    <td th:if="${pl.partyStatus != 0}"><a type="button" class="btn btn-danger" th:href="@{/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                                                          data-bs-toggle="modal" data-bs-target="#CheckOneStatusUpdate" id="CheckButtonUpdate">
+                        Отменить принятие
+                    </a></td>
+                    <td><a th:href="@{/addCommentsCompare/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}(idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber},idPartylots=${pl.idPartylots})}" class="btn btn-dark">
+                        Добавить комментарий
+                    </a></td>
                 </div>
-                <td style="width: 150px;word-wrap: break-word;max-width: 150px" th:text="${pl.partyComments}"></td>
-                <td th:if="${pl.partyStatus == 0}"><a type="button" class="btn btn-info" th:href="@{/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
-                                                      data-bs-toggle="modal" data-bs-target="#CheckOneStatus" id="CheckButton">
-                    Принять картридж
-                </a></td>
-                <td th:if="${pl.partyStatus != 0}"><a type="button" class="btn btn-danger" th:href="@{/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
-                                                      data-bs-toggle="modal" data-bs-target="#CheckOneStatus" id="CheckButton">
-                    Отменить принятие
-                </a></td>
-                <td><a th:href="@{/addCommentsCompare/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}(idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber},idPartylots=${pl.idPartylots})}" class="btn btn-dark">
-                    Добавить комментарий
-                </a></td>
                 </div>
             </tr>
             </tbody>
@@ -275,6 +272,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
                 <a href="" class="btn btn-primary" id="ChekingStatus">Да</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CheckOneStatusUpdate" tabindex="-1" aria-labelledby="CheckOneStatusUpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CheckOneStatusUpdateModalLabel">Подтверждение отказа от принятия</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите отменить принятие этого картриджа?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="" class="btn btn-primary" id="ChekingStatusUpdate">Да</a>
             </div>
         </div>
     </div>
@@ -370,24 +385,6 @@
     };
 </script>
 
-<!--<script>-->
-<!--    const form = document.getElementById('addNumberLots');-->
-<!--    const cartridgesId = document.getElementById('cartridgesId');-->
-<!--    form.addEventListener('submit', e => {-->
-<!--        const cartridgesIdValue = cartridgesId.value.trim();-->
-<!--            if (cartridgesIdValue === '') {-->
-<!--                setErrorFor(cartridgesId, 'Поле не может быть пустым');-->
-<!--                e.preventDefault();-->
-<!--            }-->
-<!--    });-->
-<!--    function setErrorFor(input, message) {-->
-<!--        const formControl = input.parentElement;-->
-<!--        const small = formControl.querySelector('small');-->
-<!--        formControl.className = 'form-control error';-->
-<!--        small.innerText = message;-->
-<!--    }-->
-<!--</script>-->
-
 <script>
     function submitLimit() {
         let btn = document.getElementById('addNumberLots1')
@@ -406,6 +403,15 @@
         let href = $(this).attr('href');
         $('#CheckOneStatus #ChekingStatus').attr('href', href);
         $('#CheckOneStatus').modal();
+    });
+</script>
+
+<script>
+    $('.table #CheckButtonUpdate').on('click',function(event) {
+        event.preventDefault();
+        let href = $(this).attr('href');
+        $('#CheckOneStatusUpdate #ChekingStatusUpdate').attr('href', href);
+        $('#CheckOneStatusUpdate').modal();
     });
 </script>
 

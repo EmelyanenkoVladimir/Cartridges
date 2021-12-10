@@ -73,9 +73,7 @@
                                     <select class="form-select w-50" th:field="*{status}" id="status" required>
                                         <option value="в заправке">в заправке</option>
                                         <option value="в работе">в работе</option>
-                                        <option value="на складе">на складе</option>
                                         <option value="списан">списан</option>
-                                        <option value="возврат">возврат</option>
                                     </select>
                                 </div>
                             </div>
@@ -157,8 +155,8 @@
                     </div>
                     <td th:text="${cartridge.count}"></td>
                     <td th:text="${cartridge.resource}"></td>
+                    <td style="width: 150px;word-wrap: break-word;max-width: 150px" th:text="${pl.partyComments}"></td>
                 </div>
-                <td th:text="${pl.partyComments}"></td>
             </div>
         </tr>
         </tbody>

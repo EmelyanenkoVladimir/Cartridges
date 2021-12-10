@@ -37,16 +37,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/main">На Главную страницу</a>
+                    <a class="nav-link active" aria-current="page" href="/main" data-bs-toggle="modal" data-bs-target="#CheckRedirect1">На Главную страницу</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cartrs">Модели картриджей</a>
+                    <a class="nav-link" href="/cartrs" data-bs-toggle="modal" data-bs-target="#CheckRedirect2">Модели картриджей</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/printers">Модели принтеров</a>
+                    <a class="nav-link" href="/printers" data-bs-toggle="modal" data-bs-target="#CheckRedirect3">Модели принтеров</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cartridges">Картриджи</a>
+                    <a class="nav-link" href="/cartridges" data-bs-toggle="modal" data-bs-target="#CheckRedirect4">Картриджи</a>
                 </li>
             </ul>
         </div>
@@ -72,12 +72,15 @@
                     <input readonly type="hidden" class="form-control w-50" th:value="${lotNumber}" th:text="${lotNumber}" id="lotNumber" name="lotNumber">
                 </div>
             </div>
-            <div class="row mb-3">
-                <label for="cartridgesId" class="col-sm-2 col-form-label">Картридж</label>
+            <div class="row mb-3" th:object="${NewCartridge}">
+                <label for="inventoryNumber1" class="col-sm-2 col-form-label">Картридж</label>
                 <div class="col-sm-7">
-                    <input autofocus type="text" class="form-control w-50" th:field="*{cartridgesId}" name="cartridgesId" id="cartridgesId">
-                    <div style="color:red" th:if="${#fields.hasErrors('cartridgesId')}" th:errors="*{cartridgesId}">Name Error</div>
-                    <small style="color:red;"></small>
+                    <input autofocus type="text" class="form-control w-50" th:field="*{inventoryNumber}" name="inventoryNumber" id="inventoryNumber1">
+                    <div style="color:red" th:if="${#fields.hasErrors('inventoryNumber')}" th:errors="*{inventoryNumber}">Name Error</div>
+                </div>
+                <div class="col-sm-7">
+                    <input readonly hidden type="number" class="form-control w-50" th:field="*{resource}" th:value="*{resource=0}"
+                           id="resource">
                 </div>
             </div>
             <div hidden class="row mb-3">
@@ -143,7 +146,7 @@
     </table>
 </div>
 <div class="container-fluid ms-auto fw-bold">
-    <form action="#" th:action="@{/main}" method="get">
+    <form action="#" th:action="@{/main/{lotNumber}/{idHistory}(lotNumber=${lotNumber},idHistory=${idHistory})}" method="post">
         <div class="row mb-3">
             <div class="col-sm-7">
                 <label for="chck" class="col-sm-2 col-form-label">Нажмите если хотите отправить партию</label>
@@ -172,6 +175,79 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="CheckRedirect1" tabindex="-1" aria-labelledby="CheckRedirectModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CheckRedirectModalLabel1">Подтверждение перехода</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что отправили партию???
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="/main" class="btn btn-primary">Да, перейти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CheckRedirect2" tabindex="-1" aria-labelledby="CheckRedirectModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CheckRedirectModalLabel2">Подтверждение перехода</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что отправили партию???
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="/cartrs" class="btn btn-primary">Да, перейти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CheckRedirect3" tabindex="-1" aria-labelledby="CheckRedirectModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CheckRedirectModalLabel3">Подтверждение перехода</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что отправили партию???
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="/printers" class="btn btn-primary">Да, перейти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CheckRedirect4" tabindex="-1" aria-labelledby="CheckRedirectModalLabel4" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CheckRedirectModalLabel4">Подтверждение перехода</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что отправили партию???
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="/cartridges" class="btn btn-primary">Да, перейти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     let but = document.getElementById("but");
     document.getElementById("chck").onclick = function() {
@@ -179,34 +255,6 @@
             ? but.classList.remove("btn-disable")
             : but.classList.add("btn-disable");
     };
-</script>
-
-<script>
-    const form = document.getElementById('addNumberLots');
-    const cartridgesId = document.getElementById('cartridgesId');
-    form.addEventListener('submit', e => {
-        const cartridgesIdValue = cartridgesId.value.trim();
-        let table1 = document.getElementById('myTable');
-        let firstChilds = table1.querySelectorAll('#foobar');
-        let allName = [];
-        for(let i=0; i<firstChilds.length; ++i){
-            allName.push(firstChilds[i].innerHTML);
-        }
-        let modelka = null;
-        for (let i=0;i<allName.length;i++) {
-            modelka = allName[i];
-            if (cartridgesIdValue.toString() === modelka.toString() || cartridgesIdValue === '') {
-                setErrorFor(cartridgesId, 'Поле не может быть пустым или такой картридж уже внесён');
-                e.preventDefault();
-            }
-        }
-    });
-    function setErrorFor(input, message) {
-        const formControl = input.parentElement;
-        const small = formControl.querySelector('small');
-        formControl.className = 'form-control error';
-        small.innerText = message;
-    }
 </script>
 
 <script>

@@ -5,10 +5,10 @@ import com.example.springbootsbyt.model.Partylots;
 import com.example.springbootsbyt.repository.PartyLotsRepository;
 import com.example.springbootsbyt.service.PartyLotsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PartyLotsServiceImpl implements PartyLotsService {
@@ -58,6 +58,23 @@ public class PartyLotsServiceImpl implements PartyLotsService {
         return partyLotsRepository.findDsHistory();
     }
 
+    public List<Partylots> findAllByCartridgesId(long keyword){
+        return partyLotsRepository.findAllByCartridgesId(keyword);
+    }
 
+    public List<Partylots> findAllByPartyStatusNe0(){
+        return partyLotsRepository.findAllByPartyStatusNe0();
+    }
 
+    public Partylots findOneByCartridgesId(long keyword, String keyword1){
+        return partyLotsRepository.findOneByCartridgesId(keyword,keyword1);
+    }
+
+    public Partylots findByCartridgesIdWherePartyStatus0(long keyword){
+        return partyLotsRepository.findByCartridgesIdWherePartyStatus0(keyword);
+    }
+
+    public Partylots findByCartridgesIdWherePartyStatus2(long keyword) {
+        return partyLotsRepository.findByCartridgesIdWherePartyStatus2(keyword);
+    }
 }
