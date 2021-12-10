@@ -34,5 +34,5 @@ public interface PartyLotsService {
 
     public Partylots findByCartridgesIdWherePartyStatus0(long keyword);
 
-    public Partylots findByCartridgesIdWherePartyStatus2(long keyword);
+    public List<Partylots> findByCartridgesIdWherePartyStatus2(long keyword);
 }
