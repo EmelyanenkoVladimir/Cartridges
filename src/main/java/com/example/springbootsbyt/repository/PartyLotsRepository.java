@@ -35,7 +35,9 @@ public interface PartyLotsRepository extends JpaRepository<Partylots, Long> {
     @Query(value="SELECT * from partylots where party_status = 0 and cartridges_id like :keyword",nativeQuery=true)
     Partylots findByCartridgesIdWherePartyStatus0(@Param("keyword") long keyword);
 
-    @Query(value="select * from partylots where party_status = 2 and cartridges_id like :keyword", nativeQuery=true)
-    List<Partylots> findByCartridgesIdWherePartyStatus2(@Param("keyword") long keyword);
+    @Query(value="select * from partylots where cartridges_id like :keyword", nativeQuery=true)
+    List<Partylots> findByCartridgesId(@Param("keyword") long keyword);
+
+
 }
 

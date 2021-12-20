@@ -74,7 +74,7 @@ public class PartyLotsServiceImpl implements PartyLotsService {
         return partyLotsRepository.findByCartridgesIdWherePartyStatus0(keyword);
     }
 
-    public List<Partylots> findByCartridgesIdWherePartyStatus2(long keyword) {
-        return partyLotsRepository.findByCartridgesIdWherePartyStatus2(keyword);
+    public List<Partylots> findByCartridgesId(long keyword) {
+        return partyLotsRepository.findByCartridgesId(keyword);
     }
 }

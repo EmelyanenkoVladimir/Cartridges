@@ -18,39 +18,45 @@ public class SearchController {
     private final HistoryServiceImpl historyServiceImpl;
     private final PrintersServiceImpl printersServiceImpl;
     private final ManufacturerServiceImpl manufacturerServiceImpl;
+    private final PartyLotsServiceImpl partyLotsServiceImpl;
 
 
     @Autowired
     public SearchController(CartridgeServiceImpl cartridgeServiceImpl,
                             CartrsServiceImpl cartrsServiceImpl,
                             HistoryServiceImpl historyServiceImpl,
-                            PrintersServiceImpl printersServiceImpl, ManufacturerServiceImpl manufacturerServiceImpl){
+                            PrintersServiceImpl printersServiceImpl,
+                            ManufacturerServiceImpl manufacturerServiceImpl,
+                            PartyLotsServiceImpl partyLotsServiceImpl){
         this.cartridgeServiceImpl = cartridgeServiceImpl;
         this.cartrsServiceImpl = cartrsServiceImpl;
         this.historyServiceImpl = historyServiceImpl;
         this.printersServiceImpl = printersServiceImpl;
         this.manufacturerServiceImpl = manufacturerServiceImpl;
+        this.partyLotsServiceImpl = partyLotsServiceImpl;
     }
     @GetMapping("/search")
     public String findAllSearch() {
         return "search";
     }
-    @PostMapping("/search")
-    public String Search(Model model, String keyword){
-        List<Cartridges> cartridges = cartridgeServiceImpl.findAll(keyword);
-        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
-        List<Printers> printers = printersServiceImpl.findAll();
-        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-        model.addAttribute("cartridges", cartridges);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("cartrs", cartrs);
-        model.addAttribute("printers", printers);
-        model.addAttribute("manufacturers",manufacturers);
-        return "cartridge-list";
-    }
+
+//    @PostMapping("/search")
+//    public String Search(Model model, String keyword, Partylots partylots){
+//        List<Cartridges> cartridges = cartridgeServiceImpl.findAll(keyword);
+//        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+//        List<Printers> printers = printersServiceImpl.findAll();
+//        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+//        model.addAttribute("cartridges", cartridges);
+//        model.addAttribute("keyword", keyword);
+//        model.addAttribute("cartrs", cartrs);
+//        model.addAttribute("printers", printers);
+//        model.addAttribute("manufacturers",manufacturers);
+//        return "cartridge-list";
+//    }
 
     @PostMapping("/Data-Search")
     public String DataSearch(Date Date, Model model){
+        List<Partylots> partylots1 = partyLotsServiceImpl.findDsLotNumber();
         List<History> histories = historyServiceImpl.findByDateOfStatus(Date);
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
@@ -59,6 +65,7 @@ public class SearchController {
         model.addAttribute("history", histories);
         model.addAttribute("cartrs", cartrs);
         model.addAttribute("printers", printers);
+        model.addAttribute("partylots1", partylots1);
         return "result-DataSearch";
     }
 }

@@ -109,98 +109,129 @@
 </div>
 </div>
 
-<!--<div class="container">-->
-<!--<div th:switch="${cartridges}">-->
-<!--    <div th:case="*">-->
-<!--        <div class="mx-auto" style="width: 200px;">-->
-<!--            <h2>История картриджа</h2>-->
-<!--        </div>-->
-<!--        <table class="table table-hover table-bordered">-->
-<!--            <thead class="table-light">-->
-<!--            <tr>-->
-<!--                <th class="text-center">Id Истории</th>-->
-<!--                <th class="text-center">Дата Статуса</th>-->
-<!--                <th class="text-center">Статус</th>-->
-<!--                <th class="text-center">Инвентарный номер картриджа</th>-->
+<div class="container">
+<div th:switch="${cartridges}">
+    <div th:case="*">
+        <div class="mx-auto" style="width: 200px;">
+            <h2>История картриджа</h2>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead class="table-light">
+            <tr>
+                <th class="text-center">Id Истории</th>
+                <th class="text-center">Номер партии</th>
+                <th class="text-center">Дата Статуса</th>
+                <th class="text-center">Статус</th>
+                <th class="text-center">Исполнитель</th>
+                <th class="text-center">Статус партии</th>
+                <th class="text-center">Операция просмотра</th>
+                <th class="text-center">Операция</th>
 <!--                <th colspan="2" class="text-center">Операции</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr th:each="hist:${history}" th:switch="${hist.cartridgesId}" th:case="*{id}">-->
-<!--                <td th:text="${hist.idHistory}"></td>-->
-<!--                <td th:text="${hist.dateOfStatus}"></td>-->
-<!--                <td th:text="${hist.status}"></td>-->
+            </tr>
+            </thead>
+            <tbody>
+            <div th:each="pl:${partylots}" th:switch="${pl.cartridgesId}" th:case="*{id}">
+                <tr th:each="hist:${history}">
+                    <div th:switch="${pl.historyIdHistory}" th:case="${hist.idHistory}">
+
+                        <td th:text="${hist.idHistory}"></td>
+
+                        <td th:text="${pl.lotNumber}"></td>
+
+                        <td th:text="${hist.dateOfStatus}"></td>
+                        <td th:text="${hist.status}"></td>
+                        <td th:text="${hist.executor}"></td>
+                        <td th:if="${pl.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>
+                        <td th:if="${pl.partyStatus == 1}" style="color: red">Партия не закрыта</td>
+                        <td th:if="${pl.partyStatus == 0}" style="color: red">Картридж в заправке</td>
+                        <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl.lotNumber},idHistory=${pl.historyIdHistory})}" class="btn btn-dark">Посмотреть партию</a></td>
+                        <td>-----</td>
+                    </div>
+                </tr>
+            </div>
+            <div th:each="hist:${history}" th:if="${hist.cartridgesId != null}">
+                <tr th:switch="${hist.cartridgesId}" th:case="*{id}">
+                    <td th:text="${hist.idHistory}"></td>
+                    <td>без партии</td>
+                    <td th:text="${hist.dateOfStatus}"></td>
+                    <td th:text="${hist.status}"></td>
+                    <td th:text="${hist.executor}"></td>
+                    <td>без партии</td>
+                    <td>без партии</td>
+                    <td><a th:href="@{history-delete/{idHistory}/{id}(idHistory=${hist.idHistory},id=${hist.cartridgesId})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+                </tr>
+            </div>
 <!--                <td th:each="cart:${cartridges}" th:switch="${cart.id}" th:case="${hist.cartridgesId}"-->
 <!--                    th:text="${cart.inventoryNumber}"></td>-->
 <!--                <td><a th:href="@{history-update/{idHistory}/{id}(idHistory=${hist.idHistory},id=${hist.cartridgesId})}" class="btn btn-dark">Исправить</a></td>-->
 <!--                <td><a th:href="@{history-delete/{idHistory}/{id}(idHistory=${hist.idHistory},id=${hist.cartridgesId})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>-->
-<!--                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--                    <div class="modal-dialog">-->
-<!--                        <div class="modal-content">-->
-<!--                            <div class="modal-header">-->
-<!--                                <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>-->
-<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                            </div>-->
-<!--                            <div class="modal-body">-->
-<!--                                Вы уверены, что хотите удалить эту запись?-->
-<!--                            </div>-->
-<!--                            <div class="modal-footer">-->
-<!--                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>-->
-<!--                                <a href="" class="btn btn-primary" id="delRef">Да, удалить</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--        </table>-->
-<!--    </div>-->
-<!--    <p><a class="btn btn-primary mt-3" th:href="@{/history-create/{id}(id=${id})}">Создать историю</a></p>-->
-<!--</div>-->
-<!--</div>-->
-
-<div class="container-fluid">
-    <div th:switch="${partylots}" >
-        <h2 th:case="null" class="text-center">История партии не найдена</h2>
-        <div th:case="*">
-            <div class="mx-auto" style="width: 200px;">
-                <h2>История картриджа</h2>
-            </div>
-            <table class="table table-hover table-bordered" id="myTable">
-                <thead class="table-light">
-                <tr>
-                    <th>Id партии</th>
-                    <th>Номер партии</th>
-                    <th>Дата статуса</th>
-                    <th>Статус</th>
-                    <th>Исполнитель</th>
-                    <th>Статус партии</th>
-                    <th>Операция просмотра</th>
-                    <th>Операция сравнения</th>
-                </tr>
-                </thead>
-                <tbody>
-                <div th:each="pl1 : ${partylots}">
-                    <div th:each="hist:${history}" th:switch="${hist.idHistory}" th:case="${pl1.historyIdHistory}">
-                        <tr>
-                            <td th:text="${pl1.idPartylots}"></td>
-                            <td th:text="${pl1.lotNumber}"></td>
-                            <td th:text="${hist.dateOfStatus}"></td>
-                            <td th:text="${hist.status}"></td>
-                            <td th:text="${hist.executor}"></td>
-                            <td th:if="${pl1.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>
-                            <td th:if="${pl1.partyStatus == 1}" style="color: red">Партия не закрыта</td>
-                            <td th:if="${pl1.partyStatus == 0}" style="color: red">Партия не закрыта</td>
-                            <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Посмотреть партию</a></td>
-                            <td th:if="${pl1.partyStatus == 2}">Партия закрыта</td>
-                        </tr>
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Вы уверены, что хотите удалить эту запись?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                                <a href="" class="btn btn-primary" id="delRef">Да, удалить</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </tbody>
-            </table>
-        </div>
+
+            </tbody>
+        </table>
     </div>
+    <p><a class="btn btn-primary mt-3" th:href="@{/history-create/{id}(id=${id})}">Создать историю</a></p>
 </div>
+</div>
+
+<!--<div class="container-fluid">-->
+<!--    <div th:switch="${partylots}" >-->
+<!--        <h2 th:case="null" class="text-center">История партии не найдена</h2>-->
+<!--        <div th:case="*">-->
+<!--            <div class="mx-auto" style="width: 200px;">-->
+<!--                <h2>История картриджа</h2>-->
+<!--            </div>-->
+<!--            <table class="table table-hover table-bordered" id="myTable">-->
+<!--                <thead class="table-light">-->
+<!--                <tr>-->
+<!--                    <th>Id партии</th>-->
+<!--                    <th>Номер партии</th>-->
+<!--                    <th>Дата статуса</th>-->
+<!--                    <th>Статус</th>-->
+<!--                    <th>Исполнитель</th>-->
+<!--                    <th>Статус партии</th>-->
+<!--                    <th>Операция просмотра</th>-->
+<!--                    <th>Операция сравнения</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <div th:each="pl1 : ${partylots}">-->
+<!--                    <div th:each="hist:${history}" th:switch="${hist.idHistory}" th:case="${pl1.historyIdHistory}">-->
+<!--                        <tr>-->
+<!--                            <td th:text="${pl1.idPartylots}"></td>-->
+<!--                            <td th:text="${pl1.lotNumber}"></td>-->
+<!--                            <td th:text="${hist.dateOfStatus}"></td>-->
+<!--                            <td th:text="${hist.status}"></td>-->
+<!--                            <td th:text="${hist.executor}"></td>-->
+<!--                            <td th:if="${pl1.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>-->
+<!--                            <td th:if="${pl1.partyStatus == 1}" style="color: red">Партия не закрыта</td>-->
+<!--                            <td th:if="${pl1.partyStatus == 0}" style="color: red">Партия не закрыта</td>-->
+<!--                            <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Посмотреть партию</a></td>-->
+<!--                            <td th:if="${pl1.partyStatus == 2}">Партия закрыта</td>-->
+<!--                        </tr>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 </body>

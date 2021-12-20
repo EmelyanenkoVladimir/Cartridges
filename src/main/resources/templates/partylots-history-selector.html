@@ -63,5 +63,19 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable( {
+            paging: false,
+            info: false,
+            "language": {
+                "search": "Поиск:",
+                "zeroRecords":"Ничего не найдено"
+            }
+        } );
+    })
+</script>
+
 </body>
 </html>

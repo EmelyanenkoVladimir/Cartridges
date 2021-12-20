@@ -102,7 +102,7 @@
                     <td headers="8" th:text="${cartridge.city}"></td>
                     <td headers="9" th:text="${cartridge.executor}"></td>
                     <td headers="10" th:text="${cartridge.comments}"></td>
-                    <td headers="11" th:text="${cartridge.count}">
+                    <td headers="11" th:text="${cartridge.count}"></td>
                     <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}" class="btn btn-info">Подробнее</a></td>
                     <td><a th:href="@{cartridge-update/{id}(id=${cartridge.id})}" class="btn btn-dark">Исправить</a></td>
                     <td>
@@ -111,10 +111,10 @@
                         </a>
                     </td>
                 </tr>
-                        </div>
+            </div>
             </tbody>
         </table>
-    </div>
+</div>
 </div>
 </div>
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

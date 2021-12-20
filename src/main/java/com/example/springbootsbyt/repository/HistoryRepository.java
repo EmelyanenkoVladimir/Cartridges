@@ -15,6 +15,6 @@ import java.util.List;
 @Repository
 public interface HistoryRepository extends JpaRepository<History, Long> {
 
-    @Query(value="select * from history as h left join cartridges as c on h.cartridges_id = c.id where h.date_of_status like :Date order by c.inventory_number",nativeQuery=true)
+    @Query(value="select * from history as h left join cartridges as c on h.cartridges_id = c.id where h.date_of_status like :Date",nativeQuery=true)
     List<History> findByDateOfStatus(@Param("Date") Date Date);
 }

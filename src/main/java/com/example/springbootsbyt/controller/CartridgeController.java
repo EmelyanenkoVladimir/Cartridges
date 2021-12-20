@@ -153,7 +153,7 @@ public class CartridgeController {
     @GetMapping("/cartridge-moreInfo/{id}")
     public String moreInfoForm(@PathVariable("id") long id, Model model) {
         Cartridges cartridges = cartridgeServiceImpl.findById(id);
-        List<Partylots> partylots = partyLotsServiceImpl.findByCartridgesIdWherePartyStatus2(id);
+        List<Partylots> partylots = partyLotsServiceImpl.findByCartridgesId(id);
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
         List<History> history = historyServiceImpl.findAll();
         List<Printers> printers = printersServiceImpl.findAll();
