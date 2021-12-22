@@ -123,7 +123,8 @@
                     </thead>
                     <tbody>
                     <tr th:each="pl : ${partylotsOne}">
-                        <td style="color:limegreen;">Картридж принят</td>
+                        <td th:if="${pl.partyStatus == 4}"style="color:limegreen;">Картридж утилизрован</td>
+                        <td th:if="${pl.partyStatus == 1}"style="color:limegreen;">Картридж принят</td>
                         <td th:text="${pl.idPartylots}"></td>
                         <td th:text="${pl.lotNumber}"></td>
                         <td th:text="${pl.cartridgesId}"></td>
@@ -220,6 +221,10 @@
                     style="color: limegreen">Картридж пришёл</td>
                 <td th:if="${pl.partyStatus == 2}"
                     style="color: limegreen">Картридж пришёл</td>
+                <td th:if="${pl.partyStatus == 3}"
+                    style="color: magenta">Картридж на списании</td>
+                <td th:if="${pl.partyStatus == 4}"
+                    style="color: blue">Картридж утилизирован</td>
                 <td th:text="${pl.idPartylots}"></td>
                 <td th:text="${pl.lotNumber}"></td>
                 <td th:text="${pl.cartridgesId}"></td>
@@ -244,9 +249,17 @@
                            data-bs-toggle="modal" data-bs-target="#CheckOneStatus" id="CheckButton">
                         Принять картридж
                     </a></td>
-                    <td th:if="${pl.partyStatus != 0}"><a type="button" class="btn btn-danger" th:href="@{/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
-                                                          data-bs-toggle="modal" data-bs-target="#CheckOneStatusUpdate" id="CheckButtonUpdate">
+                    <td th:if="${pl.partyStatus == 3}"><a type="button" class="btn btn-info" th:href="@{/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                                                          data-bs-toggle="modal" data-bs-target="#CheckOneStatus" id="CheckButton">
+                        Отправить в утиль
+                    </a></td>
+                    <td th:if="${pl.partyStatus != 0 and pl.partyStatus != 3 and pl.partyStatus != 4}"><a type="button" class="btn btn-danger" th:href="@{/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                                                                                                          data-bs-toggle="modal" data-bs-target="#CheckOneStatusUpdate" id="CheckButtonUpdate">
                         Отменить принятие
+                    </a></td>
+                    <td th:if="${pl.partyStatus == 4}"><a type="button" class="btn btn-danger" th:href="@{/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                                                          data-bs-toggle="modal" data-bs-target="#CheckOneStatusUpdate" id="CheckButtonUpdate">
+                        Отменить утилизацию
                     </a></td>
                     <td><a th:href="@{/addCommentsCompare/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}(idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber},idPartylots=${pl.idPartylots})}" class="btn btn-dark">
                         Добавить комментарий

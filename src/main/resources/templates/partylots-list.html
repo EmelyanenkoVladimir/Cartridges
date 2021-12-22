@@ -72,12 +72,16 @@
         </thead>
         <tbody>
         <tr th:each="pl : ${partylots1}" >
-                <td th:if="${pl.partyStatus == 0}"
-                    style="color: red">Картридж не пришёл</td>
-                <td th:if="${pl.partyStatus == 1}"
-                    style="color: limegreen">Картридж пришёл</td>
-                <td th:if="${pl.partyStatus == 2}"
-                    style="color: limegreen">Картридж пришёл</td>
+            <td th:if="${pl.partyStatus == 0}"
+                style="color: red">Картридж не пришёл</td>
+            <td th:if="${pl.partyStatus == 1}"
+                style="color: limegreen">Картридж пришёл</td>
+            <td th:if="${pl.partyStatus == 2}"
+                style="color: limegreen">Картридж пришёл</td>
+            <td th:if="${pl.partyStatus == 3}"
+                style="color: magenta">Картридж на списании</td>
+            <td th:if="${pl.partyStatus == 4}"
+                style="color: blue">Картридж утилизирован</td>
             <div th:if="${pl.historyIdHistoryReturn != null}">
                 <div th:each="hist:${history}" th:switch="${pl.historyIdHistoryReturn}" th:case="${hist.idHistory}">
                     <td th:text="${hist.dateOfStatus}"></td>

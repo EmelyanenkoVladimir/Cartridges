@@ -126,6 +126,14 @@ public class PartyLotsController {
             return "redirect:/CreatePartyLots/{idHistory}/{lotNumber}";
         }
 
+        Partylots partylots3or4 = partyLotsServiceImpl.findOneWherePartyStatus3Or4(NewPartylots.getCartridgesId());
+        if(partylots3or4 != null){
+            model.addAttribute("history", history);
+            NewCartridge.setInventoryNumber(null);
+            bindingResult.rejectValue("inventoryNumber", "error.inventoryNumber", "Такой картридж находится на списании или уже утилизирован");
+            return "createpartylots";
+        }
+
         partyLotsServiceImpl.savePartylots(NewPartylots);
         return "redirect:/CreatePartyLots/{idHistory}/{lotNumber}";
     }
@@ -246,6 +254,13 @@ public class PartyLotsController {
             partyLotsServiceImpl.savePartylots(NewPartylots);
             return "redirect:/CreatePartyLots/{idHistory}/{lotNumber}";
         }
+        Partylots partylots3or4 = partyLotsServiceImpl.findOneWherePartyStatus3Or4(NewPartylots.getCartridgesId());
+        if (partylots3or4 != null){
+            model.addAttribute("history", history);
+            NewCartridge.setInventoryNumber(null);
+            bindingResult.rejectValue("inventoryNumber", "error.inventoryNumber", "Такой картридж находится на списании или уже утилизирован");
+            return "createpartylots";
+        }
 
         partyLotsServiceImpl.savePartylots(NewPartylots);
         return "redirect:/CreatePartyLots/{idHistory}/{lotNumber}";
@@ -311,6 +326,16 @@ public class PartyLotsController {
         model.addAttribute("manufacturers",manufacturers);
         model.addAttribute("partylots1",partylots1);
         return "partylots-list";
+    }
+
+    @GetMapping("/DisposePartyLots/{idHistory}/{lotNumber}")
+    public String disposePartyLots(@PathVariable("idHistory") long idHistory,@PathVariable("lotNumber") String lotNumber){
+        History history = new History();
+        history.setDateOfStatus(Date.valueOf(LocalDate.now()));
+        history.setStatus("Утилизация");
+        history.setExecutor("Пользователь");
+        historyServiceImpl.saveHistory(history);
+        return "redirect:/ComparisonPartyLots/{idHistory}/" + history.getIdHistory() + "/{lotNumber}";
     }
 
     @GetMapping("/lots-look-history")
@@ -519,6 +544,9 @@ public class PartyLotsController {
             if (partylots2.getPartyStatus()==1){
                 partylots2.setPartyStatus((long) 2);
             }else {
+                if(partylots2.getPartyStatus() == 3 || partylots2.getPartyStatus() == 4){
+                    return "redirect:/main";
+                }
                 List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
                 List<Cartrs> cartrs = cartrsServiceImpl.findAll();
                 History history = historyServiceImpl.findById(idHistory);
@@ -545,6 +573,12 @@ public class PartyLotsController {
     public String checkOnePartyLots(@PathVariable("idPartylots") long idPartylots,@PathVariable ("idHistory") long idHistory,@PathVariable("idHistoryReturn") long idHistoryReturn,
                                     @PathVariable ("lotNumber") String lotNumber){
         Partylots partylots = partyLotsServiceImpl.findById(idPartylots);
+        if (partylots.getPartyStatus() == 3){
+            partylots.setPartyStatus((long) 4);
+            partylots.setHistoryIdHistoryReturn(idHistoryReturn);
+            partyLotsServiceImpl.savePartylots(partylots);
+            return "redirect:/ComparisonPartyLots/{idHistory}/{idHistoryReturn}/{lotNumber}";
+        }
         partylots.setPartyStatus((long) 1);
         partylots.setHistoryIdHistoryReturn(idHistoryReturn);
         partyLotsServiceImpl.savePartylots(partylots);
@@ -555,6 +589,12 @@ public class PartyLotsController {
     public String checkOnePartyLotsReturn(@PathVariable("idPartylots") long idPartylots,@PathVariable ("idHistory") long idHistory,
                                           @PathVariable("idHistoryReturn") long idHistoryReturn, @PathVariable ("lotNumber") String lotNumber){
         Partylots partylots = partyLotsServiceImpl.findById(idPartylots);
+        if (partylots.getPartyStatus() == 4){
+            partylots.setPartyStatus((long) 3);
+            partylots.setHistoryIdHistoryReturn(null);
+            partyLotsServiceImpl.savePartylots(partylots);
+            return "redirect:/ComparisonPartyLots/{idHistory}/{idHistoryReturn}/{lotNumber}";
+        }
         partylots.setPartyStatus((long) 0);
         partylots.setHistoryIdHistoryReturn(null);
         partyLotsServiceImpl.savePartylots(partylots);

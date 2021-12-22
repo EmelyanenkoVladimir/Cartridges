@@ -46,48 +46,34 @@
 </nav>
 <div class="mx-auto" style="width: 200px;">
     <h2>Создание номера партии</h2>
-    <button type="button" class="btn btn-primary" href="/lots" data-bs-toggle="modal" data-bs-target="#NumberLotsHistory">
-        Создать номер партии
-    </button>
+
 </div>
-    <div class="modal fade" id="NumberLotsHistory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <form action="#" th:action="@{/lotsNumber/{idHistory}(idHistory=${idHistory})}" th:object="${partylots}" method="post" id="addNumberLots" onclick="submitLimit()">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Создание статуса для партии</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container ms-auto mt-5 fw-bold" >
-                                <div class="row mb-3">
-                                    <div th:each="hist:${history}" th:switch="${idHistory}" th:case="${hist.idHistory}">
-                                        <label for="historyIdHistory" class="col-sm-2 col-form-label">Статус</label>
-                                        <div class="col-sm-7">
-                                                <input readonly type="hidden" class="form-control w-50" name="historyIdHistory"
-                                                       th:text="${hist.dateOfStatus} + ' || ' + ${hist.status} + ' || ' + ${hist.executor}"
-                                                       th:value="${idHistory}"
-                                                        id="historyIdHistory">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="lotNumber" class="col-sm-2 col-form-label">Номер партии</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control w-50" th:field="*{lotNumber}" id="lotNumber" name="lotNumber">
-                                        <div style="color:red" th:if="${#fields.hasErrors('lotNumber')}" th:errors="*{lotNumber}">Name Error</div>
-                                    </div>
-                                </div>
+                <div class="container ms-auto mt-5 fw-bold" >
+                    <h5 class="modal-title" id="staticBackdropLabel">Создание статуса для партии</h5>
+                    <div class="row mb-3">
+                        <div th:each="hist:${history}" th:switch="${idHistory}" th:case="${hist.idHistory}">
+                            <label for="historyIdHistory" class="col-sm-2 col-form-label">Статус</label>
+                            <div class="col-sm-7">
+                                    <input readonly type="hidden" class="form-control w-50" name="historyIdHistory"
+                                           th:text="${hist.dateOfStatus} + ' || ' + ${hist.status} + ' || ' + ${hist.executor}"
+                                           th:value="${idHistory}"
+                                            id="historyIdHistory">
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
-                            <input  type="submit" id="addNumberLots1" value="Сохранить номер для партии" class="btn btn-primary">
+                    </div>
+                    <div class="row mb-3">
+                        <label for="lotNumber" class="col-sm-2 col-form-label">Номер партии</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control w-50" th:field="*{lotNumber}" id="lotNumber" name="lotNumber">
+                            <div style="color:red" th:if="${#fields.hasErrors('lotNumber')}" th:errors="*{lotNumber}">Name Error</div>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                    <input  type="submit" id="addNumberLots1" value="Сохранить номер для партии" class="btn btn-primary">
                 </div>
-        </form>
-    </div>
+            </form>
+
 <script>
     function submitLimit() {
         let btn = document.getElementById('addNumberLots1')

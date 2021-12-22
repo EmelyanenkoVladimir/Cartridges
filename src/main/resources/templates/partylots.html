@@ -45,54 +45,39 @@
 </nav>
 <div class="mx-auto" style="width: 200px;">
     <h2>Создание статуса для партии</h2>
-    <button type="button" class="btn btn-primary" href="/lots" data-bs-toggle="modal" data-bs-target="#LotsHistory">
-        Создать статус
-    </button>
 </div>
-<div class="modal fade" id="LotsHistory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <form action="#" th:action="@{/history-create1}" th:object="${history}" method="post" id="addLots" onclick="submitLimit()">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Создание статуса для партии</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container ms-auto mt-5 fw-bold" >
-                        <input readonly type="hidden" th:field="*{idHistory}">
-                        <div class="row mb-3">
-                            <label for="dateOfStatus" class="col-sm-2 col-form-label">Дата статуса</label>
-                            <div class="col-sm-7">
-                                <input type="date" class="form-control w-50"  th:field="*{dateOfStatus}"
-                                       id="dateOfStatus" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="status" class="col-sm-2 col-form-label">Статус</label>
-                            <div class="col-sm-7">
-                                <select class="form-select w-50" th:field="*{status}" id="status" required>
-                                    <option value="в заправке">в заправке</option>
-                                    <option value="в работе">в работе</option>
-                                    <option value="на списание">на списание</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="executor" class="col-sm-2 col-form-label">Исполнитель</label>
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control w-50" id="executor" name="executor">
-                            </div>
-                        </div>
+        <div class="container ms-auto mt-5 fw-bold" >
+            <h5 class="modal-title" id="staticBackdropLabel">Создание статуса для партии</h5>
+                <br>
+                <input readonly type="hidden" th:field="*{idHistory}">
+                <div class="row mb-3">
+                    <label for="dateOfStatus" class="col-sm-2 col-form-label">Дата статуса</label>
+                    <div class="col-sm-7">
+                        <input type="date" class="form-control w-50"  th:field="*{dateOfStatus}"
+                               id="dateOfStatus" required>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
-                    <input  type="submit" id="addLots1" value="Сохранить статус для партии" class="btn btn-primary">
+                <div class="row mb-3">
+                    <label for="status" class="col-sm-2 col-form-label">Статус</label>
+                    <div class="col-sm-7">
+                        <select class="form-select w-50" th:field="*{status}" id="status" required>
+                            <option value="в заправке">в заправке</option>
+                            <option value="в работе">в работе</option>
+                            <option value="на списание">на списание</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+                <div class="row mb-3">
+                    <label for="executor" class="col-sm-2 col-form-label">Исполнитель</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control w-50" id="executor" name="executor">
+                    </div>
+                </div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+            <input  type="submit" id="addLots1" value="Сохранить статус для партии" class="btn btn-primary">
         </div>
     </form>
-</div>
 <script>
     function submitLimit() {
         let btn = document.getElementById('addLots1')
