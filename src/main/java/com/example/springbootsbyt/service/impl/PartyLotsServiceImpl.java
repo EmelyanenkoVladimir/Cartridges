@@ -78,12 +78,17 @@ public class PartyLotsServiceImpl implements PartyLotsService {
         return partyLotsRepository.findByCartridgesId(keyword);
     }
 
-    public Partylots findOneWherePartyStatus3Or4(long keyword) {
-        return partyLotsRepository.findOneWherePartyStatus3Or4(keyword);
+    public List<Partylots> findOneWherePartyStatus3Or4Or5(long keyword) {
+        return partyLotsRepository.findOneWherePartyStatus3Or4Or5(keyword);
     }
 
     public List<Partylots> findPartyLotsForDispose(String keyword) {
         return partyLotsRepository.findPartyLotsForDispose(keyword);
     }
+
+    public Partylots findByCartridgesIdWherePartyStatus3Or4Or5(long keyword) {
+        return partyLotsRepository.findByCartridgesIdWherePartyStatus3Or4Or5(keyword);
+    }
+
 
 }

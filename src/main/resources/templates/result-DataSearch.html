@@ -71,10 +71,14 @@
                         <td th:if="${pl1.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>
                         <td th:if="${pl1.partyStatus == 1}" style="color: red">Партия не закрыта</td>
                         <td th:if="${pl1.partyStatus == 0}" style="color: red">Партия не закрыта</td>
-                        <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Посмотреть партию</a></td>
+                        <td th:if="${pl1.partyStatus == 3}" style="color: magenta">Партия на списании</td>
+                        <td th:if="${pl1.partyStatus == 4}" style="color: magenta">Партия на списании</td>
+                        <td th:if="${pl1.partyStatus == 5}" style="color: blue">Партия утилизирована</td>
+                        <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-primary">Посмотреть партию</a></td>
+                        <td th:if="${pl1.partyStatus == 0 or pl1.partyStatus == 1}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Принять партию</a></td>
                         <td th:if="${pl1.partyStatus == 2}">Партия закрыта</td>
-                        <td th:if="${pl1.partyStatus == 1}" style="color: red">Партия не закрыта</td>
-                        <td th:if="${pl1.partyStatus == 0}" style="color: red">Партия не закрыта</td>
+                        <td th:if="${pl1.partyStatus == 3 or pl1.partyStatus == 4}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(idHistory=${pl1.historyIdHistory},lotNumber=${pl1.lotNumber})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Отправить в утиль</a></td>
+                        <td th:if="${pl1.partyStatus == 5}">Партия утилизирована</td>
                     </tr>
                 </div>
             </div>
@@ -113,8 +117,14 @@
                         <td th:if="${pl1.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>
                         <td th:if="${pl1.partyStatus == 1}" style="color: red">Партия не закрыта</td>
                         <td th:if="${pl1.partyStatus == 0}" style="color: red">Партия не закрыта</td>
-                        <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Посмотреть партию</a></td>
+                        <td th:if="${pl1.partyStatus == 3}" style="color: magenta">Партия на списании</td>
+                        <td th:if="${pl1.partyStatus == 4}" style="color: magenta">Партия на списании</td>
+                        <td th:if="${pl1.partyStatus == 5}" style="color: blue">Партия утилизирована</td>
+                        <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-primary">Посмотреть партию</a></td>
+                        <td th:if="${pl1.partyStatus == 0 or pl1.partyStatus == 1}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Принять партию</a></td>
                         <td th:if="${pl1.partyStatus == 2}">Партия закрыта</td>
+                        <td th:if="${pl1.partyStatus == 3 or pl1.partyStatus == 4}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(idHistory=${pl1.historyIdHistory},lotNumber=${pl1.lotNumber})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Отправить в утиль</a></td>
+                        <td th:if="${pl1.partyStatus == 5}">Партия утилизирована</td>
                     </tr>
                 </div>
             </div>
@@ -138,6 +148,18 @@
     })
 </script>
 
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable( {
+            paging: false,
+            info: false,
+            "language": {
+                "search": "Поиск:",
+                "zeroRecords":"Ничего не найдено"
+            }
+        } );
+    })
+</script>
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 
 

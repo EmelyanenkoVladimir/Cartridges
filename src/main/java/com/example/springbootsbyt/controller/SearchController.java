@@ -55,9 +55,9 @@ public class SearchController {
 //    }
 
     @PostMapping("/Data-Search")
-    public String DataSearch(Date Date, Model model){
+    public String DataSearch(Date dt1, Date dt2, Model model){
         List<Partylots> partylots1 = partyLotsServiceImpl.findDsLotNumber();
-        List<History> histories = historyServiceImpl.findByDateOfStatus(Date);
+        List<History> histories = historyServiceImpl.findByDateOfStatusBetweenDate1AndDate2(dt1, dt2);
         List<Cartridges> cartridges = cartridgeServiceImpl.findAll();
         List<Cartrs> cartrs = cartrsServiceImpl.findAll();
         List<Printers> printers = printersServiceImpl.findAll();

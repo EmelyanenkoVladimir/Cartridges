@@ -130,7 +130,7 @@
                     <div th:each="print:${printers}" th:switch="${cartr.printersIdPrinters}" th:case="${print.idPrinters}">
                         <td th:text="${print.typePrinters}"></td>
                         <div th:each="man:${manufacturers}" th:switch="${print.modelsIdModels}" th:case="${man.idModels}">
-                            <td th:text="${modelFromPrinters}"></td>
+                            <td th:text="${man.modelFromPrinters}"></td>
                         </div>
                     </div>
                 </div>

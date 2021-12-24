@@ -225,6 +225,8 @@
                     style="color: magenta">Картридж на списании</td>
                 <td th:if="${pl.partyStatus == 4}"
                     style="color: blue">Картридж утилизирован</td>
+                <td th:if="${pl.partyStatus == 5}"
+                    style="color: blue">Картридж утилизирован</td>
                 <td th:text="${pl.idPartylots}"></td>
                 <td th:text="${pl.lotNumber}"></td>
                 <td th:text="${pl.cartridgesId}"></td>

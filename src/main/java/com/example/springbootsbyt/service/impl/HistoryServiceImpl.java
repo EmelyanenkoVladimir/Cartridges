@@ -2,6 +2,7 @@ package com.example.springbootsbyt.service.impl;
 
 import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.History;
+import com.example.springbootsbyt.model.Partylots;
 import com.example.springbootsbyt.repository.CartridgeRepository;
 import com.example.springbootsbyt.repository.HistoryRepository;
 import com.example.springbootsbyt.service.HistoryService;
@@ -21,7 +22,9 @@ public class HistoryServiceImpl implements HistoryService {
     private final CartridgeServiceImpl cartridgeServiceImpl;
 
     @Autowired
-    public HistoryServiceImpl(HistoryRepository historyRepository, CartridgeRepository cartridgeRepository, CartridgeServiceImpl cartridgeServiceImpl) {
+    public HistoryServiceImpl(HistoryRepository historyRepository,
+                              CartridgeRepository cartridgeRepository,
+                              CartridgeServiceImpl cartridgeServiceImpl) {
         this.historyRepository = historyRepository;
         this.cartridgeRepository = cartridgeRepository;
         this.cartridgeServiceImpl = cartridgeServiceImpl;
@@ -96,5 +99,9 @@ public class HistoryServiceImpl implements HistoryService {
     }
     public List<History> findByDateOfStatus(@Param("Date") Date Date){
         return historyRepository.findByDateOfStatus(Date);
+    }
+
+    public List<History> findByDateOfStatusBetweenDate1AndDate2(@Param("date1") Date dt1, @Param("date2") Date dt2){
+        return historyRepository.findByDateOfStatusBetweenDate1AndDate2(dt1, dt2);
     }
 }

@@ -82,6 +82,8 @@
                 style="color: magenta">Картридж на списании</td>
             <td th:if="${pl.partyStatus == 4}"
                 style="color: blue">Картридж утилизирован</td>
+            <td th:if="${pl.partyStatus == 5}"
+                style="color: blue">Картридж утилизирован</td>
             <div th:if="${pl.historyIdHistoryReturn != null}">
                 <div th:each="hist:${history}" th:switch="${pl.historyIdHistoryReturn}" th:case="${hist.idHistory}">
                     <td th:text="${hist.dateOfStatus}"></td>
