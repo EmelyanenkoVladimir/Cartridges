@@ -19,4 +19,6 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
     @Query(value="SELECT * FROM history WHERE date_of_status  BETWEEN ? AND ?", nativeQuery =true)
     List<History> findByDateOfStatusBetweenDate1AndDate2(@Param("date1") Date dt1, @Param("date2") Date dt2);
 
+
+
 }

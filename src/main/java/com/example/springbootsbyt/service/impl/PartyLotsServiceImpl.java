@@ -90,5 +90,9 @@ public class PartyLotsServiceImpl implements PartyLotsService {
         return partyLotsRepository.findByCartridgesIdWherePartyStatus3Or4Or5(keyword);
     }
 
+    public List<Partylots> findDsCartridgesId() {
+        return partyLotsRepository.findDsCartridgesId();
+    }
+
 
 }

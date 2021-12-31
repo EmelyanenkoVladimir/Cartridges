@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -28,13 +29,33 @@ public class ManufacturerController {
         this.printersServiceImpl = printersServiceImpl;
     }
 
-    @GetMapping("/create-model")
-    public String createModelsForm(Manufacturers manufacturers) {
-        return "printers-list";
-    }
+//    @GetMapping("/create-model")
+//    public String createModelsForm(@ModelAttribute("NewManufacturers") Manufacturers manufacturers) {
+//        return "printers-list";
+//    }
 
     @PostMapping("/create-model")
-    public String createModel(Manufacturers manufacturers) {
+    public String createModel(@Valid @ModelAttribute("NewManufacturers") Manufacturers manufacturers, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()){
+            List<Printers> printers1 = printersServiceImpl.findAll();
+            List<Manufacturers> manufacturers1 = manufacturerServiceImpl.findAll();
+            model.addAttribute("printers", printers1);
+            model.addAttribute("manufacturers1", manufacturers1);
+            return "printers-list";
+        }
+        Manufacturers NewManufacturers = null;
+        List<Manufacturers> manufacturers1 = manufacturerServiceImpl.findAll();
+        List<Printers> printers1 = printersServiceImpl.findAll();
+        model.addAttribute("printers", printers1);
+        model.addAttribute("manufacturers1", manufacturers1);
+        String str = manufacturers.getModelFromPrinters();
+        for(int i=0; i<manufacturers1.size(); i++){
+            NewManufacturers = manufacturers1.get(i);
+            if(str.equalsIgnoreCase(NewManufacturers.getModelFromPrinters())==true){
+                bindingResult.rejectValue("modelFromPrinters", "error.modelFromPrinters", "Такой производитель уже есть");
+                return "printers-list";
+            }
+        }
         manufacturerServiceImpl.saveModels(manufacturers);
         return "redirect:/printers";
     }

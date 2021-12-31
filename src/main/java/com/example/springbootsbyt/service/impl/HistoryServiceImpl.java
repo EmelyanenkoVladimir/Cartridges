@@ -39,13 +39,13 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     public History saveHistory(History history) {
-        String str3 = history.getStatus();
+//        String str3 = history.getStatus();
         Cartridges cartridge = null;
         List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
         for (int i = 0; i < cartridges1.size(); i++) {
             cartridge = cartridges1.get(i);
             if (cartridge.getId() == history.getCartridgesId()) {
-                if (str3.equalsIgnoreCase("в заправке") == true) {
+                if (history.getStatus().equalsIgnoreCase("в заправке") == true) {
                     Integer count = cartridge.getCount();
                     count++;
                     cartridge.setCount(count);
@@ -57,13 +57,13 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     public void deleteById(Long id,History history) {
-        String str4 = history.getStatus();
+//        String str4 = history.getStatus();
         Cartridges cartridge = null;
         List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
         for (int i = 0; i < cartridges1.size(); i++) {
             cartridge = cartridges1.get(i);
             if (cartridge.getId() == history.getCartridgesId()) {
-                if (str4.equalsIgnoreCase("в заправке") == true) {
+                if (history.getStatus().equalsIgnoreCase("в заправке") == true) {
                     Integer count = cartridge.getCount();
                     count--;
                     cartridge.setCount(count);
@@ -75,13 +75,13 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     public History saveHistoryUpdate(History history1) {
-        String str3 = history1.getStatus();
+//        String str3 = history1.getStatus();
         Cartridges cartridge = null;
         List<Cartridges> cartridges1 = cartridgeServiceImpl.findAll();
         for (int i = 0; i < cartridges1.size(); i++) {
             cartridge = cartridges1.get(i);
             if (cartridge.getId() == history1.getCartridgesId()) {
-                if (str3.equalsIgnoreCase("в заправке") == true) {
+                if (history1.getStatus().equalsIgnoreCase("в заправке") == true) {
                     Integer count = cartridge.getCount();
                     count++;
                     cartridge.setCount(count);
@@ -104,4 +104,5 @@ public class HistoryServiceImpl implements HistoryService {
     public List<History> findByDateOfStatusBetweenDate1AndDate2(@Param("date1") Date dt1, @Param("date2") Date dt2){
         return historyRepository.findByDateOfStatusBetweenDate1AndDate2(dt1, dt2);
     }
+
 }

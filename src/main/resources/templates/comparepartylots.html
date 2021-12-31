@@ -48,6 +48,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cartridges" data-bs-toggle="modal" data-bs-target="#CheckRedirect4">Картриджи</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/search" data-bs-toggle="modal" data-bs-target="#CheckRedirect5">Поиск</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -229,6 +232,19 @@
                     style="color: blue">Картридж утилизирован</td>
                 <td th:text="${pl.idPartylots}"></td>
                 <td th:text="${pl.lotNumber}"></td>
+                <div th:if="${pl.cartridgesId == null}">
+                    <td style="color: red">Был удален</td>
+                    <td>----</td>
+                    <td>----</td>
+                    <td>----</td>
+                    <td>----</td>
+                    <td>----</td>
+                    <td>----</td>
+                    <td>----</td>
+                    <td>----</td>
+                    <td>----</td>
+
+                </div>
                 <td th:text="${pl.cartridgesId}"></td>
                 <div th:each="cartridge :${cartridges}" th:switch="${pl.cartridgesId}" th:case="${cartridge.id}">
                     <td th:text="${cartridge.inventoryNumber}" id="foobar"></td>
@@ -247,15 +263,17 @@
                     <td th:text="${cartridge.count}"></td>
                     <td th:text="${cartridge.resource}"></td>
                     <td style="width: 150px;word-wrap: break-word;max-width: 150px" th:text="${pl.partyComments}"></td>
-                    <td th:if="${pl.partyStatus == 0}"><a type="button" class="btn btn-info" th:href="@{/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                </div>
+                <td th:if="${pl.partyStatus == 0}"><a type="button" class="btn btn-info" th:href="@{/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
                            data-bs-toggle="modal" data-bs-target="#CheckOneStatus" id="CheckButton">
                         Принять картридж
                     </a></td>
-                    <td th:if="${pl.partyStatus == 3}"><a type="button" class="btn btn-info" th:href="@{/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                    <td th:if="${pl.partyStatus == 3 and pl.cartridgesId != null}"><a type="button" class="btn btn-info" th:href="@{/lots-check/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
                                                           data-bs-toggle="modal" data-bs-target="#CheckOneStatus" id="CheckButton">
                         Отправить в утиль
                     </a></td>
-                    <td th:if="${pl.partyStatus != 0 and pl.partyStatus != 3 and pl.partyStatus != 4}"><a type="button" class="btn btn-danger" th:href="@{/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
+                <td th:if="${pl.cartridgesId == null and pl.partyStatus != 0}">-----</td>
+                <td th:if="${pl.partyStatus != 0 and pl.partyStatus != 3 and pl.partyStatus != 4 and pl.cartridgesId != null}"><a type="button" class="btn btn-danger" th:href="@{/lots-check-return/{idPartylots}/{idHistory}/{idHistoryReturn}/{lotNumber}(idPartylots=${pl.idPartylots},idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber})}"
                                                                                                           data-bs-toggle="modal" data-bs-target="#CheckOneStatusUpdate" id="CheckButtonUpdate">
                         Отменить принятие
                     </a></td>
@@ -263,10 +281,11 @@
                                                           data-bs-toggle="modal" data-bs-target="#CheckOneStatusUpdate" id="CheckButtonUpdate">
                         Отменить утилизацию
                     </a></td>
-                    <td><a th:href="@{/addCommentsCompare/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}(idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber},idPartylots=${pl.idPartylots})}" class="btn btn-dark">
+                <td th:if="${pl.cartridgesId == null}">-----</td>
+                <td th:if="${pl.cartridgesId != null}"><a th:href="@{/addCommentsCompare/{idHistory}/{idHistoryReturn}/{lotNumber}/{idPartylots}(idHistory=${idHistory},idHistoryReturn=${idHistoryReturn},lotNumber=${pl.lotNumber},idPartylots=${pl.idPartylots})}" class="btn btn-dark">
                         Добавить комментарий
                     </a></td>
-                </div>
+
                 </div>
             </tr>
             </tbody>
@@ -382,6 +401,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="CheckRedirect5" tabindex="-1" aria-labelledby="CheckRedirectModalLabel4" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CheckRedirectModalLabel5">Подтверждение перехода</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что закрыли партию???
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="/search" class="btn btn-primary">Да, перейти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--checkbox-->
 <script>
     let but = document.getElementById("but");
     document.getElementById("chck").onclick = function() {
@@ -391,6 +429,7 @@
     };
 </script>
 
+<!--checkbox-->
 <script>
     let but1 = document.getElementById("but1");
     document.getElementById("chck1").onclick = function() {
@@ -412,6 +451,7 @@
         }, 300);}
 </script>
 
+<!--на операцию принятия-->
 <script>
     $('.table #CheckButton').on('click',function(event) {
         event.preventDefault();
@@ -421,6 +461,7 @@
     });
 </script>
 
+<!--на оперцию отмены принятия-->
 <script>
     $('.table #CheckButtonUpdate').on('click',function(event) {
         event.preventDefault();

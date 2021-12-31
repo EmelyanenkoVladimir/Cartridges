@@ -68,4 +68,21 @@ public class SearchController {
         model.addAttribute("partylots1", partylots1);
         return "result-DataSearch";
     }
+
+    @PostMapping("/Data-Search-Dispose")
+    public String DataSearchDispose(Date dt1, Date dt2, Model model){
+        List<Cartridges> cartridges = cartridgeServiceImpl.findAllByPartyStatus(dt1, dt2);
+        List<Cartrs> cartrs = cartrsServiceImpl.findAll();
+//        List<History> history = historyServiceImpl.findByDateOfStatusForPartylotsBetweenDate1AndDate2(dt1, dt2);
+        List<Printers> printers = printersServiceImpl.findAll();
+        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+        List<Partylots> partylots = partyLotsServiceImpl.findAll();
+        model.addAttribute("cartridges", cartridges);
+        model.addAttribute("cartrs", cartrs);
+//        model.addAttribute("history", history);
+        model.addAttribute("printers", printers);
+        model.addAttribute("manufacturers",manufacturers);
+        model.addAttribute("partylots", partylots);
+        return "cartridge-list";
+    }
 }

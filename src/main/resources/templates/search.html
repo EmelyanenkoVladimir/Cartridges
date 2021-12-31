@@ -57,11 +57,28 @@
         </a>
         <div class="collapse w-25 mt-2" id="collapseExample">
             <div class="card card-body">
-        <label Поиск по дате></label>
-        <input type="date" name="dt1" required>
+                <label Поиск по дате></label>
+                <input type="date" name="dt1" class="form-control" required>
+                        <br>
+                <input type="date" name="dt2" class="form-control"required>
+                <input class="btn btn-primary mt-3" type="submit" value="Найти по дате">
+            </div>
+        </div>
+    </form>
+
+    <br>
+
+    <form action="#" th:action="@{/Data-Search-Dispose}" th:object="${history}" method="post" onclick="submitLimit()">
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Поиск списанных картриджей
+        </a>
+        <div class="collapse w-25 mt-2" id="collapseExample1">
+            <div class="card card-body">
+                <label Поиск списанных картриджей></label>
+                <input type="date" name="dt1" class="form-control" required>
                 <br>
-        <input type="date" name="dt2" required>
-        <input class="btn btn-primary mt-3" type="submit" value="Найти по дате">
+                <input type="date" name="dt2" class="form-control"required>
+                <input class="btn btn-primary mt-3" type="submit" value="Найти ">
             </div>
         </div>
     </form>

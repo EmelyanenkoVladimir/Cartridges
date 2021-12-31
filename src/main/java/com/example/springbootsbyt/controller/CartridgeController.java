@@ -44,11 +44,13 @@ public class CartridgeController {
         List<History> history = historyServiceImpl.findAll();
         List<Printers> printers = printersServiceImpl.findAll();
         List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
+        List<Partylots> partylots = partyLotsServiceImpl.findDsCartridgesId();
         model.addAttribute("cartridges", cartridges);
         model.addAttribute("cartrs", cartrs);
         model.addAttribute("history", history);
         model.addAttribute("printers", printers);
         model.addAttribute("manufacturers",manufacturers);
+        model.addAttribute("partylots", partylots);
         return "cartridge-list";
     }
 

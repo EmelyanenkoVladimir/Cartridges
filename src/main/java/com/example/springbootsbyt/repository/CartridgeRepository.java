@@ -1,15 +1,12 @@
 package com.example.springbootsbyt.repository;
 
-//import com.example.springbootsbyt.entity.Cartridges;
 import com.example.springbootsbyt.model.Cartridges;
-import com.example.springbootsbyt.model.History;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.List;
 
 @Repository
@@ -24,5 +21,8 @@ public interface CartridgeRepository extends JpaRepository<Cartridges, Long> {
     List<Cartridges> findAllByInventoryNumber(String barcode);
 
     Cartridges findByInventoryNumber(String inv);
+
+    @Query(value = "select * from cartridges as c left join partylots as p on c.id = p.cartridges_id left join history as h on h.id_history = p.history_id_history where p.party_status = 3 and h.date_of_status between ? and ?", nativeQuery = true)
+    List<Cartridges> findAllByPartyStatus(@Param("date1") Date dt1,@Param("date2") Date dt2);
 
 }

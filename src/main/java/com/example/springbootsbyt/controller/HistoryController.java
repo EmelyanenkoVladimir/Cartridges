@@ -38,26 +38,26 @@ public class HistoryController {
 
     @PostMapping("/history-create/{id}")
     public String createHistory(@PathVariable("id") Integer id,History history) {
-        String str1 = Integer.toString(id);
+//        String str1 = Integer.toString(id);
         historyServiceImpl.saveHistory(history);
-        return "redirect:/cartridge-moreInfo/" + str1;
+        return "redirect:/cartridge-moreInfo/" + id;
     }
 
     @PostMapping("/history-create1")
     public String createHistory1(History history) {
         historyServiceImpl.saveHistory(history);
-        String str = Long.toString(history.getIdHistory());
-        return "redirect:/lotsHistory/" + str;
+//        String str = Long.toString(history.getIdHistory());
+        return "redirect:/lotsHistory/" + history.getIdHistory();
     }
 
-    @PostMapping("/history-create2/{idHistory}/{lotNumber}")
-    public String createHistory2(@PathVariable("idHistory") long idHistory, @PathVariable("lotNumber") String lotNumber, History historyReturn) {
-        historyServiceImpl.saveHistory(historyReturn);
-        String str = Long.toString(idHistory);
-        String str1 = Long.toString(historyReturn.getIdHistory());
-        String str2 = lotNumber;
-        return "redirect:/ComparisonPartyLots/" + str + '/' + str1 + '/' + str2;
-    }
+//    @PostMapping("/history-create2/{idHistory}/{lotNumber}")
+//    public String createHistory2(@PathVariable("idHistory") long idHistory, @PathVariable("lotNumber") String lotNumber, History historyReturn) {
+//        historyServiceImpl.saveHistory(historyReturn);
+////        String str = Long.toString(idHistory);
+////        String str1 = Long.toString(historyReturn.getIdHistory());
+////        String str2 = lotNumber;
+//        return "redirect:/ComparisonPartyLots/" + idHistory + '/' + historyReturn.getIdHistory() + '/' + lotNumber;
+//    }
 
     @GetMapping("/cartridge-moreInfo/history-update/{idHistory}/{id}")
     public String updateHistoryForm(@PathVariable("idHistory") long idHistory,@PathVariable("id") Integer id, Model model){
@@ -71,16 +71,16 @@ public class HistoryController {
     @PostMapping("/history-update/{id}")
     public String updateHistory(@PathVariable("id") Integer id, History history1){
         historyServiceImpl.saveHistoryUpdate(history1);
-        String str = Integer.toString(id);
-        return"redirect:/cartridge-moreInfo/" + str;
+//        String str = Integer.toString(id);
+        return"redirect:/cartridge-moreInfo/" + id;
     }
 
     @GetMapping("/cartridge-moreInfo/history-delete/{idHistory}/{id}")
     public String deleteHistory(@PathVariable("idHistory") long idHistory, @PathVariable("id") Integer id){
         History history = historyServiceImpl.findById(idHistory);
         historyServiceImpl.deleteById(idHistory,history);
-        String str2 = Long.toString(id);
-        return "redirect:/cartridge-moreInfo/" + str2;
+//        String str2 = Long.toString(id);
+        return "redirect:/cartridge-moreInfo/" + id;
     }
 
 }

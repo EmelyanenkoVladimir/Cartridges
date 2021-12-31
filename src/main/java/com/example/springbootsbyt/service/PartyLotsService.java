@@ -41,5 +41,8 @@ public interface PartyLotsService {
     public List<Partylots> findPartyLotsForDispose(String keyword);
 
     public Partylots findByCartridgesIdWherePartyStatus3Or4Or5(long keyword);
+
+    public List<Partylots> findDsCartridgesId();
+
 }
 

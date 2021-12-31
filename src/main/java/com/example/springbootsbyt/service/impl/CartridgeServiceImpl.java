@@ -50,4 +50,8 @@ public class CartridgeServiceImpl implements CartridgeService {
     public Cartridges findByInventoryNumber(String inv){
         return cartridgeRepository.findByInventoryNumber(inv);
     }
+
+    public List<Cartridges> findAllByPartyStatus(@Param("date1") Date dt1, @Param("date2") Date dt2) {
+        return cartridgeRepository.findAllByPartyStatus(dt1, dt2);
+    }
 }

@@ -12,6 +12,7 @@ public class Manufacturers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idModels;
 
+    @NotBlank(message = "Поле не может быть пустым")
     @Column(name = "model_from_printers")
     private String modelFromPrinters;
 

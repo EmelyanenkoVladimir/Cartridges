@@ -25,5 +25,7 @@ public interface CartridgeService  {
     public List<Cartridges> findAllByInventoryNumber(String barcode);
 
     public Cartridges findByInventoryNumber(String inv);
+
+    public List<Cartridges> findAllByPartyStatus(@Param("date1") Date dt1, @Param("date2") Date dt2);
 }
 

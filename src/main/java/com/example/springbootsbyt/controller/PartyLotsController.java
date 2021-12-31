@@ -54,7 +54,7 @@ public class PartyLotsController {
             model.addAttribute("history",history);
             return "partylotshistory";
         }
-        String str = NewPartylots.getLotNumber();
+//        String str = NewPartylots.getLotNumber();
         List<Partylots> partylots = partyLotsServiceImpl.findAllByLotNumber(NewPartylots.getLotNumber());
         Partylots partylots1 = null;
         for (int i = 0; i < partylots.size(); i++) {
@@ -67,7 +67,7 @@ public class PartyLotsController {
                 return "partylotshistory";
             }
         }
-        return "redirect:/CreatePartyLots/{idHistory}/" + str;
+        return "redirect:/CreatePartyLots/{idHistory}/" + NewPartylots.getLotNumber();
     }
 
     @GetMapping("/CreatePartyLots/{idHistory}/{lotNumber}")

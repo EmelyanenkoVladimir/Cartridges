@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,32 +26,33 @@ public class PrintersController {
     }
 
     @GetMapping("/printers")
-    public String findAllPrinters(Model model){
-        List<Printers> printers = printersServiceImpl.findAll();
-        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-        model.addAttribute("printers", printers);
-        model.addAttribute("manufacturers", manufacturers);
+    public String findAllPrinters(@ModelAttribute("NewManufacturers") Manufacturers manufacturers,@ModelAttribute("NewPrinters") Printers printers, Model model){
+            List<Printers> printers1 = printersServiceImpl.findAll();
+            List<Manufacturers> manufacturers1 = manufacturerServiceImpl.findAll();
+            model.addAttribute("printers", printers1);
+            model.addAttribute("manufacturers1", manufacturers1);
         return "printers-list";
+
     }
 
     @GetMapping("/printers-create")
-    public String createPrintersForm(Printers printers, Model model) {
-        List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-        model.addAttribute("manufacturers",manufacturers);
+    public String createPrintersForm(@ModelAttribute("NewPrinters") Printers printers, Model model) {
+        List<Manufacturers> manufacturers1 = manufacturerServiceImpl.findAll();
+        model.addAttribute("manufacturers1",manufacturers1);
         return "printers-create";
     }
 
     @PostMapping("/printers-create")
-    public String createPrinters(@Valid Printers printers, BindingResult bindingResult,Model model) {
+    public String createPrinters(@Valid @ModelAttribute("NewPrinters") Printers printers, BindingResult bindingResult,Model model) {
         if (bindingResult.hasErrors()){
-            List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-            model.addAttribute("manufacturers",manufacturers);
-            return "printers-create";
+            List<Manufacturers> manufacturers1 = manufacturerServiceImpl.findAll();
+            model.addAttribute("manufacturers1", manufacturers1);
+            return "/printers-create";
         }
             Printers printer = null;
             List<Printers> printers1 = printersServiceImpl.findAll();
             List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-            model.addAttribute("manufacturers",manufacturers);
+            model.addAttribute("manufacturers1",manufacturers);
             String str = printers.getTypePrinters();
             for (int i = 0; i < printers1.size(); i++) {
                 printer = printers1.get(i);

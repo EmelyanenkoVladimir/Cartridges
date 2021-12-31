@@ -45,11 +45,11 @@
         </div>
     </div>
 </nav>
-<form action="#" th:action="@{/printers-create}" th:object="${printers}" method="post" onclick="submitLimit()">
+<form action="#" th:action="@{/printers-create}" th:object="${NewPrinters}" method="post" onclick="submitLimit()">
     <div class="container ms-auto mt-5 fw-bold" >
-        <tr>
-            <td><input readonly type="hidden" th:field="*{idPrinters}"></td>
-        </tr>
+<!--        <tr>-->
+<!--            <td><input readonly type="hidden" th:field="*{idPrinters}"></td>-->
+<!--        </tr>-->
         <div class="row mb-3">
             <label for="typePrinters" class="col-sm-2 col-form-label">Модель принтера*</label>
             <div class="col-sm-7">
@@ -62,7 +62,7 @@
             <label for="modelsIdModels" class="col-sm-2 col-form-label">Выберите производителя</label>
             <div class="col-sm-7">
                 <select class="form-select w-50" th:field="*{modelsIdModels}" id="modelsIdModels" required>
-                    <option th:each="model:${manufacturers}"
+                    <option th:each="model:${manufacturers1}"
                             th:value="${model.idModels}"
                             th:text="${model.modelFromPrinters}">
                     </option>
