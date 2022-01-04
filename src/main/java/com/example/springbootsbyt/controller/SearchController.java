@@ -83,6 +83,7 @@ public class SearchController {
         model.addAttribute("printers", printers);
         model.addAttribute("manufacturers",manufacturers);
         model.addAttribute("partylots", partylots);
+        model.addAttribute("partylots", partylots);
         return "cartridge-list";
     }
 }
