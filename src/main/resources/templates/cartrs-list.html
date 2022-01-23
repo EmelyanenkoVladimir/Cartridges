@@ -7,8 +7,8 @@
     <link href="/webjars/bootstrap/5.1.0/css/bootstrap.css" rel="stylesheet" />
     <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/5.1.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.js"></script>
 
 </head>
 <body>
@@ -47,7 +47,6 @@
         <table class="table table-hover table-bordered" id="myTable">
             <thead class="table-light">
             <tr>
-                <th>Id Модели картриджа</th>
                 <th>Чип</th>
                 <th>Модель картриджа</th>
                 <th>Модель принтера</th>
@@ -57,7 +56,6 @@
             </thead>
             <tbody>
             <tr th:each="cartrs : ${cartrs}">
-                <td th:text="${cartrs.idCartrs}"></td>
                 <td th:text="${cartrs.chip}"></td>
                 <td th:text="${cartrs.typeCartr}"></td>
                 <td th:switch="${cartrs.printersIdPrinters}" th:case="null" th:text="-----"></td>
@@ -65,7 +63,7 @@
                     th:switch="${print.idPrinters}"
                     th:case="${cartrs.printersIdPrinters}"
                     th:text="${print.typePrinters}"></td>
-                <td><a th:href="@{cartrs-update/{idCartrs}(idCartrs=${cartrs.idCartrs})}" class="btn btn-dark">Исправить</a></td>
+                <td><a th:href="@{cartrs-update/{idCartrs}(idCartrs=${cartrs.idCartrs})}" class="btn btn-dark">Изменить</a></td>
                 <td><a th:href="@{cartrs-delete/{idCartrs}(idCartrs=${cartrs.idCartrs})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
                 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

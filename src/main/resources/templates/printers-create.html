@@ -45,7 +45,7 @@
         </div>
     </div>
 </nav>
-<form action="#" th:action="@{/printers-create}" th:object="${NewPrinters}" method="post" onclick="submitLimit()">
+<form action="#" th:action="@{/printers-create}" th:object="${printers}" method="post" onclick="submitLimit()">
     <div class="container ms-auto mt-5 fw-bold" >
 <!--        <tr>-->
 <!--            <td><input readonly type="hidden" th:field="*{idPrinters}"></td>-->
@@ -62,7 +62,7 @@
             <label for="modelsIdModels" class="col-sm-2 col-form-label">Выберите производителя</label>
             <div class="col-sm-7">
                 <select class="form-select w-50" th:field="*{modelsIdModels}" id="modelsIdModels" required>
-                    <option th:each="model:${manufacturers1}"
+                    <option th:each="model:${manufacturers}"
                             th:value="${model.idModels}"
                             th:text="${model.modelFromPrinters}">
                     </option>

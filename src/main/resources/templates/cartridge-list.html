@@ -46,8 +46,6 @@
         <table class="table table-hover table-bordered" id="myTable">
             <thead class="table-light">
             <tr>
-                <th class="text-center">Id</th>
-<!--                <th class="text-center">Статус картриджа</th>-->
                 <th class="text-center">Инвентарный номер</th>
                 <th class="text-center">Модель Картриджа</th>
                 <th class="text-center">Модель принтера</th>
@@ -66,22 +64,6 @@
             <tbody>
             <div th:each="cartridge : ${cartridges}">
                 <tr>
-                    <td th:text="${cartridge.id}"></td>
-<!--                    <div th:each="pl:${partylots}" th:switch="${cartridge.id}" th:case="${pl.cartridgesId}">-->
-<!--&lt;!&ndash;                        <td th:if="${#.isEmpty(pl.partyStatus)}">-&#45;&#45;&#45;&#45;</td>&ndash;&gt;-->
-<!--                        <td th:if="${pl.partyStatus == 0}"-->
-<!--                            style="color: red">в заправке</td>-->
-<!--                        <td th:if="${pl.partyStatus == 1}"-->
-<!--                            style="color: limegreen">в работе</td>-->
-<!--                        <td th:if="${pl.partyStatus == 2}"-->
-<!--                            style="color: limegreen">в работе</td>-->
-<!--                        <td th:if="${pl.partyStatus == 3}"-->
-<!--                            style="color: magenta">на списании</td>-->
-<!--                        <td th:if="${pl.partyStatus == 4}"-->
-<!--                            style="color: blue">утилизирован</td>-->
-<!--                        <td th:if="${pl.partyStatus == 5}"-->
-<!--                            style="color: blue">утилизирован</td>-->
-<!--                    </div>-->
                     <td th:text="${cartridge.inventoryNumber}"></td>
                     <div th:switch="${cartridge.cartrsIdCartrs}" th:case="null">
                         <td th:text="-----"></td>
@@ -120,7 +102,7 @@
                     <td th:text="${cartridge.comments}"></td>
                     <td th:text="${cartridge.count}"></td>
                     <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}" class="btn btn-info">Подробнее</a></td>
-                    <td><a th:href="@{cartridge-update/{id}(id=${cartridge.id})}" class="btn btn-dark">Исправить</a></td>
+                    <td><a th:href="@{cartridge-update/{id}(id=${cartridge.id})}" class="btn btn-dark">Изменить</a></td>
                     <td>
                         <a th:href="@{cartridge-delete/{id}(id=${cartridge.id})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">
                             Удалить

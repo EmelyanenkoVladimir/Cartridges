@@ -37,151 +37,77 @@
     </div>
 </nav>
 <div class="container-fluid">
-<!--            <button type="button" class="btn btn-primary" href="/printers-list" data-bs-toggle="modal" data-bs-target="#Proizvoditeli">-->
-<!--                Прозводители-->
-<!--            </button>-->
-            <form action="#" th:action="@{/create-model}" th:object="${NewManufacturers}" method="post" >
-                <br>
-                    <h5 class="modal-title" id="staticBackdropLabel">Внести производителя</h5>
-                <div class="w-50">
-                    <br>
-<!--                    <input readonly type="hidden" th:field="*{idModels}">-->
-                    <div class="row mb-3">
-                        <label for="modelFromPrinters" class="col-sm-2 col-form-label">Производитель</label>
-                        <div class="col-sm-7">
-                            <input autofocus type="text" class="form-control w-50" th:field="*{modelFromPrinters}" id="modelFromPrinters" name="modelFromPrinters">
-                            <div style="color:red; font-weight: bold;" th:if="${#fields.hasErrors('modelFromPrinters')}" th:errors="*{modelFromPrinters}">Name Error</div>
-                        </div>
-                    </div>
-                    <input  type="submit" id="addLots1" value="Сохранить производителя" class="btn btn-primary">
-                    </div>
-            </form>
-
-    <br>
-    <a class="btn btn-info" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-        Все производители
-    </a>
-    <br>
-    <div class="collapse w-25 mt-2" id="collapseExample">
-        <table class="table w-50 table-hover table-bordered" id="models">
-            <thead class="table-light">
-            <tr>
-                <th>Производитель</th>
-                <!--                <th>Id принтеров</th>-->
-                <th>Операции</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="model : ${manufacturers1}">
-                <td th:text="${model.modelFromPrinters}"></td>
-                <!--                <td th:text="${model.idModels}"></td>-->
-                <td><a th:href="@{models-delete/{idModels}(idModels=${model.idModels})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <br>
-
-    <p><a class="btn btn-primary" href="/printers-create">Создать модель принтера</a></p>
-
-<!--    <form action="#" th:action="@{/printers-create}" th:object="${NewPrinters}" method="post" onclick="submitLimit()">-->
-<!--        <div class="container ms-auto mt-5 fw-bold" >-->
-<!--            <a>Создать модель принтера</a>-->
-<!--            <br>-->
-<!--            &lt;!&ndash;            <tr>&ndash;&gt;-->
-<!--&lt;!&ndash;                <td><input readonly type="hidden" th:field="*{idPrinters}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;            </tr>&ndash;&gt;-->
-<!--            <div class="row mb-3">-->
-<!--                <label for="typePrinters" class="col-sm-2 col-form-label">Модель принтера*</label>-->
-<!--                <div class="col-sm-7">-->
-<!--                    <input type="text" class="form-control w-50"  th:field="*{typePrinters}" id="typePrinters" name="typePrinters">-->
-<!--                    <div style="color:red" th:if="${#fields.hasErrors('typePrinters')}" th:errors="*{typePrinters}">Name Error</div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="row mb-3">-->
-<!--                <label for="modelsIdModels" class="col-sm-2 col-form-label">Выберите производителя</label>-->
-<!--                <div class="col-sm-7">-->
-<!--                    <select class="form-select w-50" th:field="*{modelsIdModels}" id="modelsIdModels" required>-->
-<!--                        <option th:each="model:${manufacturers1}"-->
-<!--                                th:value="${model.idModels}"-->
-<!--                                th:text="${model.modelFromPrinters}">-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <input type="submit" class="btn btn-primary mt-2" value="Создать модель принтера" id="printerCreate">-->
-<!--        </div>-->
-<!--    </form>-->
-
-    <div class="mx-auto" style="width: 200px;">
-            <h2>Принтеры</h2>
+    <div th:switch="${printers}">
+        <h2 th:case="null">Типы принтеров не найдены!</h2>
+        <div th:case="*">
+            <div class="mx-auto" style="width: 200px;">
+                <h2>Принтеры</h2>
+                <p><a class="btn btn-primary btn-sm" href="/printers-create">Создать модель принтера</a></p>
+                <button type="button" class="btn btn-primary" href="/printers-list" data-bs-toggle="modal" data-bs-target="#Proizvoditeli">
+                    Прозводители
+                </button>
+            </div>
+            <table class="table table-hover table-bordered" id="myTable">
+                <thead class="table-light">
+                <tr>
+                    <th>Модель принтера</th>
+                    <th>Производитель</th>
+                    <th>Операция 1</th>
+                    <th>Операция 2</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="print : ${printers}">
+                    <td th:text="${print.typePrinters}"></td>
+                    <td th:switch="${print.modelsIdModels}" th:case="null" th:text="-----"></td>
+                    <td th:each="model:${manufacturers}"
+                        th:switch="${print.modelsIdModels}"
+                        th:case="${model.idModels}"
+                        th:text="${model.modelFromPrinters}"></td>
+                    <td><a th:href="@{printers-update/{id}(id=${print.idPrinters})}" class="btn btn-dark">Изменить</a></td>
+                    <td><a th:href="@{printers-delete/{id}(id=${print.idPrinters})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    <table class="table table-hover table-bordered" id="myTable">
-            <thead class="table-light">
-            <tr>
-<!--                <th>Id принтеров</th>-->
-                <th>Модель принтера</th>
-                <th>Производитель</th>
-                <th>Операция 1</th>
-                <th>Операция 2</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="print : ${printers}">
-<!--                <td th:text="${print.idPrinters}"></td>-->
-                <td th:text="${print.typePrinters}"></td>
-                <td th:switch="${print.modelsIdModels}" th:case="null" th:text="-----"></td>
-                <td th:each="model:${manufacturers1}"
-                    th:switch="${print.modelsIdModels}"
-                    th:case="${model.idModels}"
-                    th:text="${model.modelFromPrinters}"></td>
-                <td><a th:href="@{printers-update/{id}(id=${print.idPrinters})}" class="btn btn-dark">Исправить</a></td>
-                <td><a th:href="@{printers-delete/{id}(id=${print.idPrinters})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
-            </tr>
-            </tbody>
-        </table>
     </div>
 </div>
+<div class="modal fade" id="Proizvoditeli" tabindex="-1" aria-labelledby="ProizvoditeliLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ProizvoditeliLabel">Производители</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-primary" href="/printers-list" data-bs-toggle="modal" data-bs-target="#CreateManufacturers">
+                    Внести производителя
+                </button>
+                <table class="table table-hover table-bordered" id="models">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Производитель</th>
+                        <th>Id принтеров</th>
+                        <th>Операции</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="model : ${manufacturers}">
+                        <td th:text="${model.modelFromPrinters}"></td>
+                        <td th:text="${model.idModels}"></td>
+                        <td><a th:href="@{models-delete/{idModels}(idModels=${model.idModels})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-
-<!--<div class="modal fade" id="Proizvoditeli" tabindex="-1" aria-labelledby="ProizvoditeliLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog modal-xl">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="ProizvoditeliLabel">Производители</h5>-->
-<!--                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <button type="button" class="btn btn-primary" href="/printers-list" data-bs-toggle="modal" data-bs-target="#CreateManufacturers">-->
-<!--                    Внести производителя-->
-<!--                </button>-->
-<!--&lt;!&ndash;                <table class="table table-hover table-bordered" id="models">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <thead class="table-light">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <tr>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <th>Производитель</th>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <th>Id принтеров</th>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <th>Операции</th>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </tr>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </thead>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <tbody>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <tr th:each="model : ${manufacturers}">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <td th:text="${model.modelFromPrinters}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <td th:text="${model.idModels}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <td><a th:href="@{models-delete/{idModels}(idModels=${model.idModels})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </tr>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </tbody>&ndash;&gt;-->
-<!--&lt;!&ndash;                </table>&ndash;&gt;-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -199,30 +125,30 @@
         </div>
     </div>
 </div>
-<!--<div class="modal fade" id="CreateManufacturers" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">-->
-<!--    <form action="#" th:action="@{/create-model}" th:object="${manufacturers}" method="post" id="addmanufacturers" onclick="submitLimit()">-->
-<!--        <div class="modal-dialog">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h5 class="modal-title" id="staticBackdropLabel">Внесение производителя</h5>-->
-<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                </div>-->
-<!--                    <div class="modal-body">-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="modelFromPrinters" class="col-form-label">Производитель</label>-->
-<!--                            <input type="text" class="mb-3" id="modelFromPrinters" name="modelFromPrinters">-->
-<!--                            <br>-->
-<!--                            <small style="color:red;"></small>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>-->
-<!--                    <input  type="submit" id="manufacturers" value="Создать Производителя" class="btn btn-primary">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--</div>-->
+<div class="modal fade" id="CreateManufacturers" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <form action="#" th:action="@{/create-model}" th:object="${manufacturers}" method="post" id="addmanufacturers" onclick="submitLimit()">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Внесение производителя</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="modelFromPrinters" class="col-form-label">Производитель</label>
+                        <input type="text" class="mb-3" id="modelFromPrinters" name="modelFromPrinters">
+                        <br>
+                        <small style="color:red;"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                    <input  type="submit" id="manufacturers" value="Создать Производителя" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 
 

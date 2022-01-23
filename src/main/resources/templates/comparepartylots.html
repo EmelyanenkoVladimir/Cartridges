@@ -6,8 +6,8 @@
     <link href="/webjars/bootstrap/5.1.0/css/bootstrap.css" rel="stylesheet"/>
     <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/5.1.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.js"></script>
     <style>
         .btn-disable{
             user-select:none!important;
@@ -86,15 +86,17 @@
                     <input readonly type="hidden" class="form-control w-50" th:value="${lotNumber}" th:text="${lotNumber}" id="lotNumber" name="lotNumber">
                 </div>
             </div>
-            <div class="row mb-3" th:object="${NewCartridge}">
-                <label for="inventoryNumber1" class="col-sm-2 col-form-label">Картридж</label>
+            <div class="row mb-3" >
+                <label for="inventoryNumber" class="col-sm-2 col-form-label">Картридж</label>
                 <div class="col-sm-7">
-                    <input autofocus type="text" class="form-control w-50" th:field="*{inventoryNumber}" name="inventoryNumber" id="inventoryNumber1">
-                    <div style="color:red" th:if="${#fields.hasErrors('inventoryNumber')}" th:errors="*{inventoryNumber}">Name Error</div>
-                </div>
-                <div class="col-sm-7">
-                    <input readonly hidden type="number" class="form-control w-50" th:field="*{resource}" th:value="*{resource=0}"
-                           id="resource">
+                    <input autofocus type="text" class="form-control w-50" name="inventoryNumber" id="inventoryNumber">
+                    <div th:if="${response == 'Empty'}" style="color: red">Поле не может быть пустым</div>
+                    <div th:if="${response == 'Empty1'}" style="color: red">Такого картриджа не существует</div>
+                    <div th:if="${response == 'Empty2'}" style="color: red">Такой картридж уже принят</div>
+                    <div th:if="${response == 'Empty3'}" style="color: red">Такой картридж принят в другой партии, этим днём</div>
+                    <div th:if="${response == 'Empty4'}" style="color: red">Принятый вами картридж находится в друой партии, но вы его уже приняли, поэтому отложите его и продолжайте принимать эту партию</div>
+                    <div th:if="${response == 'Empty5'}" style="color: red">Партия не может быть закрыта, так как, не все картриджи пришли</div>
+                    <div th:if="${response == 'Empty6'}" style="color: red">Партия не может быть утилизирована, так как не все картриджи отправлены в утиль</div>
                 </div>
             </div>
             <div hidden class="row mb-3">
@@ -110,9 +112,7 @@
                     <thead class="table-light">
                     <tr>
                         <th>Статус картриджа</th>
-                        <th>Id Партии</th>
                         <th>Номер партии</th>
-                        <th>Id Картриджа</th>
                         <th>Инвентарный номер</th>
                         <th>Город</th>
                         <th>Исполнитель</th>
@@ -128,9 +128,7 @@
                     <tr th:each="pl : ${partylotsOne}">
                         <td th:if="${pl.partyStatus == 4}"style="color:limegreen;">Картридж утилизрован</td>
                         <td th:if="${pl.partyStatus == 1}"style="color:limegreen;">Картридж принят</td>
-                        <td th:text="${pl.idPartylots}"></td>
                         <td th:text="${pl.lotNumber}"></td>
-                        <td th:text="${pl.cartridgesId}"></td>
                         <div th:each="cartridge :${cartridges}" th:switch="${pl.cartridgesId}" th:case="${cartridge.id}">
                             <td th:text="${cartridge.inventoryNumber}"></td>
                             <td th:text="${cartridge.city}"></td>
@@ -198,9 +196,7 @@
             <thead class="table-light">
             <tr>
                 <th>Статус картриджа</th>
-                <th>Id Партии</th>
                 <th>Номер партии</th>
-                <th>Id Картриджа</th>
                 <th>Инвентарный номер</th>
                 <th>Город</th>
                 <th>Исполнитель</th>
@@ -230,7 +226,6 @@
                     style="color: blue">Картридж утилизирован</td>
                 <td th:if="${pl.partyStatus == 5}"
                     style="color: blue">Картридж утилизирован</td>
-                <td th:text="${pl.idPartylots}"></td>
                 <td th:text="${pl.lotNumber}"></td>
                 <div th:if="${pl.cartridgesId == null}">
                     <td style="color: red">Был удален</td>
@@ -245,7 +240,6 @@
                     <td>----</td>
 
                 </div>
-                <td th:text="${pl.cartridgesId}"></td>
                 <div th:each="cartridge :${cartridges}" th:switch="${pl.cartridgesId}" th:case="${cartridge.id}">
                     <td th:text="${cartridge.inventoryNumber}" id="foobar"></td>
                     <td th:text="${cartridge.city}"></td>

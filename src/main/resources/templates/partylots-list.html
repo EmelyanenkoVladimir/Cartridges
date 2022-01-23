@@ -6,8 +6,8 @@
     <link href="/webjars/bootstrap/5.1.0/css/bootstrap.css" rel="stylesheet"/>
     <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/5.1.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.css"/>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -71,11 +71,12 @@
             <th>Ресурс</th>
             <th>Комментарии</th>
             <th>Операция комментария</th>
+            <th>Операция удаления</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="pl : ${partylots1}" >
-            <td th:if="${pl.partyStatus == 0}"
+            <td th:if="${pl.partyStatus == 0 and pl.historyIdHistory != null}"
                 style="color: red">Картридж не пришёл</td>
             <td th:if="${pl.partyStatus == 1}"
                 style="color: limegreen">Картридж пришёл</td>
@@ -87,6 +88,7 @@
                 style="color: blue">Картридж утилизирован</td>
             <td th:if="${pl.partyStatus == 5}"
                 style="color: blue">Картридж утилизирован</td>
+            <td th:if="${pl.historyIdHistory == null}">Картиридж был удален из партии</td>
             <div th:if="${pl.historyIdHistoryReturn != null}">
                 <div th:each="hist:${history}" th:switch="${pl.historyIdHistoryReturn}" th:case="${hist.idHistory}">
                     <td th:text="${hist.dateOfStatus}"></td>
@@ -101,7 +103,8 @@
             </div>
                 <td th:text="${pl.lotNumber}"></td>
             <div th:if="${pl.cartridgesId == null}">
-                <td style="color: red">Был удален</td>
+                <td>Был удален</td>
+                <td>-----</td>
                 <td>-----</td>
                 <td>-----</td>
                 <td>-----</td>
@@ -134,9 +137,29 @@
             <td th:if="${pl.cartridgesId != null}"><a th:href="@{/addComments/{idHistory}/{lotNumber}/{idPartylots}(idHistory=${idHistory},lotNumber=${pl.lotNumber},idPartylots=${pl.idPartylots})}" class="btn btn-dark">
                     Добавить комментарий
                 </a></td>
+            <td th:if="${pl.historyIdHistoryReturn == null and pl.cartridgesId != null}"><a th:href="@{/deleteOneCartridgeFromPartylots/{cartridgesId}/{lotNumber}/{idHistory}(cartridgesId=${pl.cartridgesId},lotNumber=${pl.lotNumber},idHistory=${idHistory})}" class="btn btn-danger btn-sm" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить из партии</a></td>
+            <td th:if="${pl.historyIdHistoryReturn != null}">-----</td>
         </tr>
         </tbody>
     </table>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить картридж из партии?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="" class="btn btn-primary" id="delRef">Да, удалить</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
