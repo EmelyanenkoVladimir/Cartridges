@@ -1,13 +1,10 @@
 package com.example.springbootsbyt.service.impl;
 
-import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.Partylots;
 import com.example.springbootsbyt.repository.PartyLotsRepository;
 import com.example.springbootsbyt.service.PartyLotsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -58,10 +55,6 @@ public class PartyLotsServiceImpl implements PartyLotsService {
         return partyLotsRepository.findDsHistory();
     }
 
-    public List<Partylots> findAllByCartridgesId(long keyword){
-        return partyLotsRepository.findAllByCartridgesId(keyword);
-    }
-
     public List<Partylots> findAllByPartyStatusNe0(){
         return partyLotsRepository.findAllByPartyStatusNe0();
     }
@@ -70,29 +63,51 @@ public class PartyLotsServiceImpl implements PartyLotsService {
         return partyLotsRepository.findOneByCartridgesId(keyword,keyword1);
     }
 
-    public Partylots findByCartridgesIdWherePartyStatus0(long keyword){
-        return partyLotsRepository.findByCartridgesIdWherePartyStatus0(keyword);
+    public Partylots findByCartridgesIdWherePartyStatus0Or1(long keyword){
+        return partyLotsRepository.findByCartridgesIdWherePartyStatus0Or1(keyword);
     }
 
     public List<Partylots> findByCartridgesId(long keyword) {
         return partyLotsRepository.findByCartridgesId(keyword);
     }
 
-    public List<Partylots> findOneWherePartyStatus3Or4Or5(long keyword) {
+    public List<Partylots> findOneWherePartyStatus3Or4Or5(long keyword){
         return partyLotsRepository.findOneWherePartyStatus3Or4Or5(keyword);
     }
 
-    public List<Partylots> findPartyLotsForDispose(String keyword) {
+    public List<Partylots> findPartyLotsForDispose(String keyword){
         return partyLotsRepository.findPartyLotsForDispose(keyword);
     }
 
-    public Partylots findByCartridgesIdWherePartyStatus3Or4Or5(long keyword) {
+    public Partylots findByCartridgesIdWherePartyStatus3Or4Or5(long keyword){
         return partyLotsRepository.findByCartridgesIdWherePartyStatus3Or4Or5(keyword);
+    }
+
+    public Partylots findByCartridgesIdWhereLotNumberRavnoLotNumber(long keyword, String keyword1){
+        return partyLotsRepository.findByCartridgesIdWhereLotNumberRavnoLotNumber(keyword,keyword1);
+    }
+
+    @Override
+    public List<Partylots> findDsLotNumberByPartyStatus0Or1() {
+        return partyLotsRepository.findDsLotNumberByPartyStatus0Or1();
+    }
+
+    @Override
+    public List<Partylots> findDsLotNumberByPartyStatus2() {
+        return partyLotsRepository.findDsLotNumberByPartyStatus2();
+    }
+
+    @Override
+    public List<Partylots> findDsLotNumberByPartyStatus3Or4() {
+        return partyLotsRepository.findDsLotNumberByPartyStatus3Or4();
+    }
+
+    @Override
+    public List<Partylots> findDsLotNumberByPartyStatus5() {
+        return partyLotsRepository.findDsLotNumberByPartyStatus5();
     }
 
     public List<Partylots> findDsCartridgesId() {
         return partyLotsRepository.findDsCartridgesId();
     }
-
-
 }

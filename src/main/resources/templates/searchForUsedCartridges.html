@@ -63,67 +63,68 @@
                 </thead>
 
                 <tbody>
-                    <div th:each="cartridge : ${cartridges}">
-                        <tr>
-                            <div th:each="pl:${partylots}" th:switch="${cartridge.id}" th:case="${pl.cartridgesId}">
-                                <td th:if="${pl.partyStatus == 0}"
-                                    style="color: red">в заправке</td>
-                                <td th:if="${pl.partyStatus == 1}"
-                                    style="color: limegreen">в работе</td>
-                                <td th:if="${pl.partyStatus == 2}"
-                                    style="color: limegreen">в работе</td>
-                                <td th:if="${pl.partyStatus == 3}"
-                                    style="color: magenta">на списании</td>
-                                <td th:if="${pl.partyStatus == 4}"
-                                    style="color: blue">утилизирован</td>
-                                <td th:if="${pl.partyStatus == 5}"
-                                    style="color: blue">утилизирован</td>
+                <div th:each="cartridge : ${cartridges}">
+                    <tr>
+                        <div th:each="pl:${partylots}" th:switch="${cartridge.id}" th:case="${pl.cartridgesId}">
+                            <td th:if="${pl.partyStatus == 0}"
+                                style="color: red">в заправке</td>
+                            <td th:if="${pl.partyStatus == 1}"
+                                style="color: limegreen">в работе</td>
+                            <td th:if="${pl.partyStatus == 2}"
+                                style="color: limegreen">в работе</td>
+                            <td th:if="${pl.partyStatus == 3}"
+                                style="color: magenta">на списании</td>
+                            <td th:if="${pl.partyStatus == 4}"
+                                style="color: blue">утилизирован</td>
+                            <td th:if="${pl.partyStatus == 5}"
+                                style="color: blue">утилизирован</td>
+                        </div>
+                        <td th:text="${cartridge.inventoryNumber}"></td>
+                        <div th:switch="${cartridge.cartrsIdCartrs}" th:case="null">
+                            <td th:text="-----"></td>
+                            <td th:text="-----"></td>
+                            <td th:text="-----"></td>
+                            <td th:text="-----"></td>
+                        </div>
+                        <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                            <td th:text="${cart.typeCartr}"></td>
+                        </div>
+                        <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                            <div th:switch="${cart.printersIdPrinters}" th:case="null">
+                                <td th:text="-----"></td>
+                                <td th:text="-----"></td>
                             </div>
-                            <td th:text="${cartridge.inventoryNumber}"></td>
-                            <div th:switch="${cartridge.cartrsIdCartrs}" th:case="null">
-                                <td th:text="-----"></td>
-                                <td th:text="-----"></td>
-                                <td th:text="-----"></td>
-                                <td th:text="-----"></td>
+                            <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
+                                <td th:text="${print.typePrinters}"></td>
                             </div>
-                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                                <td th:text="${cart.typeCartr}"></td>
-                            </div>
-                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                                <div th:switch="${cart.printersIdPrinters}" th:case="null">
+                        </div>
+                        <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                            <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
+                                <div th:switch="${print.modelsIdModels}" th:case="null">
                                     <td th:text="-----"></td>
-                                    <td th:text="-----"></td>
                                 </div>
-                                <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
-                                    <td th:text="${print.typePrinters}"></td>
-                                </div>
-                            </div>
-                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                                <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
-                                    <div th:switch="${print.modelsIdModels}" th:case="null">
-                                        <td th:text="-----"></td>
-                                    </div>
-                                    <div th:each="man:${manufacturers}" th:switch="${print.modelsIdModels}" th:case="${man.idModels}">
-                                        <td th:text="${man.modelFromPrinters}"></td>
-                                    </div>
+                                <div th:each="man:${manufacturers}" th:switch="${print.modelsIdModels}" th:case="${man.idModels}">
+                                    <td th:text="${man.modelFromPrinters}"></td>
                                 </div>
                             </div>
-                            <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                                <td th:text="${cart.chip}"></td>
-                            </div>
-                            <td th:text="${cartridge.resource}"></td>
-                            <td th:text="${cartridge.city}"></td>
-                            <td th:text="${cartridge.executor}"></td>
-                            <td th:text="${cartridge.comments}"></td>
-                            <td th:text="${cartridge.count}"></td>
-                            <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}" class="btn btn-info">Подробнее</a></td>
-                        </tr>
-                    </div>
+                        </div>
+                        <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
+                            <td th:text="${cart.chip}"></td>
+                        </div>
+                        <td th:text="${cartridge.resource}"></td>
+                        <td th:text="${cartridge.city}"></td>
+                        <td th:text="${cartridge.executor}"></td>
+                        <td th:text="${cartridge.comments}"></td>
+                        <td th:text="${cartridge.count}"></td>
+                        <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}" class="btn btn-info">Подробнее</a></td>
+                    </tr>
+                </div>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready( function () {
         $('#myTable').DataTable( {
@@ -136,6 +137,7 @@
         } );
     })
 </script>
+
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 </body>
 </html>

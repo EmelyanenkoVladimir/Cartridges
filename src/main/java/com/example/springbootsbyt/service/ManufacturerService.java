@@ -1,7 +1,6 @@
 package com.example.springbootsbyt.service;
 
 import com.example.springbootsbyt.model.Manufacturers;
-
 import java.util.List;
 
 public interface ManufacturerService {

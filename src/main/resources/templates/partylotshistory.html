@@ -40,42 +40,36 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cartridges">Картриджи</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/search">Поиск</a>
-                </li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="mx-auto" style="width: 200px;">
     <h2>Создание номера партии</h2>
-
 </div>
-        <form action="#" th:action="@{/lotsNumber/{idHistory}(idHistory=${idHistory})}" th:object="${partylots}" method="post" id="addNumberLots" onclick="submitLimit()">
-                <div class="container ms-auto mt-5 fw-bold" >
-                    <h5 class="modal-title" id="staticBackdropLabel">Создание статуса для партии</h5>
-                    <div class="row mb-3">
-                        <div th:each="hist:${history}" th:switch="${idHistory}" th:case="${hist.idHistory}">
-                            <label for="historyIdHistory" class="col-sm-2 col-form-label">Статус</label>
-                            <div class="col-sm-7">
-                                    <input readonly type="hidden" class="form-control w-50" name="historyIdHistory"
-                                           th:text="${hist.dateOfStatus} + ' || ' + ${hist.status} + ' || ' + ${hist.executor}"
-                                           th:value="${idHistory}"
-                                            id="historyIdHistory">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="lotNumber" class="col-sm-2 col-form-label">Номер партии</label>
-                        <div class="col-sm-7">
-                            <input type="text" class="form-control w-50" th:field="*{lotNumber}" id="lotNumber" name="lotNumber">
-                            <div style="color:red" th:if="${#fields.hasErrors('lotNumber')}" th:errors="*{lotNumber}">Name Error</div>
-                        </div>
-                    </div>
-                    <input  type="submit" id="addNumberLots1" value="Сохранить номер для партии" class="btn btn-primary">
+<div class="container ms-auto mt-5 fw-bold" >
+    <form action="#" th:action="@{/lotsNumber/{idHistory}(idHistory=${idHistory})}" th:object="${partylots}" method="post" id="addNumberLots" onclick="submitLimit()">
+        <div class="row mb-3">
+            <div th:each="hist:${history}" th:switch="${idHistory}" th:case="${hist.idHistory}">
+                <label for="historyIdHistory" class="col-sm-2 col-form-label">Статус</label>
+                <div class="col-sm-7">
+                        <input readonly type="hidden" class="form-control w-50" name="historyIdHistory"
+                               th:text="${hist.dateOfStatus} + ' || ' + ${hist.status} + ' || ' + ${hist.executor}"
+                               th:value="${idHistory}"
+                                id="historyIdHistory">
                 </div>
-            </form>
-
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="lotNumber" class="col-sm-2 col-form-label">Номер партии</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control w-50" th:field="*{lotNumber}" id="lotNumber" name="lotNumber">
+                <div style="color:red" th:if="${#fields.hasErrors('lotNumber')}" th:errors="*{lotNumber}">Name Error</div>
+            </div>
+        </div>
+    <input  type="submit" id="addNumberLots1" value="Сохранить номер для партии" class="btn btn-primary">
+    </form>
+</div>
 <script>
     function submitLimit() {
         let btn = document.getElementById('addNumberLots1')

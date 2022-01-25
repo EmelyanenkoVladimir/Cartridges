@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Модели</title>
     <title>Типы принтеров</title>
-    <link href="/webjars/bootstrap/5.1.0/css/bootstrap.css" rel="stylesheet" />
+    <link href="/webjars/bootstrap/5.1.0/css/bootstrap.css" rel="stylesheet"/>
     <script type="text/javascript" src="/webjars/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/5.1.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.css"/>
@@ -37,40 +37,42 @@
     </div>
 </nav>
 <div class="container-fluid">
-    <div th:switch="${printers}">
-        <h2 th:case="null">Типы принтеров не найдены!</h2>
-        <div th:case="*">
-            <div class="mx-auto" style="width: 200px;">
-                <h2>Принтеры</h2>
-                <p><a class="btn btn-primary btn-sm" href="/printers-create">Создать модель принтера</a></p>
-                <button type="button" class="btn btn-primary" href="/printers-list" data-bs-toggle="modal" data-bs-target="#Proizvoditeli">
-                    Прозводители
-                </button>
-            </div>
-            <table class="table table-hover table-bordered" id="myTable">
-                <thead class="table-light">
-                <tr>
-                    <th>Модель принтера</th>
-                    <th>Производитель</th>
-                    <th>Операция 1</th>
-                    <th>Операция 2</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="print : ${printers}">
-                    <td th:text="${print.typePrinters}"></td>
-                    <td th:switch="${print.modelsIdModels}" th:case="null" th:text="-----"></td>
-                    <td th:each="model:${manufacturers}"
-                        th:switch="${print.modelsIdModels}"
-                        th:case="${model.idModels}"
-                        th:text="${model.modelFromPrinters}"></td>
-                    <td><a th:href="@{printers-update/{id}(id=${print.idPrinters})}" class="btn btn-dark">Изменить</a></td>
-                    <td><a th:href="@{printers-delete/{id}(id=${print.idPrinters})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
-                </tr>
-                </tbody>
-            </table>
+<div th:switch="${printers}">
+    <h2 th:case="null">Типы принтеров не найдены!</h2>
+    <div th:case="*">
+        <div class="mx-auto" style="width: 200px;">
+            <h2>Принтеры</h2>
+            <p><a class="btn btn-primary btn-sm" href="/printers-create">Создать модель принтера</a></p>
+            <button type="button" class="btn btn-primary" href="/printers-list" data-bs-toggle="modal" data-bs-target="#Proizvoditeli">
+                Прозводители
+            </button>
         </div>
+        <table class="table table-hover table-bordered" id="myTable">
+            <thead class="table-light">
+            <tr>
+                <th>Id принтеров</th>
+                <th>Модель принтера</th>
+                <th>Производитель</th>
+                <th>Операция 1</th>
+                <th>Операция 2</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="print : ${printers}">
+                <td th:text="${print.idPrinters}"></td>
+                <td th:text="${print.typePrinters}"></td>
+                <td th:switch="${print.modelsIdModels}" th:case="null" th:text="-----"></td>
+                <td th:each="model:${manufacturers}"
+                    th:switch="${print.modelsIdModels}"
+                    th:case="${model.idModels}"
+                    th:text="${model.modelFromPrinters}"></td>
+                <td><a th:href="@{printers-update/{id}(id=${print.idPrinters})}" class="btn btn-dark">Изменить</a></td>
+                <td><a th:href="@{printers-delete/{id}(id=${print.idPrinters})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Удалить</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
+</div>
 </div>
 <div class="modal fade" id="Proizvoditeli" tabindex="-1" aria-labelledby="ProizvoditeliLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -133,14 +135,14 @@
                     <h5 class="modal-title" id="staticBackdropLabel">Внесение производителя</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="modelFromPrinters" class="col-form-label">Производитель</label>
-                        <input type="text" class="mb-3" id="modelFromPrinters" name="modelFromPrinters">
-                        <br>
-                        <small style="color:red;"></small>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="modelFromPrinters" class="col-form-label">Производитель</label>
+                            <input type="text" class="mb-3" id="modelFromPrinters" name="modelFromPrinters">
+                            <br>
+                            <small style="color:red;"></small>
+                        </div>
                     </div>
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
                     <input  type="submit" id="manufacturers" value="Создать Производителя" class="btn btn-primary">

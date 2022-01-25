@@ -26,15 +26,13 @@ public class CartridgeController {
     public CartridgeController(CartridgeServiceImpl cartridgeServiceImpl,
                                CartrsServiceImpl cartrsServiceImpl,
                                HistoryServiceImpl historyServiceImpl,
-                               PrintersServiceImpl printersServiceImpl,
-                               ManufacturerServiceImpl manufacturerServiceImpl,
-                               PartyLotsServiceImpl partyLotsServiceImpl){
+                               PrintersServiceImpl printersServiceImpl, ManufacturerServiceImpl manufacturerServiceImpl, PartyLotsServiceImpl partyLotsServiceIpml){
         this.cartridgeServiceImpl = cartridgeServiceImpl;
         this.cartrsServiceImpl = cartrsServiceImpl;
         this.historyServiceImpl = historyServiceImpl;
         this.printersServiceImpl = printersServiceImpl;
         this.manufacturerServiceImpl = manufacturerServiceImpl;
-        this.partyLotsServiceImpl = partyLotsServiceImpl;
+        this.partyLotsServiceImpl = partyLotsServiceIpml;
     }
 
     @GetMapping("/cartridges")
@@ -44,13 +42,11 @@ public class CartridgeController {
         List<History> history = historyServiceImpl.findAll();
         List<Printers> printers = printersServiceImpl.findAll();
         List<Manufacturers> manufacturers = manufacturerServiceImpl.findAll();
-        List<Partylots> partylots = partyLotsServiceImpl.findDsCartridgesId();
         model.addAttribute("cartridges", cartridges);
         model.addAttribute("cartrs", cartrs);
         model.addAttribute("history", history);
         model.addAttribute("printers", printers);
         model.addAttribute("manufacturers",manufacturers);
-        model.addAttribute("partylots", partylots);
         return "cartridge-list";
     }
 
@@ -88,7 +84,7 @@ public class CartridgeController {
             String str = cartridge.getInventoryNumber();
             for (int i = 0; i < cartridges1.size(); i++) {
                 cartridge1 = cartridges1.get(i);
-                if (str.equalsIgnoreCase(cartridge1.getInventoryNumber()) == true) {
+                if (str.equalsIgnoreCase(cartridge1.getInventoryNumber())) {
                     bindingResult.rejectValue("inventoryNumber", "error.inventoryNumber", "Такой инвентарный номер уже есть");
                     return "cartridge-create";
                 }
@@ -109,7 +105,6 @@ public class CartridgeController {
         model.addAttribute("cartrs", cartrs);
         model.addAttribute("printers", printers);
         model.addAttribute("manufacturers",manufacturers);
-
         return "cartridge-update";
     }
 

@@ -48,9 +48,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cartridges" data-bs-toggle="modal" data-bs-target="#CheckRedirect4">Картриджи</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/search">Поиск</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -102,7 +99,9 @@
     <table class="table table-hover table-bordered" id="myTable">
         <thead class="table-light">
         <tr>
+            <th>Id Партии</th>
             <th>Номер партии</th>
+            <th>Id Картриджа</th>
             <th>Инвентарный номер</th>
             <th>Город</th>
             <th>Исполнитель</th>
@@ -118,7 +117,9 @@
         </thead>
         <tbody>
         <tr th:each="pl : ${partylots1}">
+            <td th:text="${pl.idPartylots}"></td>
             <td th:text="${pl.lotNumber}"></td>
+            <td th:text="${pl.cartridgesId}"></td>
             <div th:each="cartridge :${cartridges}" th:switch="${pl.cartridgesId}" th:case="${cartridge.id}">
                 <td th:text="${cartridge.inventoryNumber}" id="foobar"></td>
                 <td th:text="${cartridge.city}"></td>
@@ -129,7 +130,7 @@
                     <div th:each="print:${printers}" th:switch="${cartr.printersIdPrinters}" th:case="${print.idPrinters}">
                         <td th:text="${print.typePrinters}"></td>
                         <div th:each="man:${manufacturers}" th:switch="${print.modelsIdModels}" th:case="${man.idModels}">
-                            <td th:text="${man.modelFromPrinters}"></td>
+                            <td th:text="${modelFromPrinters}"></td>
                         </div>
                     </div>
                 </div>

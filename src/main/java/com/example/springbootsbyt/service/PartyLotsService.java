@@ -1,10 +1,6 @@
 package com.example.springbootsbyt.service;
 
-import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.Partylots;
-import com.example.springbootsbyt.model.Printers;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 
 public interface PartyLotsService {
@@ -26,13 +22,11 @@ public interface PartyLotsService {
 
     public List<Partylots> findDsHistory();
 
-    public List<Partylots> findAllByCartridgesId(long keyword);
-
     public List<Partylots> findAllByPartyStatusNe0();
 
     public Partylots findOneByCartridgesId(long keyword,String keyword1);
 
-    public Partylots findByCartridgesIdWherePartyStatus0(long keyword);
+    public Partylots findByCartridgesIdWherePartyStatus0Or1 (long keyword);
 
     public List<Partylots> findByCartridgesId(long keyword);
 
@@ -42,7 +36,15 @@ public interface PartyLotsService {
 
     public Partylots findByCartridgesIdWherePartyStatus3Or4Or5(long keyword);
 
+    public Partylots findByCartridgesIdWhereLotNumberRavnoLotNumber(long keyword, String keyword1);
+
+    public List<Partylots> findDsLotNumberByPartyStatus0Or1();
+
+    public List<Partylots> findDsLotNumberByPartyStatus2();
+
+    public List<Partylots> findDsLotNumberByPartyStatus3Or4();
+
+    public List<Partylots> findDsLotNumberByPartyStatus5();
+
     public List<Partylots> findDsCartridgesId();
-
 }
-

@@ -46,25 +46,27 @@
         <table class="table table-hover table-bordered" id="myTable">
             <thead class="table-light">
             <tr>
-                <th class="text-center">Инвентарный номер</th>
-                <th class="text-center">Модель Картриджа</th>
-                <th class="text-center">Модель принтера</th>
-                <th class="text-center">Производитель</th>
-                <th class="text-center">Чип</th>
-                <th class="text-center">Ресурс</th>
-                <th class="text-center">Город</th>
-                <th class="text-center">Исполнитель</th>
-                <th class="text-center">Комментарии</th>
-                <th class="text-center">Колличество заправок</th>
-                <th class="text-center">Операция 1</th>
-                <th class="text-center">Операция 2</th>
-                <th class="text-center">Операция 3</th>
+                <th id="1" class="text-center">Id</th>
+                <th id="2" class="text-center">Инвентарный номер</th>
+                <th id="3" class="text-center">Модель Картриджа</th>
+                <th id="4" class="text-center">Модель принтера</th>
+                <th id="5" class="text-center">Производитель</th>
+                <th id="6" class="text-center">Чип</th>
+                <th id="7" class="text-center">Ресурс</th>
+                <th id="8" class="text-center">Город</th>
+                <th id="9" class="text-center">Исполнитель</th>
+                <th id="10" class="text-center">Комментарии</th>
+                <th id="11" class="text-center">Колличество заправок</th>
+                <th id="12"  class="text-center">Операция 1</th>
+                <th id="13"  class="text-center">Операция 2</th>
+                <th id="14"  class="text-center">Операция 3</th>
             </tr>
             </thead>
             <tbody>
             <div th:each="cartridge : ${cartridges}">
                 <tr>
-                    <td th:text="${cartridge.inventoryNumber}"></td>
+                    <td headers="1" th:text="${cartridge.id}"></td>
+                    <td headers="2" th:text="${cartridge.inventoryNumber}"></td>
                     <div th:switch="${cartridge.cartrsIdCartrs}" th:case="null">
                         <td th:text="-----"></td>
                         <td th:text="-----"></td>
@@ -72,7 +74,7 @@
                         <td th:text="-----"></td>
                     </div>
                 <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                    <td th:text="${cart.typeCartr}"></td>
+                    <td headers="3" th:text="${cart.typeCartr}"></td>
                 </div>
                     <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
                         <div th:switch="${cart.printersIdPrinters}" th:case="null">
@@ -80,7 +82,7 @@
                             <td th:text="-----"></td>
                         </div>
                         <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
-                            <td th:text="${print.typePrinters}"></td>
+                            <td headers="4" th:text="${print.typePrinters}"></td>
                         </div>
                     </div>
                     <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
@@ -89,18 +91,18 @@
                                 <td th:text="-----"></td>
                             </div>
                             <div th:each="man:${manufacturers}" th:switch="${print.modelsIdModels}" th:case="${man.idModels}">
-                                    <td th:text="${man.modelFromPrinters}"></td>
+                                    <td headers="5" th:text="${man.modelFromPrinters}"></td>
                             </div>
                         </div>
                     </div>
                     <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                        <td th:text="${cart.chip}"></td>
+                        <td headers="6" th:text="${cart.chip}"></td>
                     </div>
-                    <td th:text="${cartridge.resource}"></td>
-                    <td th:text="${cartridge.city}"></td>
-                    <td th:text="${cartridge.executor}"></td>
-                    <td th:text="${cartridge.comments}"></td>
-                    <td th:text="${cartridge.count}"></td>
+                    <td headers="7" th:text="${cartridge.resource}"></td>
+                    <td headers="8" th:text="${cartridge.city}"></td>
+                    <td headers="9" th:text="${cartridge.executor}"></td>
+                    <td headers="10" th:text="${cartridge.comments}"></td>
+                    <td headers="11" th:text="${cartridge.count}">
                     <td><a th:href="@{cartridge-moreInfo/{id}(id=${cartridge.id})}" class="btn btn-info">Подробнее</a></td>
                     <td><a th:href="@{cartridge-update/{id}(id=${cartridge.id})}" class="btn btn-dark">Изменить</a></td>
                     <td>
@@ -109,10 +111,10 @@
                         </a>
                     </td>
                 </tr>
-            </div>
+                        </div>
             </tbody>
         </table>
-</div>
+    </div>
 </div>
 </div>
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

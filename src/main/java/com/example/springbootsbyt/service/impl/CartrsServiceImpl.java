@@ -1,7 +1,6 @@
 package com.example.springbootsbyt.service.impl;
 
 import com.example.springbootsbyt.model.Cartrs;
-//import com.example.springbootsbyt.entity.Cartrs;
 import com.example.springbootsbyt.repository.CartrsRepository;
 import com.example.springbootsbyt.service.CartrsService;
 import org.springframework.beans.factory.annotation.Autowired;

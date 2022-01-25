@@ -1,8 +1,6 @@
 package com.example.springbootsbyt.service;
 
-import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.Printers;
-
 import java.util.List;
 
 public interface PrintersService {

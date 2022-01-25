@@ -1,14 +1,12 @@
 package com.example.springbootsbyt.service.impl;
 
-import com.example.springbootsbyt.model.Cartridges;
 import com.example.springbootsbyt.model.Printers;
-import com.example.springbootsbyt.repository.CartridgeRepository;
 import com.example.springbootsbyt.repository.PrintersRepository;
 import com.example.springbootsbyt.service.PrintersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+
 @Service
 public class PrintersServiceImpl implements PrintersService {
     private final PrintersRepository printersRepository;

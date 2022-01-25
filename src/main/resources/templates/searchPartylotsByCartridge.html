@@ -30,16 +30,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cartridges">Картриджи</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/search">Поиск</a>
-                </li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="container-fluid">
     <div class="mx-auto" style="width: 200px;">
-        <h2>Поиск не закрытых партий по картриджу</h2>
+        <h2>Поиск партий по картриджу</h2>
     </div>
     <form action="#" th:action="@{/SearchFromPartylotsByOne}"  method="post" onclick="submitLimit()">
         <div class="container ms-auto mt-5 fw-bold" >
@@ -47,7 +44,7 @@
                 <label class="col-sm-2 col-form-label">Поиск</label>
                 <div class="col-sm-7">
                     <input autofocus type="text"  th:field="*{inventoryNumber}" name="inventoryNumber">
-                        <div style="color:red" th:if="${#fields.hasErrors('inventoryNumber')}" th:errors="*{inventoryNumber}">Name Error</div>
+                    <div style="color:red" th:if="${#fields.hasErrors('inventoryNumber')}" th:errors="*{inventoryNumber}">Name Error</div>
                 </div>
                 <div class="col-sm-7">
                     <input readonly hidden type="number" class="form-control w-50" th:field="*{resource}" th:value="*{resource=0}"

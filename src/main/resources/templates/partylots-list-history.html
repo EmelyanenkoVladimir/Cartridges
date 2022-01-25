@@ -30,9 +30,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/cartridges">Картриджи</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/search">Поиск</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -48,6 +45,7 @@
         <thead class="table-light">
         <tr>
             <th>Статус партии</th>
+            <th>Id Партии</th>
             <th>Номер партии</th>
             <th>Дата статуса</th>
             <th>Статус</th>
@@ -63,18 +61,44 @@
                     <td th:if="${pl1.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>
                     <td th:if="${pl1.partyStatus == 1}" style="color: red">Партия не закрыта</td>
                     <td th:if="${pl1.partyStatus == 0}" style="color: red">Партия не закрыта</td>
+                    <td th:if="${pl1.partyStatus == 3}" style="color: magenta">Партия на списании</td>
+                    <td th:if="${pl1.partyStatus == 4}" style="color: magenta">Партия на списании</td>
+                    <td th:if="${pl1.partyStatus == 5}" style="color: blue">Партия утилизирована</td>
+                    <td th:text="${pl1.idPartylots}"></td>
                     <td th:text="${pl1.lotNumber}"></td>
                     <td th:text="${hist.dateOfStatus}"></td>
                     <td th:text="${hist.status}"></td>
                     <td th:text="${hist.executor}"></td>
                     <td><a th:href="@{/view-lots/{lotNumber}/{idHistory}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Посмотреть партию</a></td>
-                    <td th:if="${pl1.partyStatus !=2}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Принять партию</a></td>
+                    <td th:if="${pl1.partyStatus == 0 or pl1.partyStatus == 1}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(lotNumber=${pl1.lotNumber},idHistory=${pl1.historyIdHistory})}" class="btn btn-dark">Принять партию</a></td>
                     <td th:if="${pl1.partyStatus == 2}">Партия закрыта</td>
+                    <td th:if="${pl1.partyStatus == 3 or pl1.partyStatus == 4}"><a th:href="@{/ComparePartyLots/{idHistory}/{lotNumber}(idHistory=${pl1.historyIdHistory},lotNumber=${pl1.lotNumber})}" type="button" class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal">Отправить в утиль</a></td>
+                    <td th:if="${pl1.partyStatus == 5}">Партия утилизирована</td>
                 </tr>
             </div>
         </div>
         </tbody>
     </table>
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Подтверждение утилизации</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите отправитль эту партию в утиль?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
+                <a href="" class="btn btn-primary" id="delRef">Да, отправить</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 </body>
 </html>
