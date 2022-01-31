@@ -18,15 +18,15 @@
             pointer-events:none!important;
         }
     </style>
-<!--    <script type="text/javascript" language="javascript">-->
-<!--        function DisableBackButton() {-->
-<!--            window.history.forward()-->
-<!--        }-->
-<!--        DisableBackButton();-->
-<!--        window.onload = DisableBackButton;-->
-<!--        window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }-->
-<!--        window.onunload = function() { void (0) }-->
-<!--    </script>-->
+    <script type="text/javascript" language="javascript">
+        function DisableBackButton() {
+            window.history.forward()
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function() { void (0) }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -110,9 +110,7 @@
                     <thead class="table-light">
                     <tr>
                         <th>Статус картриджа</th>
-                        <th>Id Партии</th>
                         <th>Номер партии</th>
-                        <th>Id Картриджа</th>
                         <th>Инвентарный номер</th>
                         <th>Город</th>
                         <th>Исполнитель</th>
@@ -128,9 +126,7 @@
                     <tr th:each="pl : ${partylotsOne}">
                         <td th:if="${pl.partyStatus == 4}" style="color: blue">Картридж утилизрован</td>
                         <td th:if="${pl.partyStatus == 1}" style="color:limegreen;">Картридж принят</td>
-                        <td th:text="${pl.idPartylots}"></td>
                         <td th:text="${pl.lotNumber}"></td>
-                        <td th:text="${pl.cartridgesId}"></td>
                         <div th:each="cartridge :${cartridges}" th:switch="${pl.cartridgesId}" th:case="${cartridge.id}">
                             <td th:text="${cartridge.inventoryNumber}"></td>
                             <td th:text="${cartridge.city}"></td>
@@ -198,9 +194,7 @@
             <thead class="table-light">
             <tr>
                 <th>Статус картриджа</th>
-                <th>Id Партии</th>
                 <th>Номер партии</th>
-                <th>Id Картриджа</th>
                 <th>Инвентарный номер</th>
                 <th>Город</th>
                 <th>Исполнитель</th>
@@ -231,10 +225,8 @@
                 <td th:if="${pl.partyStatus == 5}"
                     style="color: blue">Картридж утилизирован</td>
                 <td th:if="${pl.historyIdHistory == null}">Картридж был удалён из партии</td>
-                <td th:text="${pl.idPartylots}"></td>
                 <td th:text="${pl.lotNumber}"></td>
                 <td th:if="${pl.cartridgesId == null}">-----</td>
-                <td th:if="${pl.cartridgesId == null}">Картридж был удалён</td>
                 <td th:if="${pl.cartridgesId == null}">-----</td>
                 <td th:if="${pl.cartridgesId == null}">-----</td>
                 <td th:if="${pl.cartridgesId == null}">-----</td>
@@ -245,7 +237,7 @@
                 <td th:if="${pl.cartridgesId == null}">-----</td>
                 <td th:if="${pl.cartridgesId == null}">-----</td>
                 <td th:if="${pl.cartridgesId == null}">-----</td>
-                <td th:text="${pl.cartridgesId}"></td>
+                <td th:if="${pl.cartridgesId == null}">-----</td>
                 <div th:each="cartridge :${cartridges}" th:switch="${pl.cartridgesId}" th:case="${cartridge.id}">
                     <td th:text="${cartridge.inventoryNumber}" id="foobar"></td>
                     <td th:text="${cartridge.city}"></td>

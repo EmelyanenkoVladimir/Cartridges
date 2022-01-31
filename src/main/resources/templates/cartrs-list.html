@@ -46,7 +46,6 @@
         <table class="table table-hover table-bordered" id="myTable">
             <thead class="table-light">
             <tr>
-                <th>Id Модели картриджа</th>
                 <th>Чип</th>
                 <th>Модель картриджа</th>
                 <th>Модель принтера</th>
@@ -56,7 +55,6 @@
             </thead>
             <tbody>
             <tr th:each="cartrs : ${cartrs}">
-                <td th:text="${cartrs.idCartrs}"></td>
                 <td th:text="${cartrs.chip}"></td>
                 <td th:text="${cartrs.typeCartr}"></td>
                 <td th:switch="${cartrs.printersIdPrinters}" th:case="null" th:text="-----"></td>

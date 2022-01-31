@@ -41,9 +41,9 @@
     <table class="table table-hover table-bordered" id="myTable1">
         <thead class="table-light">
         <tr>
-            <th>Id партии</th>
             <th>Номер партии</th>
-            <th>Дата статуса</th>
+            <th>Дата отправки</th>
+            <th>Дата принятия</th>
             <th>Статус</th>
             <th>Исполнитель</th>
             <th>Статус партии</th>
@@ -55,9 +55,14 @@
         <div th:each="pl1 : ${partylots1}">
             <div th:each="hist:${history}" th:switch="${hist.idHistory}" th:case="${pl1.historyIdHistory}">
                 <tr>
-                    <td th:text="${pl1.idPartylots}"></td>
                     <td th:text="${pl1.lotNumber}"></td>
                     <td th:text="${hist.dateOfStatus}" id="killBill"></td>
+                    <div th:if="${pl1.historyIdHistoryReturn != null}">
+                        <div th:each="hist:${history}" th:switch="${hist.idHistory}" th:case="${pl1.historyIdHistoryReturn}">
+                            <td th:text="${hist.dateOfStatus}" id="killBill1"></td>
+                        </div>
+                    </div>
+                    <td th:if="${pl1.historyIdHistoryReturn == null}">-----</td>
                     <td th:text="${hist.status}"></td>
                     <td th:text="${hist.executor}"></td>
                     <td th:if="${pl1.partyStatus == 2}" style="color: limegreen">Партия закрыта</td>

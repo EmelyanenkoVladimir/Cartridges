@@ -17,15 +17,15 @@
             pointer-events:none!important;
         }
     </style>
-<!--    <script type="text/javascript" language="javascript">-->
-<!--        function DisableBackButton() {-->
-<!--            window.history.forward()-->
-<!--        }-->
-<!--        DisableBackButton();-->
-<!--        window.onload = DisableBackButton;-->
-<!--        window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }-->
-<!--        window.onunload = function() { void (0) }-->
-<!--    </script>-->
+    <script type="text/javascript" language="javascript">
+        function DisableBackButton() {
+            window.history.forward()
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function() { void (0) }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -99,9 +99,7 @@
     <table class="table table-hover table-bordered" id="myTable">
         <thead class="table-light">
         <tr>
-            <th>Id Партии</th>
             <th>Номер партии</th>
-            <th>Id Картриджа</th>
             <th>Инвентарный номер</th>
             <th>Город</th>
             <th>Исполнитель</th>
@@ -117,9 +115,7 @@
         </thead>
         <tbody>
         <tr th:each="pl : ${partylots1}">
-            <td th:text="${pl.idPartylots}"></td>
             <td th:text="${pl.lotNumber}"></td>
-            <td th:text="${pl.cartridgesId}"></td>
             <div th:each="cartridge :${cartridges}" th:switch="${pl.cartridgesId}" th:case="${cartridge.id}">
                 <td th:text="${cartridge.inventoryNumber}" id="foobar"></td>
                 <td th:text="${cartridge.city}"></td>
@@ -267,6 +263,31 @@
         setTimeout(function() {
             btn.removeAttribute('disabled');
         }, 300);}
+</script>
+
+<script>
+    $(document).ready( function () {
+        let table = $('#myTable').DataTable( {
+            paging: false,
+            info: false,
+            dom: 'Bfrtip',
+            buttons: [
+                { extend: 'excelHtml5', text: 'Экспортировать в Excel',exportOptions: {
+                        columns: [ 1, 2, 3, 4, 5 ]
+                    },
+                    customize: function ( xlsx ){
+                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        // jQuery selector to add a border
+                        $('row c[r*="3"]', sheet).attr( 's', '25' );
+                    }},
+            ],
+            "language": {
+                "search": "Поиск:",
+                "zeroRecords":"Ничего не найдено"
+            }
+        } );
+    })
 </script>
 
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>

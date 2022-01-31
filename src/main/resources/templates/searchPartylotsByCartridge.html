@@ -38,7 +38,7 @@
     <div class="mx-auto" style="width: 200px;">
         <h2>Поиск партий по картриджу</h2>
     </div>
-    <form action="#" th:action="@{/SearchFromPartylotsByOne}"  method="post" onclick="submitLimit()">
+    <form action="#" th:action="@{/SearchFromPartylotsByOne}"  method="get" onclick="submitLimit()">
         <div class="container ms-auto mt-5 fw-bold" >
             <div class="row mb-3" th:object="${NewCartridge}">
                 <label class="col-sm-2 col-form-label">Поиск</label>

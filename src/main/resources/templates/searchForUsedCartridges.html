@@ -127,9 +127,21 @@
 
 <script>
     $(document).ready( function () {
-        $('#myTable').DataTable( {
+        let table = $('#myTable').DataTable( {
             paging: false,
             info: false,
+            dom: 'Bfrtip',
+            buttons: [
+                { extend: 'excelHtml5', text: 'Экспортировать в Excel',exportOptions: {
+                        columns: [ 1, 2, 3, 4, 5 ]
+                    },
+                    customize: function ( xlsx ){
+                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        // jQuery selector to add a border
+                        $('row c[r*="3"]', sheet).attr( 's', '25' );
+                    }},
+            ],
             "language": {
                 "search": "Поиск:",
                 "zeroRecords":"Ничего не найдено"

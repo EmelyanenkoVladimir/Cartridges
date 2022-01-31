@@ -46,7 +46,6 @@
             <table class="table table-hover table-bordered" id="myTable">
                 <thead class="table-light">
                 <tr>
-                    <th class="text-center">Id</th>
                     <th class="text-center">Инвентарный номер</th>
                     <th class="text-center">Модель Картриджа</th>
                     <th class="text-center">Модель принтера</th>
@@ -62,8 +61,7 @@
                 <tbody>
                 <div th:each="cartridge : ${cartridges}">
                     <tr>
-                        <td headers="1" th:text="${cartridge.id}"></td>
-                        <td headers="2" th:text="${cartridge.inventoryNumber}"></td>
+                        <td th:text="${cartridge.inventoryNumber}"></td>
                         <div th:switch="${cartridge.cartrsIdCartrs}" th:case="null">
                             <td th:text="-----"></td>
                             <td th:text="-----"></td>
@@ -71,7 +69,7 @@
                             <td th:text="-----"></td>
                         </div>
                         <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                            <td headers="3" th:text="${cart.typeCartr}"></td>
+                            <td th:text="${cart.typeCartr}"></td>
                         </div>
                         <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
                             <div th:switch="${cart.printersIdPrinters}" th:case="null">
@@ -79,7 +77,7 @@
                                 <td th:text="-----"></td>
                             </div>
                             <div th:each="print:${printers}" th:switch="${cart.printersIdPrinters}" th:case="${print.idPrinters}">
-                                <td headers="4" th:text="${print.typePrinters}"></td>
+                                <td th:text="${print.typePrinters}"></td>
                             </div>
                         </div>
                         <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
@@ -88,18 +86,18 @@
                                     <td th:text="-----"></td>
                                 </div>
                                 <div th:each="man:${manufacturers}" th:switch="${print.modelsIdModels}" th:case="${man.idModels}">
-                                    <td headers="5" th:text="${man.modelFromPrinters}"></td>
+                                    <td th:text="${man.modelFromPrinters}"></td>
                                 </div>
                             </div>
                         </div>
                         <div th:each="cart:${cartrs}" th:switch="${cartridge.cartrsIdCartrs}" th:case="${cart.idCartrs}">
-                            <td headers="6" th:text="${cart.chip}"></td>
+                            <td th:text="${cart.chip}"></td>
                         </div>
-                        <td headers="7" th:text="${cartridge.resource}"></td>
-                        <td headers="8" th:text="${cartridge.city}"></td>
-                        <td headers="9" th:text="${cartridge.executor}"></td>
-                        <td headers="10" th:text="${cartridge.comments}"></td>
-                        <td headers="11" th:text="${cartridge.count}">
+                        <td th:text="${cartridge.resource}"></td>
+                        <td th:text="${cartridge.city}"></td>
+                        <td th:text="${cartridge.executor}"></td>
+                        <td th:text="${cartridge.comments}"></td>
+                        <td th:text="${cartridge.count}">
                     </tr>
                 </div>
                 </tbody>
@@ -115,7 +113,6 @@
             <table class="table table-hover table-bordered">
                 <thead class="table-light">
                 <tr>
-                    <th class="text-center">Id Истории</th>
                     <th class="text-center">Номер партии</th>
                     <th class="text-center">Дата Статуса</th>
                     <th class="text-center">Статус</th>
@@ -130,11 +127,7 @@
                 <div th:each="pl:${partylots}" th:switch="${pl.cartridgesId}" th:case="*{id}">
                     <tr th:each="hist:${history}">
                         <div th:switch="${pl.historyIdHistory}" th:case="${hist.idHistory}">
-
-                            <td th:text="${hist.idHistory}"></td>
-
                             <td th:text="${pl.lotNumber}"></td>
-
                             <td th:text="${hist.dateOfStatus}"></td>
                             <td th:text="${hist.status}"></td>
                             <td th:text="${hist.executor}"></td>
@@ -149,7 +142,6 @@
                 </div>
                 <div th:each="hist:${history}" th:if="${hist.cartridgesId != null}">
                     <tr th:switch="${hist.cartridgesId}" th:case="*{id}">
-                        <td th:text="${hist.idHistory}"></td>
                         <td>без партии</td>
                         <td th:text="${hist.dateOfStatus}"></td>
                         <td th:text="${hist.status}"></td>

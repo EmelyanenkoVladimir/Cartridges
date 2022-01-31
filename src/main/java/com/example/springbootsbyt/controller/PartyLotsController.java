@@ -253,24 +253,6 @@ public class PartyLotsController {
         return "partylots-list";
     }
 
-    @GetMapping("/lots-look-history")
-    public String findAllLotsHistory(Model model){
-        List<Partylots> partylots = partyLotsServiceImpl.findDsHistory();
-        List<History> histories = historyServiceImpl.findAll();
-        model.addAttribute("partylots",partylots);
-        model.addAttribute("history",histories);
-        return "partylots-history-selector";
-    }
-
-    @GetMapping("/view-lots-history/{idHistory}")
-    public String viewLotsHistory(@PathVariable ("idHistory") long idHistory,Model model){
-        List<History> history = historyServiceImpl.findAll();
-        List<Partylots> partylots1 = partyLotsServiceImpl.findDsHistoryKeyword(idHistory);
-        model.addAttribute("history",history);
-        model.addAttribute("partylots1",partylots1);
-        return "partylots-list-history";
-    }
-
     @GetMapping("/ComparePartyLots/{idHistory}/{lotNumber}")
     public String ComparePartyLots(@PathVariable ("idHistory") long idHistory,@PathVariable ("lotNumber") String lotNumber,Model model){
         List<Partylots> partylots1 = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
@@ -624,7 +606,7 @@ public class PartyLotsController {
         return "searchPartylotsByCartridge";
     }
 
-    @PostMapping("/SearchFromPartylotsByOne")
+    @GetMapping("/SearchFromPartylotsByOne")
     public String searchFromPartylotsByOne(@Valid @ModelAttribute("NewCartridge") Cartridges NewCartridge,BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "searchPartylotsByCartridge";

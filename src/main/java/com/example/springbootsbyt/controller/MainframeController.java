@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
         return "main-frame";
     }
 
+    @GetMapping("/")
+    public String mainFrameSlash() {
+        return "main-frame";
+    }
+
     @GetMapping("/login")
     public String loginPage() {
         return "login";
