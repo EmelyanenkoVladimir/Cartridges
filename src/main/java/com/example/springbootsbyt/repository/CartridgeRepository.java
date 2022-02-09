@@ -32,6 +32,7 @@ public interface CartridgeRepository extends JpaRepository<Cartridges, Long> {
     @Query(value = "select * from cartridges as c left join partylots as p on c.id = p.cartridges_id left join history as h on h.id_history = p.history_id_history where p.party_status in (4,5) and h.date_of_status between ? and ?", nativeQuery = true)
     List<Cartridges> findAllByPartyStatus4And5(@Param("date1") Date dt1,@Param("date2") Date dt2);
 
-    @Query(value = "select * from cartridges as c left join partylots as p on c.id = p.cartridges_id left join history as h on h.id_history = p.history_id_history where p.party_status in (0,1,2,3,4,5) and h.date_of_status between  ? and ?", nativeQuery = true)
+    @Query(value = "select * from cartridges as c left join partylots as p on c.id = p.cartridges_id left join history as h on h.id_history = p.history_id_history where p.party_status in (0,1,2,3,4,5) and h.date_of_status between ? and ? " +
+            "group by p.cartridges_id order by  p.cartridges_id desc\n", nativeQuery = true)
     List<Cartridges> findAllByPartyStatus(@Param("date1") Date dt1,@Param("date2") Date dt2);
 }

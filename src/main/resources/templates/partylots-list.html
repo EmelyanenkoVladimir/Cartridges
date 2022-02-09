@@ -34,9 +34,11 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid" >
     <div class="mx-auto" style="width: 200px;">
         <h2>Просмотр партии</h2>
+        <br>
+        <p><a class="btn btn-primary btn-sm" th:href="@{/cartridge-Export-Excel-PartyLots/{lotNumber}/{idHistory}(lotNumber=${lotNumber},idHistory=${idHistory})}">Экспортировать в Excel</a></p>
         <br>
     </div>
     <div class="row mb-3">
@@ -49,7 +51,7 @@
     </div>
     <br>
     <br>
-    <table class="table table-hover table-bordered" id="myTable" >
+    <table class="table-sm table table-hover table-bordered" id="myTable">
         <thead class="table-light">
         <tr>
             <th>Статус картриджа</th>
@@ -162,22 +164,6 @@
         let table = $('#myTable').DataTable( {
             paging: false,
             info: false,
-            dom: 'Bfrtip',
-            buttons: [
-                { extend: 'excelHtml5', text: 'Экспортировать в Excel',exportOptions: {
-                        columns: [ 1, 2, 3, 4, 5 ]
-                    },
-                    customize: function ( xlsx, dateTimeFormat ){
-                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
-
-                        // jQuery selector to add a border
-                        $('row c[r*="5"]', sheet).attr( 's', '28' );
-
-
-                        // $("*", sheet).attr( 's', '25');
-
-                    }},
-            ],
             "language": {
                 "search": "Поиск:",
                 "zeroRecords":"Ничего не найдено"

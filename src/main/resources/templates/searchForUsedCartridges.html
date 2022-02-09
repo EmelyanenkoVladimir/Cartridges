@@ -41,13 +41,21 @@
         <div th:case="*">
             <div class="mx-auto" style="width: 200px;">
                 <br>
-                <h2>Списанные картриджи</h2>
+                <h2>Картриджи</h2>
+                <div hidden>
+                    <span th:text="${firstSelect}"></span>
+                    <span th:text="${dt1}"></span>
+                    <span th:text="${dt2}"></span>
+                </div>
+                <br>
+                <p><a class="btn btn-primary btn-sm" th:href="@{/cartridge-Export-Excel-CartridgesBySearch/{firstSelect}/{dt1}/{dt2}(firstSelect=${firstSelect},dt1=${dt1},dt2=${dt2})}">Экспортировать в Excel</a></p>
                 <br>
             </div>
             <table class="table table-hover table-bordered" id="myTable">
                 <thead class="table-light">
                 <tr>
                     <th class="text-center">Статус картриджа</th>
+                    <th class="text-center">Дата статуса</th>
                     <th class="text-center">Инвентарный номер</th>
                     <th class="text-center">Модель Картриджа</th>
                     <th class="text-center">Модель принтера</th>
@@ -78,6 +86,17 @@
                                 style="color: blue">утилизирован</td>
                             <td th:if="${pl.partyStatus == 5}"
                                 style="color: blue">утилизирован</td>
+
+                        <div th:each="hist:${history}" th:switch="${hist.idHistory}" th:case="${pl.historyIdHistory}">
+                            <div th:if="${pl.historyIdHistoryReturn == null}">
+                                <td th:text="${hist.dateOfStatus}"></td>
+                            </div>
+                            <div th:if="${pl.historyIdHistoryReturn != null}">
+                                <div th:each="hist:${history}" th:switch="${hist.idHistory}" th:case="${pl.historyIdHistoryReturn}">
+                                    <td th:text="${hist.dateOfStatus}"></td>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                         <td th:text="${cartridge.inventoryNumber}"></td>
                         <div th:switch="${cartridge.cartrsIdCartrs}" th:case="null">
@@ -130,18 +149,6 @@
         let table = $('#myTable').DataTable( {
             paging: false,
             info: false,
-            dom: 'Bfrtip',
-            buttons: [
-                { extend: 'excelHtml5', text: 'Экспортировать в Excel',exportOptions: {
-                        columns: [ 1, 2, 3, 4, 5 ]
-                    },
-                    customize: function ( xlsx ){
-                        let sheet = xlsx.xl.worksheets['sheet1.xml'];
-
-                        // jQuery selector to add a border
-                        $('row c[r*="3"]', sheet).attr( 's', '25' );
-                    }},
-            ],
             "language": {
                 "search": "Поиск:",
                 "zeroRecords":"Ничего не найдено"

@@ -2,6 +2,12 @@ package com.example.springbootsbyt.controller;
 
 import com.example.springbootsbyt.model.*;
 import com.example.springbootsbyt.service.impl.*;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -645,4 +654,495 @@ public class PartyLotsController {
         partyLotsServiceImpl.savePartylots(partylots);
         return "redirect:/view-lots/{lotNumber}/{idHistory}";
     }
+
+    //Стиль для названия колонок
+    private static HSSFCellStyle createStyleForTitle(HSSFWorkbook workbook) {
+        HSSFFont font = workbook.createFont();
+        font.setBold(true);
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderRight(BorderStyle.THIN);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderTop (BorderStyle.THIN);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        style.setWrapText(true);
+        return style;
+    }
+
+    //Сам метод кнопки экспорта в эксель
+    @GetMapping("/cartridge-Export-Excel-PartyLots/{lotNumber}/{idHistory}")
+    public String cartridgeExportExcelPartyLots(@PathVariable ("lotNumber") String lotNumber,
+                                                @PathVariable ("idHistory") long idHistory) throws IOException {
+        //Подготовка и создание экселя и листа в нём
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("Список картриджей");
+        List<Partylots> partylotsList = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
+        History history = historyServiceImpl.findById(idHistory);
+        Cell cell;
+        Row row,row1,row2,row3;
+        //Создание стилей
+        HSSFCellStyle style = createStyleForTitle(workbook);
+        HSSFCellStyle style2 = workbook.createCellStyle();
+        HSSFCellStyle style3 = workbook.createCellStyle();
+        HSSFCellStyle style4 = workbook.createCellStyle();
+        HSSFCellStyle style5 = workbook.createCellStyle();
+        HSSFCellStyle style6 = workbook.createCellStyle();
+        HSSFCellStyle style7 = workbook.createCellStyle();
+        style2.setAlignment(HorizontalAlignment.RIGHT);
+        style2.setWrapText(true);
+        style3.setAlignment(HorizontalAlignment.CENTER);
+        style3.setWrapText(true);
+        HSSFFont font1 = workbook.createFont();
+        font1.setBold(true);
+        style3.setFont(font1);
+        style4.setAlignment(HorizontalAlignment.CENTER);
+        style5.setAlignment(HorizontalAlignment.RIGHT);
+        style5.setFont(font1);
+        style6.setAlignment(HorizontalAlignment.LEFT);
+        style6.setFont(font1);
+        style7.setAlignment(HorizontalAlignment.LEFT);
+        //Для даты в шапке
+        DataFormat format = workbook.createDataFormat();
+        CellStyle dateStyle = workbook.createCellStyle();
+        dateStyle.setDataFormat(format.getFormat("dd.mm.yyyy"));
+        dateStyle.setAlignment(HorizontalAlignment.LEFT);
+        //Для даты внутри таблицы
+        DataFormat format1 = workbook.createDataFormat();
+        CellStyle dateStyle1 = workbook.createCellStyle();
+        dateStyle1.setDataFormat(format1.getFormat("dd.mm.yyyy"));
+        dateStyle1.setAlignment(HorizontalAlignment.CENTER);
+        dateStyle1.setVerticalAlignment(VerticalAlignment.CENTER);
+        dateStyle1.setBorderBottom(BorderStyle.THIN);
+        dateStyle1.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        dateStyle1.setBorderLeft(BorderStyle.THIN);
+        dateStyle1.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        dateStyle1.setBorderRight(BorderStyle.THIN);
+        dateStyle1.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        dateStyle1.setBorderTop (BorderStyle.THIN);
+        dateStyle1.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        //Создание строк
+        row = sheet.createRow(2);
+        row1 = sheet.createRow(0);
+        row2 = sheet.createRow(1);
+        row3 = sheet.createRow(3);
+
+        //Создание колонок
+        cell = row1.createCell(6,CellType.STRING);
+        cell.setCellValue("РУП 'Минскэнерго' филиал 'Энергосбыт'");
+        cell.setCellStyle(style2);
+
+        cell = row1.createCell(0);
+        cell.setCellValue(history.getDateOfStatus());
+        cell.setCellStyle(dateStyle);
+
+        cell = row.createCell(6,CellType.STRING);
+        cell.setCellValue("ООО 'ДельтаПринт'");
+        cell.setCellStyle(style5);
+
+        cell = row2.createCell(1);
+        cell.setCellValue("Заявка № " + lotNumber);
+        cell.setCellStyle(style3);
+        //Объединение ячеек
+        sheet.addMergedRegion(new CellRangeAddress(
+                1, //first row (0-based)
+                1, //last row  (0-based)
+                1, //first column (0-based)
+                3  //last column  (0-based)
+        ));
+
+        cell = row.createCell(1);
+        cell.setCellValue("на восстановление и заправку картриджей");
+        cell.setCellStyle(style4);
+        sheet.addMergedRegion(new CellRangeAddress(
+                2, //first row (0-based)
+                2, //last row  (0-based)
+                1, //first column (0-based)
+                3  //last column  (0-based)
+        ));
+
+        cell = row3.createCell(0, CellType.STRING);
+        cell.setCellValue("№ п/п");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(1, CellType.STRING);
+        cell.setCellValue("Дата принятия");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(2, CellType.STRING);
+        cell.setCellValue("Модель принтера");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(3, CellType.STRING);
+        cell.setCellValue("Производитель");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(4, CellType.STRING);
+        cell.setCellValue("Инвентарный номер");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(5, CellType.STRING);
+        cell.setCellValue("Город");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(6, CellType.STRING);
+        cell.setCellValue("Примечания");
+        cell.setCellStyle(style);
+
+        //Границы для стиля style1
+        HSSFCellStyle style1 = workbook.createCellStyle();
+        style1.setVerticalAlignment(VerticalAlignment.CENTER);
+        style1.setAlignment(HorizontalAlignment.CENTER);
+        style1.setBorderBottom(BorderStyle.THIN);
+        style1.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style1.setBorderLeft(BorderStyle.THIN);
+        style1.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style1.setBorderRight(BorderStyle.THIN);
+        style1.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style1.setBorderTop (BorderStyle.THIN);
+        style1.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        //Загрузка данных на Эксель
+        int rownum = 3;
+        for (Partylots partylots : partylotsList) {
+            Cartridges cartridges = cartridgeServiceImpl.findById(partylots.getCartridgesId());
+            Cartrs cartrs = cartrsServiceImpl.findById(cartridges.getCartrsIdCartrs());
+            Printers printers = printersServiceImpl.findById(cartrs.getPrintersIdPrinters());
+            Manufacturers manufacturers = manufacturerServiceImpl.findById(printers.getModelsIdModels());
+
+            rownum++;
+            row = sheet.createRow(rownum);
+
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue(rownum-3);
+            cell.setCellStyle(style1);
+
+            if (partylots.getHistoryIdHistoryReturn() != null){
+                History history1 = historyServiceImpl.findById(partylots.getHistoryIdHistoryReturn());
+                cell = row.createCell(1, CellType.STRING);
+                cell.setCellValue(history1.getDateOfStatus());
+                cell.setCellStyle(dateStyle1);
+            }else {
+                cell = row.createCell(1);
+                cell.setCellValue("Не принят");
+                cell.setCellStyle(style1);
+            }
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue(printers.getTypePrinters());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue(manufacturers.getModelFromPrinters());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue(cartridges.getInventoryNumber());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue(cartridges.getCity());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue(partylots.getPartyComments());
+            cell.setCellStyle(style1);
+        }
+        //Создание строк для нижних подписантов
+        Row row4,row5,row6,row7;
+        row4 = sheet.createRow(rownum + 2);
+        row5 = sheet.createRow(rownum + 3);
+        row6 = sheet.createRow(rownum + 5);
+        row7 = sheet.createRow(rownum + 6);
+        cell = row4.createCell(0,CellType.STRING);
+        cell.setCellValue("Составил:");
+        cell.setCellStyle(style6);
+
+        cell = row5.createCell(0,CellType.STRING);
+        cell.setCellValue("Инженер-системотехник");
+        cell.setCellStyle(style7);
+
+        cell = row6.createCell(0,CellType.STRING);
+        cell.setCellValue("Принял:");
+        cell.setCellStyle(style6);
+
+        cell = row4.createCell(6,CellType.STRING);
+        cell.setCellValue("___________/__________________/");
+        cell.setCellStyle(style2);
+
+        cell = row5.createCell(6,CellType.STRING);
+        cell.setCellValue("'____'_________/_________");
+        cell.setCellStyle(style2);
+
+        cell = row6.createCell(6,CellType.STRING);
+        cell.setCellValue("___________/__________________/");
+        cell.setCellStyle(style2);
+
+        cell = row7.createCell(6,CellType.STRING);
+        cell.setCellValue("'____'_________/_________");
+        cell.setCellStyle(style2);
+
+        //Выставление печати на принтер для листа(sheet) формат а4 , и чтобы в одну страницу печатало
+        sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
+        sheet.getPrintSetup().setFitHeight((short)1);
+        sheet.getPrintSetup().setFitWidth((short)1);
+        sheet.setAutobreaks(true);
+        File file = new File("C:/demo/Просмотр партии.xls");
+        file.getParentFile().mkdirs();
+        sheet.autoSizeColumn(0);
+        sheet.autoSizeColumn(1);
+        sheet.autoSizeColumn(2);
+        sheet.autoSizeColumn(3);
+        sheet.autoSizeColumn(4);
+        sheet.autoSizeColumn(5);
+        sheet.autoSizeColumn(6);
+        sheet.autoSizeColumn(7);
+        //Запись всех данных в эксель
+        FileOutputStream outFile = new FileOutputStream(file);
+        workbook.write(outFile);
+        //Закрытие экселя для его редактирования и удаления
+        workbook.close();
+        outFile.close();
+        return "redirect:/view-lots/{lotNumber}/{idHistory}";
+    }
+
+    @GetMapping("/cartridge-Export-Excel-PartyLots-Comparison/{lotNumber}/{idHistory}/{idHistoryReturn}")
+    public String cartridgeExportExcelPartyLotsComparison(@PathVariable ("lotNumber") String lotNumber, @PathVariable ("idHistory") long idHistory,
+                                                          @PathVariable ("idHistoryReturn") long idHistoryReturn) throws IOException {
+        //Подготовка и создание экселя и листа в нём
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("Список картриджей");
+        List<Partylots> partylotsList = partyLotsServiceImpl.findAllByLotNumber(lotNumber);
+        History history = historyServiceImpl.findById(idHistory);
+        Cell cell;
+        Row row,row1,row2,row3;
+        //Создание стилей
+        HSSFCellStyle style = createStyleForTitle(workbook);
+        HSSFCellStyle style2 = workbook.createCellStyle();
+        HSSFCellStyle style3 = workbook.createCellStyle();
+        HSSFCellStyle style4 = workbook.createCellStyle();
+        HSSFCellStyle style5 = workbook.createCellStyle();
+        HSSFCellStyle style6 = workbook.createCellStyle();
+        HSSFCellStyle style7 = workbook.createCellStyle();
+        style2.setAlignment(HorizontalAlignment.RIGHT);
+        style2.setWrapText(true);
+        style3.setAlignment(HorizontalAlignment.CENTER);
+        style3.setWrapText(true);
+        HSSFFont font1 = workbook.createFont();
+        font1.setBold(true);
+        style3.setFont(font1);
+        style4.setAlignment(HorizontalAlignment.CENTER);
+        style5.setAlignment(HorizontalAlignment.RIGHT);
+        style5.setFont(font1);
+        style6.setAlignment(HorizontalAlignment.LEFT);
+        style6.setFont(font1);
+        style7.setAlignment(HorizontalAlignment.LEFT);
+        //Для даты в шапке
+        DataFormat format = workbook.createDataFormat();
+        CellStyle dateStyle = workbook.createCellStyle();
+        dateStyle.setDataFormat(format.getFormat("dd.mm.yyyy"));
+        dateStyle.setAlignment(HorizontalAlignment.LEFT);
+        //Для даты внутри таблицы
+        DataFormat format1 = workbook.createDataFormat();
+        CellStyle dateStyle1 = workbook.createCellStyle();
+        dateStyle1.setDataFormat(format1.getFormat("dd.mm.yyyy"));
+        dateStyle1.setAlignment(HorizontalAlignment.CENTER);
+        dateStyle1.setVerticalAlignment(VerticalAlignment.CENTER);
+        dateStyle1.setBorderBottom(BorderStyle.THIN);
+        dateStyle1.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        dateStyle1.setBorderLeft(BorderStyle.THIN);
+        dateStyle1.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        dateStyle1.setBorderRight(BorderStyle.THIN);
+        dateStyle1.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        dateStyle1.setBorderTop (BorderStyle.THIN);
+        dateStyle1.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        //Создание строк
+        row = sheet.createRow(2);
+        row1 = sheet.createRow(0);
+        row2 = sheet.createRow(1);
+        row3 = sheet.createRow(3);
+
+        //Создание колонок
+        cell = row1.createCell(6,CellType.STRING);
+        cell.setCellValue("РУП 'Минскэнерго' филиал 'Энергосбыт'");
+        cell.setCellStyle(style2);
+
+        cell = row1.createCell(0);
+        cell.setCellValue(history.getDateOfStatus());
+        cell.setCellStyle(dateStyle);
+
+        cell = row.createCell(6,CellType.STRING);
+        cell.setCellValue("ООО 'ДельтаПринт'");
+        cell.setCellStyle(style5);
+
+        cell = row2.createCell(1);
+        cell.setCellValue("Заявка № " + lotNumber);
+        cell.setCellStyle(style3);
+        //Объединение ячеек
+        sheet.addMergedRegion(new CellRangeAddress(
+                1, //first row (0-based)
+                1, //last row  (0-based)
+                1, //first column (0-based)
+                3  //last column  (0-based)
+        ));
+
+        cell = row.createCell(1);
+        cell.setCellValue("на восстановление и заправку картриджей");
+        cell.setCellStyle(style4);
+        sheet.addMergedRegion(new CellRangeAddress(
+                2, //first row (0-based)
+                2, //last row  (0-based)
+                1, //first column (0-based)
+                3  //last column  (0-based)
+        ));
+
+        cell = row3.createCell(0, CellType.STRING);
+        cell.setCellValue("№ п/п");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(1, CellType.STRING);
+        cell.setCellValue("Дата принятия");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(2, CellType.STRING);
+        cell.setCellValue("Модель принтера");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(3, CellType.STRING);
+        cell.setCellValue("Производитель");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(4, CellType.STRING);
+        cell.setCellValue("Инвентарный номер");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(5, CellType.STRING);
+        cell.setCellValue("Город");
+        cell.setCellStyle(style);
+
+        cell = row3.createCell(6, CellType.STRING);
+        cell.setCellValue("Примечания");
+        cell.setCellStyle(style);
+
+        //Границы для стиля style1
+        HSSFCellStyle style1 = workbook.createCellStyle();
+        style1.setVerticalAlignment(VerticalAlignment.CENTER);
+        style1.setAlignment(HorizontalAlignment.CENTER);
+        style1.setBorderBottom(BorderStyle.THIN);
+        style1.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style1.setBorderLeft(BorderStyle.THIN);
+        style1.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style1.setBorderRight(BorderStyle.THIN);
+        style1.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style1.setBorderTop (BorderStyle.THIN);
+        style1.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        //Загрузка данных на Эксель
+        int rownum = 3;
+        for (Partylots partylots : partylotsList) {
+            Cartridges cartridges = cartridgeServiceImpl.findById(partylots.getCartridgesId());
+            Cartrs cartrs = cartrsServiceImpl.findById(cartridges.getCartrsIdCartrs());
+            Printers printers = printersServiceImpl.findById(cartrs.getPrintersIdPrinters());
+            Manufacturers manufacturers = manufacturerServiceImpl.findById(printers.getModelsIdModels());
+
+            rownum++;
+            row = sheet.createRow(rownum);
+
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue(rownum-3);
+            cell.setCellStyle(style1);
+
+            if (partylots.getHistoryIdHistoryReturn() != null){
+                History history1 = historyServiceImpl.findById(partylots.getHistoryIdHistoryReturn());
+                cell = row.createCell(1, CellType.STRING);
+                cell.setCellValue(history1.getDateOfStatus());
+                cell.setCellStyle(dateStyle1);
+            }else {
+                cell = row.createCell(1);
+                cell.setCellValue("Не принят");
+                cell.setCellStyle(style1);
+            }
+
+            cell = row.createCell(2, CellType.STRING);
+            cell.setCellValue(printers.getTypePrinters());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(3, CellType.STRING);
+            cell.setCellValue(manufacturers.getModelFromPrinters());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(4, CellType.STRING);
+            cell.setCellValue(cartridges.getInventoryNumber());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(5, CellType.STRING);
+            cell.setCellValue(cartridges.getCity());
+            cell.setCellStyle(style1);
+
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue(partylots.getPartyComments());
+            cell.setCellStyle(style1);
+        }
+        //Создание строк для нижних подписантов
+        Row row4,row5,row6,row7;
+        row4 = sheet.createRow(rownum + 2);
+        row5 = sheet.createRow(rownum + 3);
+        row6 = sheet.createRow(rownum + 5);
+        row7 = sheet.createRow(rownum + 6);
+        cell = row4.createCell(0,CellType.STRING);
+        cell.setCellValue("Составил:");
+        cell.setCellStyle(style6);
+
+        cell = row5.createCell(0,CellType.STRING);
+        cell.setCellValue("Инженер-системотехник");
+        cell.setCellStyle(style7);
+
+        cell = row6.createCell(0,CellType.STRING);
+        cell.setCellValue("Принял:");
+        cell.setCellStyle(style6);
+
+        cell = row4.createCell(6,CellType.STRING);
+        cell.setCellValue("___________/__________________/");
+        cell.setCellStyle(style2);
+
+        cell = row5.createCell(6,CellType.STRING);
+        cell.setCellValue("'____'_________/_________");
+        cell.setCellStyle(style2);
+
+        cell = row6.createCell(6,CellType.STRING);
+        cell.setCellValue("___________/__________________/");
+        cell.setCellStyle(style2);
+
+        cell = row7.createCell(6,CellType.STRING);
+        cell.setCellValue("'____'_________/_________");
+        cell.setCellStyle(style2);
+
+        //Выставление печати на принтер для листа(sheet) формат а4 , и чтобы в одну страницу печатало
+        sheet.getPrintSetup().setPaperSize(PrintSetup.A4_PAPERSIZE);
+        sheet.getPrintSetup().setFitHeight((short)1);
+        sheet.getPrintSetup().setFitWidth((short)1);
+        sheet.setAutobreaks(true);
+        File file = new File("C:/demo/Просмотр партии принятия.xls");
+        file.getParentFile().mkdirs();
+        sheet.autoSizeColumn(0);
+        sheet.autoSizeColumn(1);
+        sheet.autoSizeColumn(2);
+        sheet.autoSizeColumn(3);
+        sheet.autoSizeColumn(4);
+        sheet.autoSizeColumn(5);
+        sheet.autoSizeColumn(6);
+        sheet.autoSizeColumn(7);
+        //Запись всех данных в эксель
+        FileOutputStream outFile = new FileOutputStream(file);
+        workbook.write(outFile);
+        //Закрытие экселя для его редактирования и удаления
+        workbook.close();
+        outFile.close();
+        return "redirect:/ComparisonPartyLots/{idHistory}/{idHistoryReturn}/{lotNumber}";
+    }
+
+
 }
