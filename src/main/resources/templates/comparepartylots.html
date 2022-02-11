@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Сравнение партий</title>
@@ -151,13 +151,15 @@
         </div>
     </div>
     <br>
+    <div class="container-fluid">
+    <div class="container ms-auto fw-bold">
     <div class="row mb-3">
-        <div class="col-sm-12">
+        <div class="col">
             <div class="container-fluid ms-auto fw-bold">
                 <form action="#" th:action="@{/main/{idHistory}/{idHistoryReturn}/{lotNumber}(idHistory=${idHistory},lotNumber=${lotNumber},idHistoryReturn=${idHistoryReturn})}" method="post">
                     <div>
                         <div>
-                            <label for="chck" class="col-sm-2 col-form-label">Нажмите если хотите закончить работу с партией</label>
+                            <label for="chck" class="col-sm-4 col-form-label">Нажмите если хотите закончить работу с партией</label>
                             <input type="checkbox" id="chck">
                         </div>
                         <div>
@@ -167,12 +169,12 @@
                 </form>
             </div>
         </div>
-        <div class="col-sm-12">
+        <div class="col">
             <div class="container-fluid ms-auto fw-bold">
                 <form action="#" th:action="@{/main}" method="get">
                     <div>
                         <div>
-                            <label for="chck1" class="col-sm-2 col-form-label">Нажмите если хотите закончить работу с партией, без закрытия партии</label>
+                            <label for="chck1" class="col-sm-4 col-form-label">Нажмите если хотите закончить работу с партией, без закрытия партии</label>
                             <input type="checkbox" id="chck1">
                         </div>
                         <div>
@@ -182,6 +184,8 @@
                 </form>
             </div>
         </div>
+    </div>
+    </div>
     </div>
     <br>
     <div class="mx-auto" style="width: 200px;">
@@ -280,7 +284,7 @@
             </tbody>
         </table>
     </div>
-</div>
+
 
 <div class="modal fade" id="CheckOneStatus" tabindex="-1" aria-labelledby="CheckOneStatusModalLabel" aria-hidden="true">
     <div class="modal-dialog">
