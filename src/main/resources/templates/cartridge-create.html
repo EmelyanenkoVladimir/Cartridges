@@ -10,6 +10,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.0.1/b-print-2.0.1/sp-1.4.0/datatables.min.js"></script>
     <title>Создать картридж</title>
     <script type="text/javascript" language="javascript">
+
         function DisableBackButton() {
             window.history.forward()
         }
@@ -96,7 +97,7 @@
             <div class="row mb-3">
                     <label for="count" class="col-sm-2 col-form-label">Количество заправок</label>
                 <div class="col-sm-7">
-                    <input type="number" class="form-control w-50" th:field="*{count}" th:value="*{count=0}" id="count">
+                    <input type="number" min="0" class="form-control w-50" th:field="*{count}" th:value="*{count=0}" id="count">
                     <div style="color:red" th:if="${#fields.hasErrors('count')}" th:errors="*{count}">Name Error</div>
                 </div>
             </div>

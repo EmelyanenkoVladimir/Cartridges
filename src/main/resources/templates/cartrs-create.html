@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label for="printersIdPrinters" class="col-sm-2 col-form-label">Выберите есть ли чип</label>
+            <label for="printersIdPrinters" class="col-sm-2 col-form-label">Модель принтера</label>
             <div class="col-sm-7">
                 <select class="form-select w-50" th:field="*{printersIdPrinters}" id="printersIdPrinters" required>
                     <option th:each="print:${printers}"
